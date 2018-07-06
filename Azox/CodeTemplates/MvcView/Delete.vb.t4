@@ -1,0 +1,69 @@
+﻿<#@ template language="VB" HostSpecific="True" #>
+<#@ output extension=".vbhtml" #>
+<#@ include file="Imports.include.t4" #>
+@ModelType <#= ViewDataTypeName #>
+<#
+' The following chained if-statement outputs the file header code and markup for a partial view, a view using a layout page, or a regular view.
+If (IsPartialView) Then
+#>
+
+<#
+    ElseIf (IsLayoutPageSelected)
+#>
+@Code
+    ViewBag.Title = "Удаление"
+<#
+If (Not String.IsNullOrEmpty(LayoutPageFile))
+#>
+    Layout = "<#= LayoutPageFile#>"
+<#
+End If
+#>
+End Code
+
+<h1>@ViewBag.Title</h1>
+<hr />
+
+<#
+Else
+#>
+
+@Code
+    Layout = Nothing
+End Code
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title><#= ViewName #></title>
+</head>
+<body>
+<#
+    PushIndent("    ")
+End If
+#>
+<p class="lead">Вы уверены, что хотите удалить &laquo;@Model.Title&raquo;?</p>
+
+@Using Html.BeginForm
+    @Html.AntiForgeryToken
+    @<div class="form-actions no-color">
+		<button class="btn btn-default">Удалить</button>
+		<a href="@Request.UrlReferrer.AbsolutePath" class="btn btn-link">Отмена</a>
+    </div>
+End Using
+
+<#
+' The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+#>
+<#
+If (Not IsPartialView) AndAlso (Not IsLayoutPageSelected) Then
+    ClearIndent()
+#>
+</body>
+</html>
+<#
+End If
+#>
+<#@ include file="ModelMetadataFunctions.vb.include.t4" #>

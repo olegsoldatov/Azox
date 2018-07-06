@@ -1,0 +1,147 @@
+﻿/*!
+ * Azox v1.0.0
+ * Copyright 2017 Soldata
+ */
+
+/*#region Table*/
+.table > thead > tr > th.tablesorter-header {
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+	.table > thead > tr > th.tablesorter-header > .tablesorter-header-inner::after {
+		content: "";
+		display: inline-block;
+		width: 8px;
+		height: 4px;
+		margin-left: 1em;
+		margin-bottom: 1px;
+	}
+
+.table > thead > tr > th.tablesorter-headerAsc,
+.table > thead > tr > th.tablesorter-headerDesc {
+	border-bottom: 2px solid #666;
+	border-bottom: 2px solid rgba(0,0,0,0.6);
+}
+
+	.table > thead > tr > th.tablesorter-headerAsc > .tablesorter-header-inner::after {
+		border-top: 4px solid #666;
+		border-top: 4px solid rgba(0,0,0,0.6);
+		border-right: 4px solid transparent;
+		border-left: 4px solid transparent;
+	}
+
+	.table > thead > tr > th.tablesorter-headerDesc > .tablesorter-header-inner::after {
+		border-right: 4px solid transparent;
+		border-bottom: 4px solid #666;
+		border-bottom: 4px solid rgba(0,0,0,0.6);
+		border-left: 4px solid transparent;
+	}
+/*#endregion*/
+
+/*#region Layout: Group*/
+.group {
+	display: flex;
+	padding: 0;
+	margin: 0 -15px;
+	list-style: none;
+}
+
+	.group.wrap {
+		-ms-flex-wrap: wrap;
+		-webkit-flex-wrap: wrap;
+		flex-wrap: wrap;
+	}
+
+	.group > * {
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+
+	.group.size-md > * {
+		flex-grow: 0;
+		flex-shrink: 1;
+		flex-basis: 100%;
+	}
+
+	@media screen and (min-width: 540px) {
+		.group.size-md > * {
+			max-width: 50%;
+			flex-basis: 50%;
+		}
+	}
+
+	@media screen and (min-width: 768px) {
+		.group.size-md > * {
+			max-width: 33.33%;
+			flex-basis: 33.33%;
+		}
+	}
+
+	@media screen and (min-width: 1200px) {
+		.group.size-md > * {
+			max-width: 25%;
+			flex-basis: 25%;
+		}
+	}
+
+	@media screen and (min-width: 1600px) {
+		.group.size-md > * {
+			max-width: 16.66%;
+			flex-basis: 16.66%;
+		}
+	}
+/*#endregion*/
+
+/*#region Components*/
+
+/*#region Components: Hero*/
+.hero {
+	position: relative;
+}
+
+	.hero picture {
+		position: relative;
+		display: block;
+	}
+
+		.hero picture img {
+			max-width: 100%;
+			vertical-align: middle;
+		}
+
+	.hero > div {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	.hero.theme-dark {
+		background-color: #171717;
+		color: #fff;
+	}
+
+	.hero.mask-50 picture::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: block;
+		background-color: rgba(0,0,0,0.5);
+	}
+/*#endregion*/
+
+/*#endregion*/
+
+/*#region Navbar brand*/
+.navbar-brand img {
+	display: block;
+	height: 1.6rem;
+}
+/*#endregion*/

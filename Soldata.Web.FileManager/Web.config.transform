@@ -1,0 +1,13 @@
+<configuration>
+  <appSettings>
+    <add key="FileManager:ScriptFile" value="~/CKFinder/ckfinder.js" />
+    <add key="FileManager:BasePath" value="~/CKFinder/" />
+  </appSettings>
+  <system.web>
+    <pages>
+      <namespaces>
+        <add namespace="Soldata.Web" />
+      </namespaces>
+    </pages>
+  </system.web>
+</configuration>

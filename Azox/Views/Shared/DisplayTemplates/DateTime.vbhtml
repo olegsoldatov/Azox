@@ -1,0 +1,3 @@
+﻿@ModelType Date
+@Model.ToShortDateString
+

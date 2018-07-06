@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Олег Солдатов</authors>
+    <owners>Soldata</owners>
+    <language>ru-ru</language>
+    <licenseUrl>https://azox.codeplex.com/license</licenseUrl>
+    <projectUrl>http://soldata.ru/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <!--<releaseNotes></releaseNotes>-->
+    <copyright>Soldata, 2014</copyright>
+    <tags>Azox</tags>
+    <dependencies>
+      <dependency id="Soldata.Azox.Core" version="1.9.5334" />
+    </dependencies>
+  </metadata>
+</package>

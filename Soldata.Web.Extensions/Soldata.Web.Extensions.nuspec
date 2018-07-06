@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Oleg Soldatov</authors>
+    <owners>Oleg Soldatov</owners>
+    <language>ru-ru</language>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Soldata, 2015</copyright>
+    <tags>ASP.NET MVC</tags>
+  </metadata>
+  <files>
+    <file src="Web.config.transform" target="content" />
+  </files>
+</package>

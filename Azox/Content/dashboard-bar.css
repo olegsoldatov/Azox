@@ -1,0 +1,58 @@
+﻿@import 'font-awesome.min.css';
+
+html {
+	margin-top: 44px;
+}
+
+.dashboard-bar {
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background: #171717;
+	color: #fff;
+	overflow: hidden;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	z-index: 2000;
+}
+
+	.dashboard-bar::before,
+	.dashboard-bar::after {
+		content: "";
+		display: table;
+	}
+
+	.dashboard-bar::after {
+		clear: both;
+	}
+
+.dashboard-bar__left-menu {
+	float: left;
+}
+
+.dashboard-bar__right-menu {
+	float: right;
+}
+
+.dashboard-bar__button,
+.dashboard-bar__button:link,
+.dashboard-bar__button:visited {
+	display: inline-block;
+	height: 44px;
+	min-width: 44px;
+	text-align: center;
+	font-size: 15px;
+	line-height: 20px;
+	color: #fff;
+	text-decoration: none;
+	padding: 12px;
+}
+
+	.dashboard-bar__button:hover,
+	.dashboard-bar__button:active {
+		background: #2f2f2f;
+		color: #fff;
+		text-decoration: none;
+	}

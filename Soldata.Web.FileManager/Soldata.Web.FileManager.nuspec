@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Soldata</authors>
+    <owners>Soldata</owners>
+    <language>ru-ru</language>
+    <licenseUrl>https://azox.codeplex.com/license</licenseUrl>
+    <projectUrl>http://soldata.ru/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <!--<releaseNotes></releaseNotes>-->
+    <copyright>Soldata, 2014</copyright>
+    <tags>Soldata.Web</tags>
+  </metadata>
+  <files>
+    <file src="Web.config.transform" target="content" />
+    <file src="CKFinder\" target="content\CKFinder" />
+    <file src="bin\CKFinder.dll" target="lib\net451" />
+  </files>
+</package>

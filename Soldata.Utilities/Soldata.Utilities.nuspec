@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>Oleg Soldatov</authors>
+		<owners>Soldata</owners>
+		<language>ru-ru</language>
+		<licenseUrl>http://soldata.ru/</licenseUrl>
+		<projectUrl>http://soldata.ru/</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<!--<releaseNotes></releaseNotes>-->
+		<copyright>Soldata, 2017</copyright>
+		<tags></tags>
+	</metadata>
+</package>
