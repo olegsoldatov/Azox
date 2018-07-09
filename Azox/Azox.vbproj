@@ -180,7 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.vb" />
-    <Compile Include="App_Start\ProductConfig.vb" />
     <Compile Include="App_Start\FilterConfig.vb" />
     <Compile Include="App_Start\IdentityConfig.vb" />
     <Compile Include="App_Start\RouteConfig.vb" />
@@ -192,7 +191,6 @@
     <Compile Include="Areas\Admin\Controllers\ServicesController.vb" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.vb" />
     <Compile Include="Areas\Admin\Controllers\ArticlesController.vb" />
-    <Compile Include="Core\ProductCore.vb" />
     <Compile Include="Core\DbController.vb" />
     <Compile Include="Areas\Admin\ViewModels\DashboardViewModels.vb" />
     <Compile Include="Controllers\AboutController.vb" />
@@ -1034,6 +1032,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Products\_List.vbhtml" />
     <Content Include="Views\Products\_Filter.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Image.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
