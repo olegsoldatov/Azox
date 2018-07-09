@@ -25,25 +25,6 @@ Public Class EntityStore(Of TEntity As Entity)
 		Await Context.SaveChangesAsync
 	End Function
 
-	Public Overridable Async Function FindByIdAsync(id As Guid) As Task(Of TEntity) Implements IEntityStore(Of TEntity, Guid).FindByIdAsync
-		Return Await Context.Set(Of TEntity).FindAsync(id)
-	End Function
-
-	Public Overridable Async Function UpdateAsync(entity As TEntity) As Task Implements IEntityStore(Of TEntity, Guid).UpdateAsync
-		Context.Entry(entity).State = EntityState.Modified
-		Await Context.SaveChangesAsync
-	End Function
-
-	Public Overridable Overloads Async Function DeleteAsync(entity As TEntity) As Task Implements IEntityStore(Of TEntity, Guid).DeleteAsync
-		Context.Set(Of TEntity).Remove(entity)
-		Await Context.SaveChangesAsync
-	End Function
-
-	Public Overridable Overloads Async Function DeleteAsync(entities As IEnumerable(Of TEntity)) As Task Implements IEntityStore(Of TEntity, Guid).DeleteAsync
-		Context.Set(Of TEntity).RemoveRange(entities)
-		Await Context.SaveChangesAsync
-	End Function
-
 	Public Overridable Overloads Sub Create(entity As TEntity) Implements IEntityStore(Of TEntity, Guid).Create
 		Context.Set(Of TEntity).Add(entity)
 		Context.SaveChanges()
@@ -54,14 +35,33 @@ Public Class EntityStore(Of TEntity As Entity)
 		Context.SaveChanges()
 	End Sub
 
+	Public Overridable Async Function FindByIdAsync(id As Guid) As Task(Of TEntity) Implements IEntityStore(Of TEntity, Guid).FindByIdAsync
+		Return Await Context.Set(Of TEntity).FindAsync(id)
+	End Function
+
 	Public Overridable Function FindById(id As Guid) As TEntity Implements IEntityStore(Of TEntity, Guid).FindById
 		Return Context.Set(Of TEntity).Find(id)
+	End Function
+
+	Public Overridable Async Function UpdateAsync(entity As TEntity) As Task Implements IEntityStore(Of TEntity, Guid).UpdateAsync
+		Context.Entry(entity).State = EntityState.Modified
+		Await Context.SaveChangesAsync
 	End Function
 
 	Public Overridable Sub Update(entity As TEntity) Implements IEntityStore(Of TEntity, Guid).Update
 		Context.Entry(entity).State = EntityState.Modified
 		Context.SaveChanges()
 	End Sub
+
+	Public Overridable Overloads Async Function DeleteAsync(entity As TEntity) As Task Implements IEntityStore(Of TEntity, Guid).DeleteAsync
+		Context.Set(Of TEntity).Remove(entity)
+		Await Context.SaveChangesAsync
+	End Function
+
+	Public Overridable Overloads Async Function DeleteAsync(entities As IEnumerable(Of TEntity)) As Task Implements IEntityStore(Of TEntity, Guid).DeleteAsync
+		Context.Set(Of TEntity).RemoveRange(entities)
+		Await Context.SaveChangesAsync
+	End Function
 
 	Public Overridable Overloads Sub Delete(entity As TEntity) Implements IEntityStore(Of TEntity, Guid).Delete
 		Context.Set(Of TEntity).Remove(entity)
