@@ -211,7 +211,7 @@
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="Models\Article.vb" />
     <Compile Include="Models\Entity.vb" />
-    <Compile Include="Models\Image.vb" />
+    <Compile Include="Models\ImageModels.vb" />
     <Compile Include="Models\Page.vb" />
     <Compile Include="Utilities\SlugUtility.vb" />
     <Compile Include="ViewModels\ContactFormViewModel.vb" />

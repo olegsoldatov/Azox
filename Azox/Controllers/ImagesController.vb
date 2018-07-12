@@ -3,61 +3,77 @@ Imports System.Threading.Tasks
 
 Namespace Controllers
 	Public Class ImagesController
-		Inherits DbController
+		Inherits Controller
 
-		Public Async Function Thumbnail(id As Guid) As Task(Of ActionResult)
-			Dim image = Await Db.Images.Select(Function(x) New With {x.Id, x.ContentType, .Content = x.Thumbnail}).SingleOrDefaultAsync(Function(x) x.Id = id)
-			If IsNothing(image) Then Return HttpNotFound("Изображение не найдено.")
-			Return New ImageResult(image.ContentType, image.Content)
+		Private ReadOnly Property ImageManager As New ImageManager
+
+		Public Async Function Thumbnail(id As Guid?) As Task(Of ActionResult)
+			If IsNothing(id) Then
+				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+			End If
+			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Thumbnail, x.ContentType}).SingleOrDefaultAsync
+			If IsNothing(model) Then
+				Return HttpNotFound()
+			End If
+			Return File(model.Thumbnail, model.ContentType)
 		End Function
 
 		<OutputCache(Duration:=30, VaryByParam:="none")>
-		Public Async Function Original(id As Guid) As Task(Of ActionResult)
-			Dim image = Await Db.Images.Select(Function(x) New With {x.Id, x.ContentType, .Content = x.Original}).SingleOrDefaultAsync(Function(x) x.Id = id)
-			If IsNothing(image) Then Return HttpNotFound("Изображение не найдено.")
-			Return New ImageResult(image.ContentType, image.Content)
+		Public Async Function Original(id As Guid?) As Task(Of ActionResult)
+			If IsNothing(id) Then
+				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+			End If
+			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Original, x.ContentType}).SingleOrDefaultAsync
+			If IsNothing(model) Then
+				Return HttpNotFound()
+			End If
+			Return File(model.Original, model.ContentType)
 		End Function
 
 		<OutputCache(Duration:=30, VaryByParam:="none")>
-		Public Async Function Large(id As Guid) As Task(Of ActionResult)
-			Dim image = Await Db.Images.Select(Function(x) New With {x.Id, x.ContentType, .Content = x.Large}).SingleOrDefaultAsync(Function(x) x.Id = id)
-			If IsNothing(image) Then Return HttpNotFound("Изображение не найдено.")
-			Return New ImageResult(image.ContentType, image.Content)
+		Public Async Function Large(id As Guid?) As Task(Of ActionResult)
+			If IsNothing(id) Then
+				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+			End If
+			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Large, x.ContentType}).SingleOrDefaultAsync
+			If IsNothing(model) Then
+				Return HttpNotFound()
+			End If
+			Return File(model.Large, model.ContentType)
 		End Function
 
 		<OutputCache(Duration:=30, VaryByParam:="none")>
-		Public Async Function Medium(id As Guid) As Task(Of ActionResult)
-			Dim image = Await Db.Images.Select(Function(x) New With {x.Id, x.ContentType, .Content = x.Medium}).SingleOrDefaultAsync(Function(x) x.Id = id)
-			If IsNothing(image) Then Return HttpNotFound("Изображение не найдено.")
-			Return New ImageResult(image.ContentType, image.Content)
+		Public Async Function Medium(id As Guid?) As Task(Of ActionResult)
+			If IsNothing(id) Then
+				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+			End If
+			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Medium, x.ContentType}).SingleOrDefaultAsync
+			If IsNothing(model) Then
+				Return HttpNotFound()
+			End If
+			Return File(model.Medium, model.ContentType)
 		End Function
 
 		<OutputCache(Duration:=30, VaryByParam:="none")>
-		Public Async Function Small(id As Guid) As Task(Of ActionResult)
-			Dim image = Await Db.Images.Select(Function(x) New With {x.Id, x.ContentType, .Content = x.Small}).SingleOrDefaultAsync(Function(x) x.Id = id)
-			If IsNothing(image) Then Return HttpNotFound("Изображение не найдено.")
-			Return New ImageResult(image.ContentType, image.Content)
+		Public Async Function Small(id As Guid?) As Task(Of ActionResult)
+			If IsNothing(id) Then
+				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+			End If
+			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Small, x.ContentType}).SingleOrDefaultAsync
+			If IsNothing(model) Then
+				Return HttpNotFound()
+			End If
+			Return File(model.Small, model.ContentType)
 		End Function
 
-		Private Class ImageResult
-			Inherits ActionResult
-
-			Private _ContentType As String
-			Private _Content As Byte()
-
-			Public Sub New(contentType As String, content As Byte())
-				_ContentType = contentType
-				_Content = content
-			End Sub
-
-			Public Overrides Sub ExecuteResult(context As ControllerContext)
-				If IsNothing(_Content) Then
-					context.HttpContext.Response.StatusCode = 404
-				Else
-					context.HttpContext.Response.ContentType = _ContentType
-					context.HttpContext.Response.BinaryWrite(_Content)
+		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+			If (disposing) Then
+				If _ImageManager IsNot Nothing Then
+					_ImageManager.Dispose()
+					_ImageManager = Nothing
 				End If
-			End Sub
-		End Class
+			End If
+			MyBase.Dispose(disposing)
+		End Sub
 	End Class
 End Namespace
