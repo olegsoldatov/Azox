@@ -260,6 +260,3 @@ paket-files/
 __pycache__/
 *.pyc
 /Documents
-
-# Azox unuseable projects
-Azox.Models/
