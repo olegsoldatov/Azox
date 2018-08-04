@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("Soldata.Azox.EntityFramework")>
-<Assembly: AssemblyDescription("Предоставляет поддержку доступа к источнику данных в приложениях Azox с помощью EntityFramework.")>
+<Assembly: AssemblyDescription("Предоставляет поддержку доступа к источнику данных моделям Azox с помощью EntityFramework.")>
 <Assembly: AssemblyCompany("Soldata")> 
 <Assembly: AssemblyProduct("Azox")>
 <Assembly: AssemblyCopyright("© Soldata, 2018")>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.3.0.*")>
-<Assembly: AssemblyFileVersion("3.3.0")>
+<Assembly: AssemblyVersion("3.3.1")>
+<Assembly: AssemblyFileVersion("3.3.1")>
