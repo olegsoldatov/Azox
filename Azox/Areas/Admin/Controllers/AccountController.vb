@@ -36,16 +36,12 @@ Namespace Areas.Admin.Controllers
 			End Set
 		End Property
 
-		'
-		' GET: /Account/Login
 		<AllowAnonymous>
 		Public Function Login(returnUrl As String) As ActionResult
 			ViewData!ReturnUrl = returnUrl
 			Return View()
 		End Function
 
-		'
-		' POST: /Account/Login
 		<HttpPost>
 		<AllowAnonymous>
 		<ValidateAntiForgeryToken>
@@ -72,15 +68,11 @@ Namespace Areas.Admin.Controllers
 			End Select
 		End Function
 
-		'
-		' GET: /Account/Register
 		<AllowAnonymous>
 		Public Function Register() As ActionResult
 			Return View()
 		End Function
 
-		'
-		' POST: /Account/Register
 		<HttpPost>
 		<AllowAnonymous>
 		<ValidateAntiForgeryToken>
@@ -109,15 +101,11 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		'
-		' GET: /Account/ForgotPassword
 		<AllowAnonymous>
 		Public Function ForgotPassword() As ActionResult
 			Return View()
 		End Function
 
-		'
-		' POST: /Account/ForgotPassword
 		<HttpPost>
 		<AllowAnonymous>
 		<ValidateAntiForgeryToken>
@@ -140,22 +128,16 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		'
-		' GET: /Account/ForgotPasswordConfirmation
 		<AllowAnonymous>
 		Public Function ForgotPasswordConfirmation() As ActionResult
 			Return View()
 		End Function
 
-		'
-		' GET: /Account/ResetPassword
 		<AllowAnonymous>
 		Public Function ResetPassword(code As String) As ActionResult
 			Return If(code Is Nothing, View("Error"), View())
 		End Function
 
-		'
-		' POST: /Account/ResetPassword
 		<HttpPost>
 		<AllowAnonymous>
 		<ValidateAntiForgeryToken>
@@ -176,8 +158,6 @@ Namespace Areas.Admin.Controllers
 			Return View()
 		End Function
 
-		'
-		' POST: /Account/LogOff
 		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Function LogOff() As ActionResult

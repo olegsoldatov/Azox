@@ -2,5 +2,8 @@
 	ViewBag.Title = "О компании"
 End Code
 
-<h1>@ViewBag.Title</h1>
+<div class="container">
+	<h1>@ViewBag.Title</h1>
+
+</div>
 

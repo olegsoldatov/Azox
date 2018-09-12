@@ -10,6 +10,7 @@
 	<meta name="format-detection" content="telephone=no" />
 	<link href="~/favicon.png" rel="icon" type="image/png" />
 	@Styles.Render("~/Content/dashboard")
+	@RenderSection("Head", required:=False)
 </head>
 <body>
 	<div class="sidebar">
@@ -54,4 +55,4 @@
 	@RenderSection("Scripts", required:=False)
 </body>
 </html>
-<!-- Софт Бизнес (http://soft.business/) -->
+<!-- Дизайн и разработка Софт Бизнес http://soft.business -->

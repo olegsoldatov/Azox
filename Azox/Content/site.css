@@ -93,55 +93,15 @@
 	}
 /*#endregion*/
 
-/*#region Components*/
-
-/*#region Components: Hero*/
-.hero {
-	position: relative;
-}
-
-	.hero picture {
-		position: relative;
-		display: block;
-	}
-
-		.hero picture img {
-			max-width: 100%;
-			vertical-align: middle;
-		}
-
-	.hero > div {
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		display: flex;
-		align-items: center;
-	}
-
-	.hero.theme-dark {
-		background-color: #171717;
-		color: #fff;
-	}
-
-	.hero.mask-50 picture::after {
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		display: block;
-		background-color: rgba(0,0,0,0.5);
-	}
-/*#endregion*/
-
-/*#endregion*/
-
 /*#region Navbar brand*/
 .navbar-brand img {
 	display: block;
 	height: 1.6rem;
+}
+/*#endregion*/
+
+/*#region Page footer*/
+.page-footer {
+	padding-top: 1rem;
 }
 /*#endregion*/

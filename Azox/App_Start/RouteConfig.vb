@@ -5,7 +5,7 @@
 		routes.MapRoute(
 			name:="Default",
 			url:="{controller}/{action}/{id}",
-			defaults:=New With {.controller = "Home", .action = "Index", .id = UrlParameter.Optional},
+			defaults:=New With {.controller = "home", .action = "index", .id = UrlParameter.Optional},
 			namespaces:={"Azox.Controllers"}
 		)
 	End Sub

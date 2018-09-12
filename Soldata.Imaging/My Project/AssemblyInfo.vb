@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Обработка изображений.")>
 <Assembly: AssemblyCompany("Soldata")>
 <Assembly: AssemblyProduct("")>
-<Assembly: AssemblyCopyright("© Soldata, 2017")>
+<Assembly: AssemblyCopyright("© Soldata, 2018")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("2.0.1.*")>
+<Assembly: AssemblyFileVersion("2.0.1")>

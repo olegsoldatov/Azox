@@ -11,8 +11,8 @@
 		Public Overrides Sub RegisterArea(ByVal context As AreaRegistrationContext)
 			context.MapRoute(
 				"Admin",
-				"Admin/{controller}/{action}/{id}",
-				New With {.controller = "Dashboard", .action = "Index", .id = UrlParameter.Optional},
+				"admin/{controller}/{action}/{id}",
+				New With {.controller = "dashboard", .action = "index", .id = UrlParameter.Optional},
 				{"Azox.Areas.Admin.Controllers"}
 			)
 		End Sub

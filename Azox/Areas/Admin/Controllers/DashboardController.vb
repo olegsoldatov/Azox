@@ -1,7 +1,7 @@
 ﻿Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class DashboardController
-		Inherits DbController
+		Inherits Controller
 
 		Public Function Index() As ActionResult
 			Return View()

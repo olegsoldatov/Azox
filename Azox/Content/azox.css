@@ -1,5 +1,5 @@
 ﻿/*!
- * Bootstrap Azox v1.5.2
+ * Bootstrap Azox v1.5.3
  * Copyright 2018 Soldata.
  */
 
@@ -75,19 +75,19 @@
 }
 /*#endregion*/
 
-/*#region Page section*/
-.page-section {
+/*#region Region*/
+.region {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 }
 
-	.page-section::before,
-	.page-section::after {
+	.region::before,
+	.region::after {
 		display: table;
 		content: "";
 	}
 
-	.page-section::after {
+	.region::after {
 		clear: both;
 	}
 /*#endregion*/
@@ -104,6 +104,7 @@
 	.card > div {
 		-webkit-box-flex: 1;
 		-ms-flex: 1 1 auto;
+		-moz-box-flex: 1;
 		flex: 1 1 auto;
 		overflow: hidden;
 		display: flex;
@@ -195,20 +196,40 @@
 			overflow: hidden;
 		}
 
+	.hero.mask-10 > picture::after {
+		opacity: 0.1;
+	}
+
 	.hero.mask-20 > picture::after {
 		opacity: 0.2;
+	}
+
+	.hero.mask-30 > picture::after {
+		opacity: 0.3;
 	}
 
 	.hero.mask-40 > picture::after {
 		opacity: 0.4;
 	}
 
+	.hero.mask-50 > picture::after {
+		opacity: 0.5;
+	}
+
 	.hero.mask-60 > picture::after {
 		opacity: 0.6;
 	}
 
+	.hero.mask-70 > picture::after {
+		opacity: 0.7;
+	}
+
 	.hero.mask-80 > picture::after {
 		opacity: 0.8;
+	}
+
+	.hero.mask-90 > picture::after {
+		opacity: 0.9;
 	}
 
 	.hero.mask-100 > picture::after {
@@ -497,8 +518,8 @@
 	height: 44px;
 	background-color: rgba(0,0,0,0.2);
 	position: fixed;
-	right: 3%;
-	bottom: 36px;
+	right: 2rem;
+	bottom: 1rem;
 	text-align: center;
 	line-height: 44px;
 	font-size: 24px;
