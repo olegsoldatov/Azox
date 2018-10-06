@@ -1,6 +1,6 @@
 ﻿Imports System.Data.Entity
 
-Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
+Public Class EntityManager(Of TEntity As {Class, IEntity})
 	Implements IDisposable
 
 	''' <summary>
@@ -12,17 +12,11 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	Protected Friend ReadOnly Property Context As DbContext
 
 	''' <summary>
-	''' Возвращает перечисление сущностей с возможностью расчета запроса.
-	''' </summary>
-	Public Overridable ReadOnly Property Entities As IQueryable(Of TEntity)
-
-	''' <summary>
 	''' Инициализирует новый экземпляр класса <see cref="EntityManager(Of TEntity)"/>.
 	''' </summary>
 	''' <param name="context">Экземпляр контекста данных.</param>
 	Public Sub New(context As DbContext)
 		_Context = context
-		_Entities = context.Set(Of TEntity)
 	End Sub
 
 	''' <summary>

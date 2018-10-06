@@ -31,11 +31,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Azox.Models", "Azox.Models\
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Imaging", "Soldata.Imaging\Soldata.Imaging.vbproj", "{FD2427E5-9B95-4F05-8C8A-D561F298831F}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Entities", "Soldata.Entities\Soldata.Entities.vbproj", "{37526145-2D27-42C5-9B6E-751D1EDE1C03}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Utilities", "Soldata.Utilities\Soldata.Utilities.vbproj", "{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox", "Soldata.Azox\Soldata.Azox.vbproj", "{8D1DE96F-C9CD-40DF-B9D0-F5353B49F961}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Entity", "Soldata.Entity\Soldata.Entity.vbproj", "{37526145-2D27-42C5-9B6E-751D1EDE1C03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,10 +99,6 @@ Global
 		{FD2427E5-9B95-4F05-8C8A-D561F298831F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD2427E5-9B95-4F05-8C8A-D561F298831F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD2427E5-9B95-4F05-8C8A-D561F298831F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,6 +107,10 @@ Global
 		{8D1DE96F-C9CD-40DF-B9D0-F5353B49F961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D1DE96F-C9CD-40DF-B9D0-F5353B49F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D1DE96F-C9CD-40DF-B9D0-F5353B49F961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

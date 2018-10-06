@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Проверьте значения атрибутов сборки
 
-<Assembly: AssemblyTitle("Soldata.Entities")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyTitle("Soldata.Entity")>
+<Assembly: AssemblyDescription("Базовая модель данных.")>
+<Assembly: AssemblyCompany("Soldata")>
 <Assembly: AssemblyProduct("Soldata.Entities")>
-<Assembly: AssemblyCopyright("Copyright ©  2017")>
+<Assembly: AssemblyCopyright("© Soldata, 2018")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
