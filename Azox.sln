@@ -27,8 +27,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.Images", "Sold
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.StaticPages", "Soldata.Azox.StaticPages\Soldata.Azox.StaticPages.vbproj", "{2A855997-91DF-4234-8E3F-B851D0E5E7F8}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.Application", "Soldata.Azox.Application\Soldata.Azox.Application.vbproj", "{7C5378FB-7E9F-4622-865B-AEAB99201784}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Azox.Models", "Azox.Models\Azox.Models.vbproj", "{6796A206-569D-4715-A141-B7FB74446415}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Imaging", "Soldata.Imaging\Soldata.Imaging.vbproj", "{FD2427E5-9B95-4F05-8C8A-D561F298831F}"
@@ -93,10 +91,6 @@ Global
 		{2A855997-91DF-4234-8E3F-B851D0E5E7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A855997-91DF-4234-8E3F-B851D0E5E7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A855997-91DF-4234-8E3F-B851D0E5E7F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C5378FB-7E9F-4622-865B-AEAB99201784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C5378FB-7E9F-4622-865B-AEAB99201784}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C5378FB-7E9F-4622-865B-AEAB99201784}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C5378FB-7E9F-4622-865B-AEAB99201784}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6796A206-569D-4715-A141-B7FB74446415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6796A206-569D-4715-A141-B7FB74446415}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6796A206-569D-4715-A141-B7FB74446415}.Release|Any CPU.ActiveCfg = Release|Any CPU
