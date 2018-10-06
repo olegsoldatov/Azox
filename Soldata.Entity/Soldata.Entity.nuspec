@@ -12,5 +12,8 @@
     <description>$description$</description>
     <releaseNotes></releaseNotes>
     <copyright>Soldata, 2018</copyright>
+	  <dependencies>
+		  <dependency id="EntityFramework" version="6.2.0" />
+	  </dependencies>
   </metadata>
 </package>

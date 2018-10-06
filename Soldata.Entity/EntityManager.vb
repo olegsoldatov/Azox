@@ -1,5 +1,9 @@
 ﻿Imports System.Data.Entity
 
+''' <summary>
+''' Предоставляет базовый API для управления сущностями.
+''' </summary>
+''' <typeparam name="TEntity">Тип сущности.</typeparam>
 Public Class EntityManager(Of TEntity As {Class, IEntity})
 	Implements IDisposable
 

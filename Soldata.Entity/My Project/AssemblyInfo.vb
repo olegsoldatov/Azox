@@ -9,9 +9,9 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("Soldata.Entity")>
-<Assembly: AssemblyDescription("Базовая модель данных.")>
+<Assembly: AssemblyDescription("Базовая сущность.")>
 <Assembly: AssemblyCompany("Soldata")>
-<Assembly: AssemblyProduct("Soldata.Entities")>
+<Assembly: AssemblyProduct("Soldata.Entity")>
 <Assembly: AssemblyCopyright("© Soldata, 2018")>
 <Assembly: AssemblyTrademark("")>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("1.0.1")>
+<Assembly: AssemblyFileVersion("1.0.0")>
