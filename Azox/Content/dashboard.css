@@ -127,6 +127,9 @@ a {
 		border: 1px dashed transparent;
 		color: currentColor;
 		text-decoration: none;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.sidebar .nav ul {
