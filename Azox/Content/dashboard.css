@@ -118,11 +118,10 @@ a {
 	.sidebar .nav button {
 		display: flex;
 		width: 100%;
+		align-items: center;
 		text-align: left;
 		border-radius: 0;
 		line-height: 20px;
-		padding-top: 11px;
-		padding-bottom: 11px;
 		background: 0 0;
 		border: 1px dashed transparent;
 		color: currentColor;
@@ -147,17 +146,24 @@ a {
 			padding: 9px 0 9px 42px;
 		}
 
+	.sidebar .nav > li > a > span,
+	.sidebar .nav > li > button > span {
+		flex: 1 1 auto;
+	}
+
 	.sidebar .nav > li > a > [class*=fa-],
 	.sidebar .nav > li > button > [class*=fa-] {
+		flex: 0 1 auto;
 		text-align: center;
-		font-size: 18px;
+		font-size: 20px;
 		width: 42px;
+		height: 42px;
+		line-height: 42px;
 	}
 
 	.sidebar .nav > li > button[aria-expanded=false]::after,
 	.sidebar .nav > li > button[aria-expanded=true]::after {
-		display: block;
-		float: right;
+		display: inline-block;
 		text-align: center;
 		font: normal normal normal 20px/42px FontAwesome;
 		width: 42px;

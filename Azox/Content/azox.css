@@ -187,14 +187,17 @@
 		justify-content: center;
 		text-align: center;
 		align-items: center;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
 	}
 
-		.hero > div > div {
-			width: 100%;
-			padding-left: 15px;
-			padding-right: 15px;
-			overflow: hidden;
-		}
+	.hero.align-top > div {
+		align-items: flex-start;
+	}
+
+	.hero.align-bottom > div {
+		align-items: flex-end;
+	}
 
 	.hero.mask-10 > picture::after {
 		opacity: 0.1;
@@ -299,60 +302,18 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.hero.align-top > div,
-	.hero.align-right > div,
-	.hero.align-bottom > div,
-	.hero.align-left > div {
-		text-align: left;
-	}
-
-	.hero.align-center.align-top > div,
-	.hero.align-center.align-bottom > div {
-		text-align: center;
-	}
-
-	.hero.align-top > div {
-		align-items: flex-start;
-	}
-
-	.hero.align-right > div {
-		justify-content: flex-end;
-	}
-
-	.hero.align-bottom > div {
-		align-items: flex-end;
-	}
-
-	.hero.align-left > div {
-		justify-content: flex-start;
 	}
 }
 
 @media all and (min-width: 768px) {
-	.hero > div > div {
-		max-width: 50%;
-	}
-
-	.hero.align-top > div,
-	.hero.align-right > div,
-	.hero.align-bottom > div,
-	.hero.align-left > div,
-	.hero.align-center > div {
+	.hero > div {
 		margin-top: 2rem;
 		margin-bottom: 2rem;
 	}
 }
 
 @media all and (min-width: 992px) {
-	.hero.align-top > div,
-	.hero.align-right > div,
-	.hero.align-bottom > div,
-	.hero.align-left > div,
-	.hero.align-center > div {
+	.hero > div {
 		margin-top: 4rem;
 		margin-bottom: 4rem;
 	}
@@ -360,14 +321,6 @@
 
 @media all and (min-width: 1200px) {
 	.hero > div {
-		max-width: 1140px;
-	}
-
-	.hero.align-top > div,
-	.hero.align-right > div,
-	.hero.align-bottom > div,
-	.hero.align-left > div,
-	.hero.align-center > div {
 		margin-top: 6rem;
 		margin-bottom: 6rem;
 	}
