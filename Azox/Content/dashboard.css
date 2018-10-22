@@ -1,5 +1,5 @@
 ﻿/*!
- * Dashboard v1.5.0.0
+ * Dashboard v1.6.0
  * Copyright 2018 Soldata
  */
 
@@ -542,6 +542,11 @@ label {
 
 label + .checkbox {
 	margin-top: 0;
+}
+
+.checkbox .checkbox {
+	margin-top: 5px;
+	margin-left: 20px;
 }
 /*#endregion*/
 

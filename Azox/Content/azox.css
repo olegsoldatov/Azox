@@ -1,5 +1,5 @@
 ﻿/*!
- * Bootstrap Azox v1.5.3
+ * Bootstrap Azox v1.6.0
  * Copyright 2018 Soldata.
  */
 
@@ -73,23 +73,6 @@
 .navbar-brand img {
 	display: block;
 }
-/*#endregion*/
-
-/*#region Region*/
-.region {
-	padding-top: 3rem;
-	padding-bottom: 3rem;
-}
-
-	.region::before,
-	.region::after {
-		display: table;
-		content: "";
-	}
-
-	.region::after {
-		clear: both;
-	}
 /*#endregion*/
 
 /*#region Card*/
@@ -187,8 +170,8 @@
 		justify-content: center;
 		text-align: center;
 		align-items: center;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
 	}
 
 	.hero.align-top > div {
@@ -302,27 +285,53 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-	}
-}
-
-@media all and (min-width: 768px) {
-	.hero > div {
-		margin-top: 2rem;
-		margin-bottom: 2rem;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
 	}
 }
 
 @media all and (min-width: 992px) {
 	.hero > div {
-		margin-top: 4rem;
-		margin-bottom: 4rem;
+		padding-top: 4rem;
+		padding-bottom: 4rem;
 	}
 }
 
 @media all and (min-width: 1200px) {
 	.hero > div {
-		margin-top: 6rem;
-		margin-bottom: 6rem;
+		padding-top: 6rem;
+		padding-bottom: 6rem;
+	}
+}
+/*#endregion*/
+
+/*#region Region*/
+.region {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+	.region::before,
+	.region::after {
+		display: table;
+		content: "";
+	}
+
+	.region::after {
+		clear: both;
+	}
+
+@media all and (min-width: 768px) {
+	.region {
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.region {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
 	}
 }
 /*#endregion*/
@@ -462,6 +471,30 @@
 	.feature-group .card:last-child {
 		margin-bottom: 0;
 	}
+/*#endregion*/
+
+/*#region Form*/
+.required::after {
+	content: "*";
+	margin-left: 0.25em;
+}
+
+.validation-summary-errors {
+	color: #dc3545;
+}
+
+.input-validation-error {
+	border-color: #dc3545;
+}
+
+	.input-validation-error:focus {
+		border-color: #dc3545;
+		box-shadow: 0px 0px 0px 0.2rem rgba(220, 53, 69, 0.25);
+	}
+
+.field-validation-error {
+	color: #dc3545;
+}
 /*#endregion*/
 
 /*#region Back to top*/
