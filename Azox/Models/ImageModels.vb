@@ -33,4 +33,10 @@ Public Class ImageManager
 	Public Sub New()
 		MyBase.New(New EntityStore(Of Image)(New ApplicationDbContext))
 	End Sub
+
+	Public ReadOnly Property Images As IQueryable(Of Image)
+		Get
+			Return CType(Store, EntityStore(Of Image)).Context.Set(Of Image)
+		End Get
+	End Property
 End Class

@@ -5,13 +5,17 @@ Namespace Controllers
 	Public Class ImagesController
 		Inherits Controller
 
-		Private ReadOnly Property ImageManager As New ImageManager
+		Public Sub New()
+			_ImageManager = New ImageManager
+		End Sub
+
+		Public ReadOnly Property ImageManager As ImageManager
 
 		Public Async Function Thumbnail(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Thumbnail, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await ImageManager.Images.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Thumbnail, x.ContentType}).SingleOrDefaultAsync
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -23,7 +27,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Original, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await ImageManager.Images.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Original, x.ContentType}).SingleOrDefaultAsync
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -35,7 +39,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Large, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await ImageManager.Images.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Large, x.ContentType}).SingleOrDefaultAsync
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -47,7 +51,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Medium, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await ImageManager.Images.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Medium, x.ContentType}).SingleOrDefaultAsync
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -59,7 +63,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Small, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await ImageManager.Images.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Small, x.ContentType}).SingleOrDefaultAsync
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If

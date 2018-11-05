@@ -10,7 +10,6 @@ Public Module PaginationHtmlHelper
 	Private _PageCount As Integer
 	Private _StartPageIndex As Integer
 	Private _ViewContext As ViewContext
-	Private _pageIndexName As String = "pageIndex"
 
 	''' <summary>
 	''' Отображает немаркированный список постраничной навигации.
@@ -74,158 +73,110 @@ Public Module PaginationHtmlHelper
 		With ul
 			.MergeAttributes(New RouteValueDictionary(htmlAttributes))
 
-			'Ссылка на предыдущую страницу.
-			If _PageIndex > 0 And Not String.IsNullOrEmpty(options.PreviousText) Then
-				.InnerHtml += BuildPreviousLi(_PageIndex - 1, BuildASpan(options.PreviousText))
+			' Ссылка на предыдущую страницу.
+			If Not options.HidePreviousNext Then
+				If _PageIndex > 0 And Not String.IsNullOrEmpty(options.PreviousText) Then
+					.InnerHtml += BuildPageItem(_PageIndex - 1, options.PreviousText, PageItemState.Normal, options)
+				End If
 			End If
 
-			'Ссылки на страницы.
-			Dim limit = 10
-			If _PageCount < limit Then limit = _PageCount
+			' Начальная страница.
+			.InnerHtml += BuildPageItem(0, "1", If(_PageIndex = 0, PageItemState.Active, PageItemState.Normal), options)
 
-			Dim mid = CInt(Math.Floor(limit / 2))
+			Dim startIndex = If(_PageIndex - 4 < 1, 1, _PageIndex - 4)
+			Dim count = If(_PageIndex + 4 >= _PageCount - 2, _PageCount - 2, _PageIndex + 4)
 
-			If _PageIndex > (_StartPageIndex + mid) And (_StartPageIndex + limit) < _PageCount Then
-				_StartPageIndex += 1
-			ElseIf _PageIndex < (_StartPageIndex + mid) And _StartPageIndex > 0 Then
-				_StartPageIndex -= 1
+			' Разделитель в начале.
+			If startIndex > 1 Then
+				.InnerHtml += BuildPageItem(0, "…", PageItemState.Disabled, options)
 			End If
 
-			For i = _StartPageIndex To (_StartPageIndex + limit) - 1
-				.InnerHtml += BuildLi(i, (i + 1).ToString(), options.ActiveCssClass)
+			For i = startIndex To count
+				.InnerHtml += BuildPageItem(i, (i + 1).ToString, If(_PageIndex = i, PageItemState.Active, PageItemState.Normal), options)
 			Next
 
-			'Ссылка на следующую страницу.
-			If _PageIndex < (_PageCount - 1) And Not String.IsNullOrEmpty(options.NextText) Then
-				.InnerHtml += BuildNextLi(_PageIndex + 1, BuildASpan(options.NextText))
+			' Разделитель в конце.
+			If _PageCount - count > 2 Then
+				.InnerHtml += BuildPageItem(0, "…", PageItemState.Disabled, options)
+			End If
+
+			' Последняя страница.
+			.InnerHtml += BuildPageItem(_PageCount - 1, _PageCount.ToString, If(_PageIndex = _PageCount - 1, PageItemState.Active, PageItemState.Normal), options)
+
+			' Ссылка на следующую страницу.
+			If Not options.HidePreviousNext Then
+				If _PageIndex < (_PageCount - 1) And Not String.IsNullOrEmpty(options.NextText) Then
+					.InnerHtml += BuildPageItem(_PageIndex + 1, options.NextText, PageItemState.Normal, options)
+				End If
 			End If
 		End With
 
 		Return ul.ToString(TagRenderMode.Normal)
 	End Function
 
-	Private Function BuildPreviousLi(pageIndex As Integer, text As String) As String
-		Dim li As New TagBuilder("li")
-
+	Private Function BuildPageItem(pageIndex As Integer, innerText As String, state As PageItemState, options As PaginationOptions) As String
 		Dim routeValues As New RouteValueDictionary(_ViewContext.RouteData.Values)
 		Dim queryString = _ViewContext.HttpContext.Request.QueryString
 		For Each key In queryString.AllKeys
-			If Not key = _pageIndexName Then
+			If Not key = options.PageIndexName Then
 				Dim value = queryString(key)
 				routeValues.Add(key, value)
 			End If
 		Next
 		If pageIndex > 0 Then
-			routeValues.Add(_pageIndexName, pageIndex)
+			routeValues.Add(options.PageIndexName, pageIndex)
 		End If
 
-		Dim urlHelper As New UrlHelper(_ViewContext.RequestContext)
-		li.InnerHtml = BuildPreviousA(urlHelper.RouteUrl(routeValues), text)
+		Dim result As New TagBuilder("li") With {.InnerHtml = BuildPageLink(innerText, state, New UrlHelper(_ViewContext.RequestContext).RouteUrl(routeValues), options)}
 
-		Return li.ToString(TagRenderMode.Normal)
-	End Function
+		Select Case state
+			Case PageItemState.Disabled
+				result.AddCssClass(options.DisabledCssClass)
+			Case PageItemState.Active
+				result.AddCssClass(options.ActiveCssClass)
+		End Select
 
-	Private Function BuildNextLi(pageIndex As Integer, text As String) As String
-		Dim li As New TagBuilder("li")
-
-		Dim routeValues As New RouteValueDictionary(_ViewContext.RouteData.Values)
-		Dim queryString = _ViewContext.HttpContext.Request.QueryString
-		For Each key In queryString.AllKeys
-			If Not key = _pageIndexName Then
-				Dim value = queryString(key)
-				routeValues.Add(key, value)
-			End If
-		Next
-		If pageIndex > 0 Then
-			routeValues.Add(_pageIndexName, pageIndex)
+		If Not String.IsNullOrEmpty(options.PageItemCssClass) Then
+			result.AddCssClass(options.PageItemCssClass)
 		End If
 
-		Dim urlHelper As New UrlHelper(_ViewContext.RequestContext)
-		li.InnerHtml = BuildNextA(urlHelper.RouteUrl(routeValues), text)
-
-		Return li.ToString(TagRenderMode.Normal)
+		Return result.ToString(TagRenderMode.Normal)
 	End Function
 
-	Private Function BuildLi(pageIndex As Integer, text As String, activeCssClass As String) As String
-		Dim li As New TagBuilder("li")
+	Private Function BuildPageLink(innerText As String, state As PageItemState, href As String, options As PaginationOptions) As String
+		Dim result As TagBuilder
 
-		Dim routeValues As New RouteValueDictionary(_ViewContext.RouteData.Values)
-		Dim queryString = _ViewContext.HttpContext.Request.QueryString
-		For Each key In queryString.AllKeys
-			If Not key = _pageIndexName Then
-				Dim value = queryString(key)
-				routeValues.Add(key, value)
-			End If
-		Next
-		If pageIndex > 0 Then
-			routeValues.Add(_pageIndexName, pageIndex)
+		Select Case state
+			Case PageItemState.Disabled
+				result = New TagBuilder("span") With {.InnerHtml = innerText}
+			Case PageItemState.Active
+				result = New TagBuilder("span") With {.InnerHtml = innerText}
+				result.InnerHtml += BuildCurrent("(current)", options)
+			Case Else
+				result = New TagBuilder("a") With {.InnerHtml = innerText}
+				result.Attributes.Add("href", href)
+		End Select
+
+		If Not String.IsNullOrEmpty(options.PageLinkCssClass) Then
+			result.AddCssClass(options.PageLinkCssClass)
 		End If
 
-		With li
-			If pageIndex = _PageIndex Then
-				.AddCssClass(activeCssClass)
-				.InnerHtml = BuildDisabledSpan(text & " " & BuildSpan("(current)"))
-			Else
-				Dim urlHelper As New UrlHelper(_ViewContext.RequestContext)
-				.InnerHtml = BuildA(urlHelper.RouteUrl(routeValues), text)
-			End If
-		End With
-
-		Return li.ToString(TagRenderMode.Normal)
+		Return result.ToString(TagRenderMode.Normal)
 	End Function
 
-	Private Function BuildPreviousA(href As String, text As String) As String
-		Dim aTag As New TagBuilder("a") With {
-			.InnerHtml = text
-		}
-		aTag.Attributes.Add("href", href)
-		aTag.Attributes.Add("area-label", "Previous")
+	Private Function BuildCurrent(innerText As String, options As PaginationOptions) As String
+		Dim result As New TagBuilder("span") With {.InnerHtml = innerText}
 
-		Return aTag.ToString(TagRenderMode.Normal)
-	End Function
+		If Not String.IsNullOrEmpty(options.SrOnlyCssClass) Then
+			result.AddCssClass(options.SrOnlyCssClass)
+		End If
 
-	Private Function BuildNextA(href As String, text As String) As String
-		Dim aTag As New TagBuilder("a") With {
-			.InnerHtml = text
-		}
-		aTag.Attributes.Add("href", href)
-		aTag.Attributes.Add("area-label", "Next")
-
-		Return aTag.ToString(TagRenderMode.Normal)
-	End Function
-
-	Private Function BuildA(href As String, text As String) As String
-		Dim aTag As New TagBuilder("a") With {
-			.InnerHtml = text
-		}
-		aTag.Attributes.Add("href", href)
-
-		Return aTag.ToString(TagRenderMode.Normal)
-	End Function
-
-	Private Function BuildASpan(text As String) As String
-		Dim spanTag As New TagBuilder("span")
-
-		spanTag.Attributes.Add("aria-hidden", "true")
-		spanTag.InnerHtml = text
-
-		Return spanTag.ToString(TagRenderMode.Normal)
-	End Function
-
-	Private Function BuildDisabledSpan(text As String) As String
-		Dim spanTag As New TagBuilder("span") With {
-			.InnerHtml = text
-		}
-
-		Return spanTag.ToString(TagRenderMode.Normal)
-	End Function
-
-	Private Function BuildSpan(text As String) As String
-		Dim spanTag As New TagBuilder("span")
-
-		spanTag.AddCssClass("sr-only")
-		spanTag.InnerHtml = text
-
-		Return spanTag.ToString(TagRenderMode.Normal)
+		Return result.ToString(TagRenderMode.Normal)
 	End Function
 End Module
+
+Enum PageItemState
+	Normal
+	Active
+	Disabled
+End Enum
