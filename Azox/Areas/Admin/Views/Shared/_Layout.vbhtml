@@ -13,41 +13,43 @@
 	@RenderSection("Head", required:=False)
 </head>
 <body>
-	<div class="sidebar">
-		<button title="Свернуть" data-toggle="collapse">
+	<header class="sidebar" id="sidebar">
+		<button class="sidebar-toggle" data-toggle="collapse" aria-expanded="false" data-target="#sidebar">
 			<span class="fas fa-bars"></span>
 		</button>
-		<button title="Развернуть" data-toggle="expand">
-			<span class="fas fa-bars"></span>
-		</button>
-
 		@Html.Partial("_Navigation")
-	</div>
+	</header>
 
-	<div class="main">
-		<div class="top-bar">
+	<main class="main" id="main">
+		<footer class="toolbar" id="toolbar" tabindex="-1">
 			<div>
-				<a href="~/" class="btn" title="Переход на сайт" target="_blank"><span class="fas fa-external-link-alt">&nbsp;&nbsp;</span>Сайт</a>
 				@RenderSection("Toolbar", required:=False)
 			</div>
 
 			<div>
-				<a href="~/admin/manage" class="btn" title="Управление"><span class="fas fa-user">&nbsp;&nbsp;</span>@User.Identity.GetUserName()</a>
+				<a href="~/" class="btn" title="Переход на сайт" target="_blank">
+					<span class="fa fa-globe"></span>
+					<span>Сайт</span>
+				</a>
+				<a href="~/admin/manage" class="btn" title="Управление учетной записью">
+					<span class="fas fa-user"></span>
+					<span>@User.Identity.Name</span>
+				</a>
 				@Using Html.BeginForm("logoff", "account", New With {.area = "admin"}, FormMethod.Post, New With {.id = "logoutForm"})
 					@Html.AntiForgeryToken()
 					@<button class="btn" title="Выход"><span class="fas fa-sign-out-alt"></span></button>
 				End Using
 			</div>
-		</div>
+		</footer>
 
-		<div class="content">
+		<section class="content" id="content" tabindex="-1">
 			@RenderBody()
-		</div>
+		</section>
+	</main>
 
-		<a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">
-			<div class="fas fa-arrow-up" aria-label="Наверх"></div>
-		</a>
-	</div>
+	<a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">
+		<div class="fas fa-arrow-up" aria-label="Наверх"></div>
+	</a>
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")

@@ -4,25 +4,32 @@
 End Code
 
 @Section Toolbar
-	<a class="button" href="#" onclick="$('#ModelForm').submit(); return false;"><span class="fa fa-save">&nbsp;&nbsp;</span>Сохранить</a>
+	<button class="btn" form="model-form">
+		<span class="fa fa-save"></span>
+		<span>Сохранить</span>
+	</button>
 End Section
 
-<h1>@ViewBag.Title</h1>
-<hr />
+<header>
+	<h1 class="heading">@ViewBag.Title</h1>
+</header>
 
-@Using Html.BeginForm("changeimage", Nothing, FormMethod.Post, New With {.enctype = "multipart/form-data", .role = "form", .id = "ModelForm"})
-	@Html.AntiForgeryToken
-	@Html.HiddenFor(Function(model) model.Id)
-	@<div class="form-group">
-		@Html.LabelFor(Function(model) model.ImageFile, htmlAttributes:=New With {.class = "control-label"})
-		@Html.ValidationMessageFor(Function(model) model.ImageFile, "", New With {.class = "text-danger"})
-		<input type="file" name="imageFile" id="imageFile" accept="image/*" />
-		<small class="help-block">Размер файла не более 4 мегабайт.</small>
-	</div>
+<article>
+	@Using Html.BeginForm("changeimage", Nothing, FormMethod.Post, New With {.enctype = "multipart/form-data", .id = "model-form"})
+		@Html.AntiForgeryToken
+		@Html.ValidationSummary(True, "", New With {.class = "text-danger"})
+		@<div class="form-group">
+			@Html.LabelFor(Function(model) model.ImageFile, htmlAttributes:=New With {.class = "control-label required"})
+			@Html.ValidationMessageFor(Function(model) model.ImageFile, "", New With {.class = "text-danger"})
+			<div>
+				<input type="file" name="imageFile" id="imageFile" accept="image/*" />
+			</div>
+			<p><small>@String.Format("Размер файла не более {0} МБ.", ViewBag.Length / 1024)</small></p>
+		</div>
 
-	@<div class="form-group">
-		<button class="btn btn-default">Сохранить</button>
-		@Html.ActionLink("Отменить", "edit", New With {.id = Model.Id}, New With {.class = "btn btn-link"})
-	</div>
-End Using
+		@<div class="form-group">
+			<button class="btn btn-primary">Сохранить</button>
+		</div>
+	End Using
+</article>
 

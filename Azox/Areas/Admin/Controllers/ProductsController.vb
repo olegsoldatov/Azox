@@ -1,5 +1,6 @@
 ﻿Imports System.Data.Entity
 Imports System.Threading.Tasks
+Imports System.Web.Configuration
 Imports Soldata.Imaging
 
 Namespace Areas.Admin.Controllers
@@ -7,9 +8,15 @@ Namespace Areas.Admin.Controllers
 	Public Class ProductsController
 		Inherits Controller
 
-		Private ReadOnly Property ProductManager As New ProductManager
+		Public ReadOnly Property ProductManager As ProductManager
+		Public ReadOnly Property ImageManager As ImageManager
 
-		Async Function Index(searchString As String, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 20) As Task(Of ActionResult)
+		Public Sub New()
+			_ProductManager = New ProductManager
+			_ImageManager = New ImageManager
+		End Sub
+
+		Public Async Function Index(searchString As String, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 20) As Task(Of ActionResult)
 			Dim entities = ProductManager.Entities
 
 			' Поиск.
@@ -24,12 +31,12 @@ Namespace Areas.Admin.Controllers
 			Return View(Await entities.OrderBy(Function(x) x.Id).Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
 		End Function
 
-		Function Create() As ActionResult
+		Public Function Create() As ActionResult
 			Return View()
 		End Function
 
 		<HttpPost, ValidateAntiForgeryToken>
-		Async Function Create(model As Product) As Task(Of ActionResult)
+		Public Async Function Create(model As Product) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				Await ProductManager.CreateAsync(model)
 				TempData("Message") = "Продукт добавлен."
@@ -38,7 +45,7 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		Async Function Edit(id As Guid?) As Task(Of ActionResult)
+		Public Async Function Edit(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
@@ -50,7 +57,7 @@ Namespace Areas.Admin.Controllers
 		End Function
 
 		<HttpPost, ValidateAntiForgeryToken>
-		Async Function Edit(model As Product) As Task(Of ActionResult)
+		Public Async Function Edit(model As Product) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				Await ProductManager.UpdateAsync(model)
 				TempData("Message") = "Продукт изменен."
@@ -59,7 +66,7 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		Async Function Delete(id As Guid?) As Task(Of ActionResult)
+		Public Async Function Delete(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
@@ -71,62 +78,64 @@ Namespace Areas.Admin.Controllers
 		End Function
 
 		<ActionName("Delete"), HttpPost, ValidateAntiForgeryToken>
-		Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
+		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
 			Await ProductManager.DeleteAsync(Await ProductManager.FindByIdAsync(id))
-			'Dim entity = Await Db.Products.FindAsync(id)
-			'If Not IsNothing(entity.ImageId) Then
-			'	Db.Images.Remove(Await Db.Images.FindAsync(entity.ImageId))
-			'End If
-			'Db.Products.Remove(entity)
-			'Await Db.SaveChangesAsync
 			TempData("Message") = "Продукт удален."
 			Return RedirectToAction("Index")
 		End Function
 
-		Function ChangeImage(id As Guid) As ActionResult
+		Public Function ChangeImage(id As Guid) As ActionResult
 			ViewBag.Id = id
+			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View()
 		End Function
 
 		<HttpPost, ValidateAntiForgeryToken>
-		Async Function ChangeImage(model As ChangeImageViewModel) As Task(Of ActionResult)
-			If Not IsNothing(model.ImageFile) AndAlso model.ImageFile.ContentType.Contains("image") Then
-				'Dim entity = Await Db.Products.FindAsync(model.Id)
+		Public Async Function ChangeImage(model As ChangeImageViewModel) As Task(Of ActionResult)
+			If ModelState.IsValid Then
+				If Not IsNothing(model.ImageFile) AndAlso (model.ImageFile.ContentType.Contains("image") And model.ImageFile.ContentLength > 0) Then
+					Dim entity = Await ProductManager.FindByIdAsync(model.Id)
 
-				'If Not IsNothing(entity.ImageId) Then
-				'	Db.Images.Remove(Await Db.Images.FindAsync(entity.ImageId))
-				'End If
+					If Not IsNothing(entity.ImageId) Then
+						Await ImageManager.DeleteAsync(Await ImageManager.FindByIdAsync(entity.ImageId))
+					End If
 
-				'Dim image As New Image With {
-				'		.Original = ImageUtility.FileToBytes(model.ImageFile.InputStream, model.ImageFile.ContentType),
-				'		.Thumbnail = ImageUtility.FileToBytes(model.ImageFile.InputStream, model.ImageFile.ContentType, 200, 200, StretchMode.UniformToFill),
-				'		.Large = ImageUtility.FileToBytes(model.ImageFile.InputStream, model.ImageFile.ContentType, 555, 555, StretchMode.UniformToFill),
-				'		.Medium = ImageUtility.FileToBytes(model.ImageFile.InputStream, model.ImageFile.ContentType, 260, 260, StretchMode.UniformToFill),
-				'		.Small = ImageUtility.FileToBytes(model.ImageFile.InputStream, model.ImageFile.ContentType, 160, 160, StretchMode.Uniform, Drawing.Color.White)
-				'	}
+					Dim image As New Image With {
+						.ContentType = model.ImageFile.ContentType,
+						.Original = ImageUtility.Generate(model.ImageFile.InputStream, model.ImageFile.ContentType),
+						.Thumbnail = ImageUtility.Generate(model.ImageFile.InputStream, model.ImageFile.ContentType, 200, 200, StretchMode.UniformToFill),
+						.Small = ImageUtility.Generate(model.ImageFile.InputStream, model.ImageFile.ContentType, 80, 80, StretchMode.UniformToFill),
+						.Medium = ImageUtility.Generate(model.ImageFile.InputStream, model.ImageFile.ContentType, 240, 160, StretchMode.UniformToFill),
+						.Large = ImageUtility.Generate(model.ImageFile.InputStream, model.ImageFile.ContentType, 848, 318, StretchMode.UniformToFill)
+					}
 
-				'Db.Images.Add(image)
-				'entity.ImageId = image.Id
-				'Await Db.SaveChangesAsync
+					Await ImageManager.CreateAsync(image)
 
-				TempData("Message") = "Изображение изменено."
+					entity.ImageId = image.Id
+
+					Await ProductManager.UpdateAsync(entity)
+
+					TempData("Message") = "Изображение изменено."
+					Return RedirectToAction("edit", New With {model.Id})
+				End If
 			End If
-
-			Return RedirectToAction("Edit", New With {model.Id})
+			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
+			Return View(model)
 		End Function
 
 		Public Async Function DeleteImage(id As Guid) As Task(Of ActionResult)
-			'Dim entity = Await Db.Products.FindAsync(id)
+			Dim entity = Await ProductManager.FindByIdAsync(id)
 
-			'If Not IsNothing(entity.ImageId) Then
-			'	Db.Images.Remove(Await Db.Images.FindAsync(entity.ImageId))
-			'End If
+			If Not IsNothing(entity.ImageId) Then
+				Await ImageManager.DeleteAsync(Await ImageManager.FindByIdAsync(entity.ImageId))
+			End If
 
-			'entity.ImageId = Nothing
-			'Await Db.SaveChangesAsync
-			'TempData("Message") = "Изображение удалено."
+			entity.ImageId = Nothing
 
-			Return RedirectToAction("Edit", New With {id})
+			Await ProductManager.UpdateAsync(entity)
+
+			TempData("Message") = "Изображение удалено."
+			Return RedirectToAction("edit", New With {id})
 		End Function
 
 		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -134,6 +143,10 @@ Namespace Areas.Admin.Controllers
 				If _ProductManager IsNot Nothing Then
 					_ProductManager.Dispose()
 					_ProductManager = Nothing
+				End If
+				If _ImageManager IsNot Nothing Then
+					_ImageManager.Dispose()
+					_ImageManager = Nothing
 				End If
 			End If
 			MyBase.Dispose(disposing)

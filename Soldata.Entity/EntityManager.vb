@@ -13,7 +13,7 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 	''' <value>
 	''' Контекст данных.
 	''' </value>
-	Protected Friend ReadOnly Property Context As DbContext
+	Public ReadOnly Property Context As DbContext
 
 	''' <summary>
 	''' Инициализирует новый экземпляр класса <see cref="EntityManager(Of TEntity)"/>.
@@ -22,6 +22,16 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 	Public Sub New(context As DbContext)
 		_Context = context
 	End Sub
+
+	''' <summary>
+	''' Возвращает перечисление сущностей с возможностью расчета запросов к источнику данных.
+	''' </summary>
+	''' <returns></returns>
+	Public Overridable ReadOnly Property Entities As IQueryable(Of TEntity)
+		Get
+			Return _Context.Set(Of TEntity)
+		End Get
+	End Property
 
 	''' <summary>
 	''' Находит сущность по уникальному идентификатору.
@@ -49,7 +59,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Set(Of TEntity).Add(entity)
 		Context.SaveChanges()
 		Return ManagerResult.Success
@@ -64,7 +73,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Set(Of TEntity).Add(entity)
 		Await Context.SaveChangesAsync()
 		Return ManagerResult.Success
@@ -79,7 +87,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Entry(entity).State = EntityState.Modified
 		Context.SaveChanges()
 		Return ManagerResult.Success
@@ -94,7 +101,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Entry(entity).State = EntityState.Modified
 		Await Context.SaveChangesAsync()
 		Return ManagerResult.Success
@@ -109,7 +115,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Set(Of TEntity).Remove(entity)
 		Context.SaveChanges()
 		Return ManagerResult.Success
@@ -124,7 +129,6 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-
 		Context.Set(Of TEntity).Remove(entity)
 		Await Context.SaveChangesAsync()
 		Return ManagerResult.Success

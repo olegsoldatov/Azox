@@ -1,5 +1,5 @@
 ﻿/*!
- * Dashboard v1.6.0
+ * Dashboard v1.7.0
  * Copyright 2018 Soldata
  */
 
@@ -32,78 +32,43 @@ body {
 	grid-area: sidebar;
 	position: relative;
 	overflow-x: hidden;
+	z-index: 3;
 }
 
 .main {
 	grid-area: main;
 	position: relative;
 	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
-@media all and (min-width: 1200px) {
-	body:not(.collapsed) {
+@media all and (min-width: 992px) {
+	body {
 		grid-template-columns: 276px 1fr;
 	}
 }
 /*#endregion*/
 
-/*#region Sidebar*/
+/*#region Sidebar */
 .sidebar {
-	background-color: rgba(0, 29, 27, 0.8);
-	color: #fff;
+	grid-area: sidebar;
+	position: relative;
+	overflow-x: hidden;
+	z-index: 3;
 }
 
-	.sidebar > button[data-toggle=collapse],
-	.sidebar > button[data-toggle=expand] {
-		width: 44px;
-		border-radius: 0;
-		font-size: 18px;
-		line-height: 20px;
-		padding: 11px;
-		background: none;
-		border: 1px dashed transparent;
-		color: currentColor;
-		cursor: default;
-	}
-
-		.sidebar > button[data-toggle=collapse]:focus,
-		.sidebar > button[data-toggle=expand]:focus,
-		.sidebar > button[data-toggle=collapse]:hover,
-		.sidebar > button[data-toggle=expand]:hover {
-			background-color: #008576;
-		}
-
-		.sidebar > button[data-toggle=collapse]:active,
-		.sidebar > button[data-toggle=expand]:active {
-			border-color: #01bfaa;
-		}
-
-	.sidebar > button[data-toggle=collapse] {
-		display: none;
-	}
-
-	.sidebar > button[data-toggle=expand] {
-		display: block;
-	}
-
-@media all and (min-width: 1200px) {
-	body:not(.collapsed) > .sidebar > button[data-toggle=collapse] {
-		display: block;
-	}
-
-	body:not(.collapsed) > .sidebar > button[data-toggle=expand] {
-		display: none;
-	}
+.sidebar-toggle {
+	width: 44px;
+	height: 44px;
+	padding: 11px;
+	font-size: 20px;
+	line-height: 20px;
+	background-color: transparent;
+	border: 1px dashed transparent;
+	border-radius: 0;
 }
-/*#endregion*/
 
-/*#region Hyperlink*/
-a {
-	color: #2B6597;
-}
-/*#endregion*/
-
-/*#region Sidebar Nav */
 .sidebar .nav {
 	position: absolute;
 	top: 44px;
@@ -111,24 +76,20 @@ a {
 	left: 0;
 	width: 276px;
 	overflow: auto;
-	color: #fff;
 }
 
 	.sidebar .nav a,
 	.sidebar .nav button {
-		display: flex;
+		display: block;
 		width: 100%;
-		align-items: center;
 		text-align: left;
 		border-radius: 0;
 		line-height: 20px;
+		padding: 0;
 		background: 0 0;
 		border: 1px dashed transparent;
 		color: currentColor;
 		text-decoration: none;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 
 	.sidebar .nav ul {
@@ -143,17 +104,11 @@ a {
 
 		.sidebar .nav ul a {
 			font-size: 13px;
-			padding: 9px 0 9px 42px;
+			padding: 9px 12px 9px 44px;
 		}
-
-	.sidebar .nav > li > a > span,
-	.sidebar .nav > li > button > span {
-		flex: 1 1 auto;
-	}
 
 	.sidebar .nav > li > a > [class*=fa-],
 	.sidebar .nav > li > button > [class*=fa-] {
-		flex: 0 1 auto;
 		text-align: center;
 		font-size: 20px;
 		width: 42px;
@@ -161,9 +116,14 @@ a {
 		line-height: 42px;
 	}
 
+	.sidebar .nav > li + li {
+		margin-top: 0;
+	}
+
 	.sidebar .nav > li > button[aria-expanded=false]::after,
 	.sidebar .nav > li > button[aria-expanded=true]::after {
-		display: inline-block;
+		display: block;
+		float: right;
 		text-align: center;
 		font: normal normal normal 20px/42px FontAwesome;
 		width: 42px;
@@ -178,119 +138,183 @@ a {
 		content: "\f106";
 	}
 
-	.sidebar .nav > li + li {
-		margin-top: 0;
-	}
-
-	.sidebar .nav ul,
-	.sidebar .nav > .active,
-	.sidebar .nav button[aria-expanded=true] {
-		background-color: #01342e;
+	.sidebar .nav > .active ul,
+	.sidebar .nav > .active button,
+	.sidebar .nav button[aria-expanded=true],
+	.sidebar .nav button[aria-expanded=true] + ul {
+		-webkit-backdrop-filter: blur(20px) saturate(125%);
+		backdrop-filter: blur(20px) saturate(125%);
+		background-color: rgba(255,255,255,.1);
 	}
 
 	.sidebar .nav .active > a {
-		background-color: #006156;
-		background-color: rgba(255, 255, 255, 0.2);
+		-webkit-backdrop-filter: blur(20px) saturate(125%);
+		backdrop-filter: blur(20px) saturate(125%);
+		background-color: rgba(255,255,255,.1);
 	}
 
+	.sidebar-toggle:hover,
+	.sidebar-toggle:focus,
 	.sidebar .nav a:hover,
 	.sidebar .nav a:focus,
 	.sidebar .nav > .active > a:hover,
 	.sidebar .nav > .active > a:focus,
 	.sidebar .nav button:hover,
 	.sidebar .nav button:focus {
-		background-color: #008576;
+		background-color: rgba(255,255,255,.2);
 	}
 
+	.sidebar-toggle:active,
 	.sidebar .nav a:active,
 	.sidebar .nav > .active > a:active,
 	.sidebar .nav button:active {
-		border-color: #01bfaa;
+		border-color: rgba(255,255,255,.5);
 	}
+
+@media all and (min-width: 992px) {
+	.sidebar-toggle {
+		display: none;
+	}
+
+	.sidebar .nav {
+		top: 44px;
+		bottom: 44px;
+		left: 0;
+		background-color: transparent;
+	}
+
+		.sidebar .nav,
+		.sidebar .nav.in {
+			overflow-y: auto;
+			width: 276px;
+			box-shadow: none;
+		}
+
+			.sidebar .nav > li,
+			.sidebar .nav.in > li {
+				opacity: 1;
+			}
+}
+/*#endregion*/
+
+/*#region Hyperlink*/
+a {
+	color: #2B6597;
+}
+/*#endregion*/
+
+/*#region Toolbar*/
+.toolbar {
+	display: flex;
+	justify-content: space-between;
+	min-height: 44px;
+	background-color: #f3f3f3;
+	color: rgba(0,0,0,0.9);
+}
+
+	.toolbar > div {
+		display: flex;
+	}
+
+	.toolbar .btn {
+		display: inline-block;
+		line-height: 20px;
+		min-width: 44px;
+		height: 44px;
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: center;
+		border: none;
+		background-color: transparent;
+		color: inherit;
+		transition: none;
+	}
+
+		.toolbar .btn:active,
+		.toolbar .btn:focus,
+		.toolbar .btn:hover,
+		.toolbar .btn-group.open .dropdown-toggle {
+			background-color: #d8d8d8;
+			border-style: none;
+			box-shadow: none;
+		}
+
+		.toolbar .btn:focus {
+			outline: 1px dashed rgba(0,0,0,0.6);
+			outline-offset: -2px;
+		}
+
+		.toolbar .btn > [class*=fa-] {
+			font-size: 20px;
+			width: 20px;
+		}
+
+			.toolbar .btn > [class*=fa-] + span {
+				display: none;
+				margin-left: 10px;
+			}
+
+@media all and (min-width: 992px) {
+	.toolbar .btn > [class*=fa-] {
+		float: left;
+	}
+
+		.toolbar .btn > [class*=fa-] + span {
+			display: inline;
+		}
+}
 /*#endregion*/
 
 /*#region Content*/
 .content {
-	position: absolute;
-	top: 44px;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	padding: 0 24px;
-	overflow: auto;
-	background-color: #fff;
-	color: #000;
-}
-
-	.content::after {
-		content: "";
-		display: block;
-		height: 48px;
-	}
-/*#endregion*/
-
-/*#region Top bar*/
-.top-bar {
+	flex: 1 0 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-top: 1.5rem;
 	display: flex;
-	justify-content: space-between;
-	background-color: #f0f0f0;
-	height: 44px;
+	flex-direction: column;
+	background-color: #fff;
+	color: rgba(0,0,0,0.9);
 }
 
-	.top-bar > div {
-		display: flex;
+	.content > header,
+	.content > article {
+		padding-right: 12px;
+		padding-left: 12px;
 	}
 
-	.top-bar .btn {
-		display: inline-block;
-		font-size: 15px;
-		line-height: 20px;
-		padding: 11px 14px;
-		border: 1px solid transparent;
-		text-decoration: none;
-		color: rgba(0,0,0,0.9);
-		transition: none;
+	.content > header {
+		margin-bottom: 1rem;
 	}
 
-		.top-bar .btn:focus,
-		.top-bar .btn:hover,
-		.top-bar .btn:active,
-		.top-bar .btn:hover:active {
-			background-color: rgba(0,0,0,0.1);
+		.content > header .heading {
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 
-		.top-bar .btn:focus {
-			outline: 1px dashed rgba(0,0,0,0.6);
-			outline-offset: -2px;
-			box-shadow: none;
-		}
-/*#endregion*/
+	.content > article {
+		flex: 1 0 0;
+		overflow-y: auto;
+	}
 
-/*#region Aleft*/
-.alert {
-	line-height: 1.5;
-	border-radius: 0;
-}
-
-.close {
-	font-size: 1.15rem;
+@media all and (min-width: 992px) {
+	.content > header,
+	.content > article {
+		padding-right: 24px;
+		padding-left: 24px;
+	}
 }
 /*#endregion*/
 
 /*#region Heading*/
 h1, .h1, h2, .h2, h3, .h3 {
 	font-weight: 100;
+	margin-top: .5em;
+	margin-bottom: .25em;
 }
 
 h1, .h1, h2, .h2 {
 	letter-spacing: -0.01em;
-}
-
-h1, .h1 {
-	font-size: 2.4rem;
-	line-height: 1.1;
-	margin-top: 1em;
-	margin-bottom: .25em;
 }
 
 h2, .h2 {
@@ -306,83 +330,118 @@ h3, .h3 {
 }
 /*#endregion*/
 
-/*#region Fieldset*/
-legend {
-	margin-bottom: .5em;
-	font-size: 20px;
-	color: #000;
-	padding-bottom: .25em;
-	font-weight: 300;
-}
-/*#endregion*/
-
 /*#region Table*/
-.table thead {
-	border-bottom: 2px solid #ccc;
+.table {
+	table-layout: fixed;
 }
 
-.table > thead > tr > th {
-	font-size: 11px;
-	line-height: 16px;
-	vertical-align: top;
-	font-weight: 400;
-	color: #666;
-	color: rgba(0, 0, 0, 0.6);
-	border-bottom: none;
+	.table thead {
+		border-bottom: 2px solid #ccc;
+	}
+
+	.table > thead > tr > th {
+		font-size: 11px;
+		line-height: 16px;
+		vertical-align: top;
+		font-weight: 400;
+		color: #666;
+		color: rgba(0, 0, 0, 0.6);
+		border-bottom: none;
+	}
+
+	.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+		padding: 10px 12px;
+		border-top: none;
+		line-height: 20px;
+	}
+
+	.table td.f-numerical, .table th.f-numerical {
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	.table td.f-actional, .table th.f-actional {
+		width: 121px;
+		text-align: right;
+	}
+
+	.table td.f-thumbal, .table th.f-thumbal {
+		width: 104px;
+	}
+
+	.table > thead > tr > th.tablesorter-header:not(.sorter-false) {
+		cursor: pointer;
+		white-space: nowrap;
+	}
+
+		.table > thead > tr > th.tablesorter-header:not(.sorter-false) > .tablesorter-header-inner::after {
+			content: "";
+			display: inline-block;
+			width: 8px;
+			height: 4px;
+			margin-left: 1em;
+			margin-bottom: 1px;
+		}
+
+	.table > thead > tr > th.tablesorter-headerAsc,
+	.table > thead > tr > th.tablesorter-headerDesc {
+		border-bottom: 2px solid #666;
+		border-bottom: 2px solid rgba(0,0,0,0.6);
+	}
+
+		.table > thead > tr > th.tablesorter-headerAsc > .tablesorter-header-inner::after {
+			border-top: 4px solid #666;
+			border-top: 4px solid rgba(0,0,0,0.6);
+			border-right: 4px solid transparent;
+			border-left: 4px solid transparent;
+		}
+
+		.table > thead > tr > th.tablesorter-headerDesc > .tablesorter-header-inner::after {
+			border-right: 4px solid transparent;
+			border-bottom: 4px solid #666;
+			border-bottom: 4px solid rgba(0,0,0,0.6);
+			border-left: 4px solid transparent;
+		}
+
+	.table > tbody > tr > td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+		.table > tbody > tr > td:last-child a {
+			color: rgba(0, 0, 0, 0.6);
+			margin-left: .25em;
+		}
+
+	.table.table-checkable > thead > tr > th:first-child {
+		width: 40px;
+	}
+
+	.table.table-checkable > thead > tr > th:last-child {
+		width: 64px;
+	}
+
+.table-toolbar {
+	padding-right: 12px;
 }
 
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-	padding: 10px 12px;
-	border-top: none;
-	line-height: 20px;
-}
-
-.table td.f-numerical, .table th.f-numerical {
-	text-align: right;
-	white-space: nowrap;
-}
-
-.table td.f-actional, .table th.f-actional {
-	width: 121px;
-	text-align: right;
-}
-
-.table td.f-thumbal, .table th.f-thumbal {
-	width: 104px;
-}
-
-.table > thead > tr > th.tablesorter-header:not(.sorter-false) {
-	cursor: pointer;
-	white-space: nowrap;
-}
-
-	.table > thead > tr > th.tablesorter-header:not(.sorter-false) > .tablesorter-header-inner::after {
+	.table-toolbar::before,
+	.table-toolbar::after {
 		content: "";
-		display: inline-block;
-		width: 8px;
-		height: 4px;
-		margin-left: 1em;
-		margin-bottom: 1px;
+		display: table;
 	}
 
-.table > thead > tr > th.tablesorter-headerAsc,
-.table > thead > tr > th.tablesorter-headerDesc {
-	border-bottom: 2px solid #666;
-	border-bottom: 2px solid rgba(0,0,0,0.6);
-}
-
-	.table > thead > tr > th.tablesorter-headerAsc > .tablesorter-header-inner::after {
-		border-top: 4px solid #666;
-		border-top: 4px solid rgba(0,0,0,0.6);
-		border-right: 4px solid transparent;
-		border-left: 4px solid transparent;
+	.table-toolbar::after {
+		clear: both;
 	}
 
-	.table > thead > tr > th.tablesorter-headerDesc > .tablesorter-header-inner::after {
-		border-right: 4px solid transparent;
-		border-bottom: 4px solid #666;
-		border-bottom: 4px solid rgba(0,0,0,0.6);
-		border-left: 4px solid transparent;
+	.table-toolbar .btn-add {
+		float: right;
+		border-radius: 17px;
+		padding-right: 10px;
+		padding-left: 10px;
+		max-width: 34px;
 	}
 
 .table-module {
@@ -413,6 +472,27 @@ legend {
 			bottom: 0;
 			width: 264px;
 		}
+/*#endregion*/
+
+/*#region Aleft*/
+.alert {
+	line-height: 1.5;
+	border-radius: 0;
+}
+
+.close {
+	font-size: 1.15rem;
+}
+/*#endregion*/
+
+/*#region Fieldset*/
+legend {
+	margin-bottom: .5em;
+	font-size: 20px;
+	color: #000;
+	padding-bottom: .25em;
+	font-weight: 300;
+}
 /*#endregion*/
 
 /*#region Dictionary List*/

@@ -4,13 +4,16 @@
 End Code
 
 @Section Toolbar
-	<button class="btn" form="ModelForm"><span class="fas fa-save">&nbsp;&nbsp;</span>Сохранить</button>
+	<button class="btn" form="model-form">
+		<span class="fas fa-save"></span>
+		<span>Сохранить</span>
+	</button>
 End Section
 
 <h1>@ViewBag.Title</h1>
 <hr />
 
-@Using Html.BeginForm("Create", Nothing, FormMethod.Post, New With {.id = "ModelForm"})
+@Using Html.BeginForm("create", Nothing, FormMethod.Post, New With {.id = "model-form"})
 	@Html.AntiForgeryToken
 	@<div class="row">
 		<div class="col-md-9">
