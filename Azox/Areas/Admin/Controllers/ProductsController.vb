@@ -8,12 +8,12 @@ Namespace Areas.Admin.Controllers
 	Public Class ProductsController
 		Inherits Controller
 
-		Public ReadOnly Property ProductManager As ProductManager
 		Public ReadOnly Property ImageManager As ImageManager
+		Public ReadOnly Property ProductManager As ProductManager
 
 		Public Sub New()
-			_ProductManager = New ProductManager
 			_ImageManager = New ImageManager
+			_ProductManager = New ProductManager
 		End Sub
 
 		Public Async Function Index(searchString As String, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 20) As Task(Of ActionResult)

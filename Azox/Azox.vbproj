@@ -233,7 +233,6 @@
     </Compile>
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Startup.vb" />
-    <Compile Include="Areas\Admin\Models\ChangeImageViewModel.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -1030,6 +1029,8 @@
     <Content Include="webfonts\fa-brands-400.woff" />
     <Content Include="webfonts\fa-brands-400.ttf" />
     <Content Include="webfonts\fa-brands-400.eot" />
+    <Content Include="Views\Shared\DisplayTemplates\Thumbnail.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Thumbnail.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -1063,6 +1064,10 @@
     <ProjectReference Include="..\Soldata.Azox.EntityFramework\Soldata.Azox.EntityFramework.vbproj">
       <Project>{41b20007-4d8c-459d-920e-e35abd3c0dbf}</Project>
       <Name>Soldata.Azox.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Soldata.Entity\Soldata.Entity.vbproj">
+      <Project>{37526145-2d27-42c5-9b6e-751d1ede1c03}</Project>
+      <Name>Soldata.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Soldata.Imaging\Soldata.Imaging.vbproj">
       <Project>{fd2427e5-9b95-4f05-8c8a-d561f298831f}</Project>

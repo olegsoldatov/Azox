@@ -1,5 +1,0 @@
-<configuration>
-  <appSettings>
-    <add key="TextEditor:ScriptFile" value="~/CKEditor/ckeditor.js" />
-  </appSettings>
-</configuration>

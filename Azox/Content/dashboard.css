@@ -355,20 +355,6 @@ h3, .h3 {
 		line-height: 20px;
 	}
 
-	.table td.f-numerical, .table th.f-numerical {
-		text-align: right;
-		white-space: nowrap;
-	}
-
-	.table td.f-actional, .table th.f-actional {
-		width: 121px;
-		text-align: right;
-	}
-
-	.table td.f-thumbal, .table th.f-thumbal {
-		width: 104px;
-	}
-
 	.table > thead > tr > th.tablesorter-header:not(.sorter-false) {
 		cursor: pointer;
 		white-space: nowrap;

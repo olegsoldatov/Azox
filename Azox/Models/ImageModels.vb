@@ -1,9 +1,9 @@
-﻿Imports System.ComponentModel.DataAnnotations.Schema
+﻿Imports System.ComponentModel.DataAnnotations
+Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity
-Imports Soldata.Azox.EntityFramework
 
 Public Class Image
-	Inherits Soldata.Azox.EntityFramework.Entity
+	Inherits Soldata.Entity.Entity
 
 	Public Property ContentType As String
 
@@ -28,15 +28,17 @@ Partial Public Class ApplicationDbContext
 End Class
 
 Public Class ImageManager
-	Inherits Soldata.Azox.EntityManager(Of Image)
+	Inherits Soldata.Entity.EntityManager(Of Image)
 
 	Public Sub New()
-		MyBase.New(New EntityStore(Of Image)(New ApplicationDbContext))
+		MyBase.New(New ApplicationDbContext)
 	End Sub
+End Class
 
-	Public ReadOnly Property Images As IQueryable(Of Image)
-		Get
-			Return CType(Store, EntityStore(Of Image)).Context.Set(Of Image)
-		End Get
-	End Property
+Public Class ChangeImageViewModel
+	<HiddenInput(DisplayValue:=False)>
+	Public Property Id As Guid
+
+	<Display(Name:="Файл изображения")>
+	Public Property ImageFile As HttpPostedFileWrapper
 End Class
