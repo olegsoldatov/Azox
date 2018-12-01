@@ -1,10 +1,10 @@
 ﻿Imports System.Data.Entity
 
 ''' <summary>
-''' Предоставляет базовый API для управления сущностями.
+''' Абстрактный API для управления сущностями в базе данных через EntityFramework.
 ''' </summary>
 ''' <typeparam name="TEntity">Тип сущности.</typeparam>
-Public Class EntityManager(Of TEntity As {Class, IEntity})
+Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	Implements IDisposable
 
 	''' <summary>

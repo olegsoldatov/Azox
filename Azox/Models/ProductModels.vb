@@ -10,6 +10,7 @@ Public Interface IProduct
 	Inherits IEntity
 	Property Sku As String
 	Property SkuRaw As String
+	Property ImageId As Guid?
 End Interface
 
 ' Чтобы добавить данные продукции, можно добавить дополнительные свойства в класс Product.
@@ -30,7 +31,7 @@ Public Class Product
 	Public Property Content As String
 
 	<Display(Name:="Изображение")>
-	Public Property ImageId As Guid?
+	Public Property ImageId As Guid? Implements IProduct.ImageId
 
 	<Display(Name:="Артикул")>
 	Public Property Sku As String Implements IProduct.Sku
@@ -56,7 +57,7 @@ End Class
 ''' <summary>
 ''' В производном классе предоставляет управление продуктами в источнике данных.
 ''' </summary>
-Public MustInherit Class ProductManager(Of TProduct As {Class, IProduct})
+Public Class ProductManager(Of TProduct As {Class, IProduct})
 	Inherits Soldata.Azox.EntityManager(Of TProduct)
 
 	Public Sub New(store As IEntityStore(Of TProduct))

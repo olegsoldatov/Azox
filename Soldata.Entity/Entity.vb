@@ -1,9 +1,9 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 
 ''' <summary>
-''' Базовая сущность.
+''' Абстрактный класс базовой сущности.
 ''' </summary>
-Public Class Entity
+Public MustInherit Class Entity
 	Implements IEntity
 
 	''' <summary>
