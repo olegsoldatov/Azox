@@ -12,17 +12,18 @@
 				@Html.ValidationMessageFor(Function(model) model.Slug, "", New With {.class = "text-danger"})
 				@Html.EditorFor(Function(model) model.Slug, New With {.htmlAttributes = New With {.class = "form-control"}})
 			</div>
+			<div class="form-group col-md-12">
+				@Html.LabelFor(Function(model) model.Company, htmlAttributes:=New With {.class = "control-label required"})
+				@Html.ValidationMessageFor(Function(model) model.Company, "", New With {.class = "text-danger"})
+				@Html.EditorFor(Function(model) model.Company, New With {.htmlAttributes = New With {.class = "form-control"}})
+				<p><small>Полное наименование компании, владеющей магазином. Не публикуется, используется для внутренней идентификации.</small></p>
+			</div>
 		</div>
 		<div class="row">
 			<div class="form-group col-md-8">
 				@Html.LabelFor(Function(model) model.City, htmlAttributes:=New With {.class = "control-label"})
 				@Html.ValidationMessageFor(Function(model) model.City, "", New With {.class = "text-danger"})
 				@Html.EditorFor(Function(model) model.City, New With {.htmlAttributes = New With {.class = "form-control"}})
-			</div>
-			<div class="form-group col-md-4">
-				@Html.LabelFor(Function(model) model.PostalCode, htmlAttributes:=New With {.class = "control-label"})
-				@Html.ValidationMessageFor(Function(model) model.PostalCode, "", New With {.class = "text-danger"})
-				@Html.EditorFor(Function(model) model.PostalCode, New With {.htmlAttributes = New With {.class = "form-control"}})
 			</div>
 			<div class="form-group col-md-4">
 				@Html.LabelFor(Function(model) model.DeliveryDays, htmlAttributes:=New With {.class = "control-label"})

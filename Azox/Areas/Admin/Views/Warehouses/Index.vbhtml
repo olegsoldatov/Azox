@@ -39,15 +39,21 @@ End Section
 							@Html.DisplayNameFor(Function(model) model.Name)
 						</th>
 						<th>
+							@Html.DisplayNameFor(Function(model) model.Company)
+						</th>
+						<th>
 							@Html.DisplayNameFor(Function(model) model.City)
 						</th>
 						<th>
 							@Html.DisplayNameFor(Function(model) model.DeliveryDays)
 						</th>
+						<th>
+							@Html.DisplayNameFor(Function(model) model.Products)
+						</th>
 						<th class="text-right" width="100">
 							@Html.DisplayNameFor(Function(model) model.Order)
 						</th>
-						<th width="84"></th>
+						<th width="64"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,20 +69,26 @@ End Section
 								</div>
 							</td>
 							<td>
+								@Html.DisplayFor(Function(model) item.Company)
+							</td>
+							<td>
 								@Html.DisplayFor(Function(model) item.City)
-								<div>
-									<small class="text-muted">@item.PostalCode</small>
-								</div>
 							</td>
 							<td>
 								@Html.DisplayFor(Function(model) item.DeliveryDays)
+							</td>
+							<td>
+								@If item.Products.Any Then
+									@Html.ActionLink(item.Products.Count, "index", "watches", New With {.warehouseId = item.Id}, Nothing)
+								Else
+									@<text>0</text>
+								End If
 							</td>
 							<td class="text-right">
 								@item.Order
 							</td>
 							<td class="text-right">
 								@Html.DisplayFor(Function(model) item.IsPublished)
-								<a href="@Url.Action("edit", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery})" title="Изменить"><span class="fa fa-pencil"></span></a>
 								<a href="@Url.Action("delete", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery})" title="Удалить"><span class="fa fa-trash"></span></a>
 							</td>
 						</tr>

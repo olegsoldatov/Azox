@@ -11,32 +11,47 @@ Namespace Areas.Admin.Controllers
 		Private ReadOnly db As New ApplicationDbContext
 
 		Public Async Function Index(filter As WarehouseFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim warehouses = db.Warehouses.AsQueryable
+			Dim entities = db.Warehouses.AsQueryable
 
-			' Количество и пагинация.
-			ViewBag.TotalCount = Await ApplyFilterAndSort(warehouses, filter).Select(Function(x) x.Id).CountAsync
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.TotalCount / pageSize))
+			' Поиск.
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(s) Or x.Slug.ToLower.Contains(s))
+			End If
 
-			' Модель.
-			Dim model = Await ApplyFilterAndSort(warehouses, filter).Skip(pageIndex * pageSize).Take(pageSize).ToListAsync
+			' Компания.
+			If Not String.IsNullOrEmpty(filter.Company) Then
+				Dim c = filter.Company.Trim.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Company.ToLower.Replace("ё", "е") = c)
+			End If
+
+			' Сортировка.
+			entities = entities.OrderBy(Function(x) x.Name).ThenBy(Function(x) x.Order)
 
 			' Фильтр.
 			ViewBag.Filter = filter
 
-			Return View(model)
+			' Количество и пагинация.
+			ViewBag.TotalCount = Await entities.CountAsync
+			ViewBag.PageIndex = pageIndex
+			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.TotalCount / pageSize))
+
+			ViewBag.Company = New SelectList(Await db.Warehouses.Select(Function(x) x.Company).GroupBy(Function(x) x).Select(Function(x) x.Key).OrderBy(Function(x) x).ToListAsync)
+
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
 		End Function
 
 		Public Function Create() As ActionResult
 			Return View()
 		End Function
 
-		<HttpPost, ValidateAntiForgeryToken>
+		<HttpPost>
+		<ValidateAntiForgeryToken>
 		Public Async Function Create(model As Warehouse, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				model.Id = Guid.NewGuid()
+				model.Id = Guid.NewGuid
 				db.Warehouses.Add(model)
-				Await db.SaveChangesAsync()
+				Await db.SaveChangesAsync
 				TempData("Message") = "Склад добавлен."
 				Return RedirectToLocal(returnUrl)
 			End If
@@ -54,11 +69,12 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		<HttpPost, ValidateAntiForgeryToken>
+		<HttpPost>
+		<ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Warehouse, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				db.Entry(model).State = EntityState.Modified
-				Await db.SaveChangesAsync()
+				Await db.SaveChangesAsync
 				TempData("Message") = "Склад изменен."
 				Return RedirectToLocal(returnUrl)
 			End If
@@ -76,11 +92,13 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		<HttpPost, ActionName("Delete"), ValidateAntiForgeryToken>
+		<HttpPost>
+		<ActionName("Delete")>
+		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid, returnUrl As String) As Task(Of ActionResult)
 			Await db.Products.Where(Function(x) id = x.WarehouseId).ForEachAsync(Sub(p As Product) p.WarehouseId = Nothing)
 			db.Warehouses.Remove(Await db.Warehouses.FindAsync(id))
-			Await db.SaveChangesAsync()
+			Await db.SaveChangesAsync
 			TempData("Message") = "Склад удален."
 			Return RedirectToLocal(returnUrl)
 		End Function
@@ -92,26 +110,6 @@ Namespace Areas.Admin.Controllers
 			Await db.SaveChangesAsync
 			TempData("Message") = String.Format("Удалено: {0}", id.Length.ToString("склад", "склада", "складов"))
 			Return Json(New With {.redirect = Url.Action("index")})
-		End Function
-
-		''' <summary>
-		''' Применяет фильтр и сортировку к перечислению складов.
-		''' </summary>
-		''' <param name="warehouses">Перечисление складов, к которому применяется фильтр.</param>
-		''' <param name="filter">Фильтр.</param>
-		''' <returns>Отсортированное перечисление складов после применения фильтра.</returns>
-		Private Function ApplyFilterAndSort(warehouses As IQueryable(Of Warehouse), filter As WarehouseFilterViewModel) As IOrderedQueryable(Of Warehouse)
-
-			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchString) Then
-				Dim searchString = filter.SearchString.Trim.ToLower.Replace("ё", "е")
-				warehouses = warehouses.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Slug.ToLower.Contains(searchString))
-			End If
-
-			' Сортировка (по умолчанию по названию).
-			warehouses = warehouses.OrderBy(Function(x) x.Name)
-
-			Return warehouses
 		End Function
 
 		Private Function RedirectToLocal(returnUrl As String) As ActionResult
