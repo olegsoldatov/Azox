@@ -1,6 +1,6 @@
 ﻿/*!
- * Bootstrap Azox v1.6.0
- * Copyright 2018 Soldata
+ * Bootstrap Azox v2.0.2
+ * Copyright 2019 Soldata
  */
 
 // Back To Top.
@@ -34,3 +34,13 @@ $(document).ready(function () {
 $("input[type=checkbox][data-toggle=agree]").change(function () {
 	$($(this).data("target")).prop("disabled", !$("input[type=checkbox][data-toggle=agree]").prop("checked"));
 });
+
+// Autosubmit.
+$("[data-submit=auto]").change(function () {
+	autosubmit(this);
+});
+
+function autosubmit(e) {
+	$("body").addClass("loading");
+	$($(e).data("form")).submit();
+}

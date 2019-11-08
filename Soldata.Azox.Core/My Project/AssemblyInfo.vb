@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("Soldata.Azox.Core")>
-<Assembly: AssemblyDescription("Базовая модель данных Azox.")>
-<Assembly: AssemblyCompany("Soldata")> 
+<Assembly: AssemblyDescription("Базовая модель данных сущности.")>
+<Assembly: AssemblyCompany("Soft Business")>
 <Assembly: AssemblyProduct("Azox")>
-<Assembly: AssemblyCopyright("© Soldata, 2018")>
+<Assembly: AssemblyCopyright("© Soft Business, 2018")>
 <Assembly: AssemblyTrademark("Azox")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.3.1")>
-<Assembly: AssemblyFileVersion("3.3.1")>
+<Assembly: AssemblyVersion("3.4.0")>
+<Assembly: AssemblyFileVersion("3.4.0")>

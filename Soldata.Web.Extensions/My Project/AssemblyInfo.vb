@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Вспомогательные методы расширения.")>
 <Assembly: AssemblyCompany("Soldata")>
 <Assembly: AssemblyProduct("Soldata.Web")>
-<Assembly: AssemblyCopyright("© Soldata, 2018")>
+<Assembly: AssemblyCopyright("© Soldata, 2019")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.6.3.*")>
-<Assembly: AssemblyFileVersion("1.6.3")>
+<Assembly: AssemblyVersion("1.6.9.*")>
+<Assembly: AssemblyFileVersion("1.6.9")>

@@ -4,15 +4,21 @@
 
 		Public Overrides ReadOnly Property AreaName() As String
 			Get
-				Return "Admin"
+				Return "admin"
 			End Get
 		End Property
 
 		Public Overrides Sub RegisterArea(ByVal context As AreaRegistrationContext)
 			context.MapRoute(
-				"Admin",
+				"Dashboard",
+				"admin",
+				New With {.controller = "dashboard", .action = "index"}
+			)
+
+			context.MapRoute(
+				"Admin_default",
 				"admin/{controller}/{action}/{id}",
-				New With {.controller = "dashboard", .action = "index", .id = UrlParameter.Optional},
+				New With {.action = "index", .id = UrlParameter.Optional},
 				{"Azox.Areas.Admin.Controllers"}
 			)
 		End Sub

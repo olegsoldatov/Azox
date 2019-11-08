@@ -1,18 +1,24 @@
-﻿Namespace Controllers
-    Public Class ErrorController
-        Inherits Controller
+﻿Imports System.Web.Configuration
 
-        Function NotFound() As ActionResult
-            If IsNothing(Request.UrlReferrer) Then
-                ViewBag.Message = "Похоже, что адрес содержит опечатку или закладка, сохраненная в вашем браузере, уже устарела."
-            ElseIf Request.UrlReferrer.Host = Request.Url.Host Then
-                ViewBag.Message = "Видимо у нас на сайте оказалась битая ссылка. Сообщение об этом уже отправлено нашему администратору. Ошибка будет устранена в ближайшее время."
-            Else
-                ViewBag.Message = "Видимо на сайте, с которого вы сейчас перешли, оказалась битая ссылка. Мы попытаемся связаться с владельцем того сайта, чтобы он исправил ссылку."
-            End If
+Namespace Controllers
+	Public Class ErrorController
+		Inherits Controller
 
-            Response.StatusCode = 404
-            Return View()
-        End Function
-    End Class
+		Public Function NotFound() As ActionResult
+			If IsNothing(Request.UrlReferrer) Then
+				ViewBag.Message = "Похоже, что адрес содержит опечатку или закладка, сохраненная в вашем браузере, уже устарела."
+			ElseIf Request.UrlReferrer.Host = Request.Url.Host Then
+				ViewBag.Message = "Возможно на нашем сайте есть битая ссылка."
+			Else
+				ViewBag.Message = "Возможно на сайте, с которого вы перешли, есть битая ссылка."
+			End If
+
+			Response.StatusCode = 404
+			Return View()
+		End Function
+
+		Public Function MaxRequest() As ActionResult
+			Return View(New HandleErrorInfo(New HttpException(500, String.Format("Размер загружаемого файла не должен быть больше {0} МБ.", CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength / 1024)), RouteData.Values("controller"), RouteData.Values("action")))
+		End Function
+	End Class
 End Namespace

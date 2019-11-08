@@ -23,7 +23,7 @@ Partial Public Class Startup
 				.OnValidateIdentity = SecurityStampValidator.OnValidateIdentity(Of ApplicationUserManager, ApplicationUser)(
 					validateInterval:=TimeSpan.FromMinutes(30),
 					regenerateIdentity:=Function(manager, user) user.GenerateUserIdentityAsync(manager))},
-			.LoginPath = New PathString("/admin/account/login")})
+			.LoginPath = New PathString("/account/login")})
 
 		app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie)
 
@@ -34,5 +34,22 @@ Partial Public Class Startup
 		' Если выбрать этот параметр, то на устройстве, с помощью которого вы входите, будет сохранен второй шаг проверки при входе.
 		' Точно так же действует параметр RememberMe при входе.
 		app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie)
+
+		' Раскомментируйте приведенные далее строки, чтобы включить вход с помощью сторонних поставщиков входа
+		'app.UseMicrosoftAccountAuthentication(
+		'    clientId:="",
+		'    clientSecret:="")
+
+		'app.UseTwitterAuthentication(
+		'   consumerKey:="",
+		'   consumerSecret:="")
+
+		'app.UseFacebookAuthentication(
+		'   appId:="",
+		'   appSecret:="")
+
+		'app.UseGoogleAuthentication(New GoogleOAuth2AuthenticationOptions() With {
+		'   .ClientId = "",
+		'   .ClientSecret = ""})
 	End Sub
 End Class

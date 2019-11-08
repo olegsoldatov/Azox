@@ -1,7 +1,7 @@
 ﻿@ModelType Boolean
 @If Model Then
-    @<i class="glyphicon glyphicon-ok-sign" title="Опубликовано"></i>
+	@<i class="fa fa-check-circle" title="Опубликовано"></i>
 Else
-    @<i class="glyphicon glyphicon-remove-circle" title="Не опубликовано"></i>
+	@<i class="fa fa-times-circle-o" title="Не опубликовано"></i>
 End If
 

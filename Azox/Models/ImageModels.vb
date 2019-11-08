@@ -1,9 +1,10 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity
+Imports Soldata.Azox
 
 Public Class Image
-	Inherits Soldata.Entity.Entity
+	Inherits Entity
 
 	Public Property ContentType As String
 
@@ -28,10 +29,14 @@ Partial Public Class ApplicationDbContext
 End Class
 
 Public Class ImageManager
-	Inherits Soldata.Entity.EntityManager(Of Image)
+	Inherits EntityManager(Of Image)
 
 	Public Sub New()
-		MyBase.New(New ApplicationDbContext)
+		MyClass.New(New ApplicationDbContext)
+	End Sub
+
+	Public Sub New(context As DbContext)
+		MyBase.New(context)
 	End Sub
 End Class
 

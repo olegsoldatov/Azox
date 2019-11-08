@@ -29,7 +29,7 @@
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +39,19 @@
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>Azox.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,14 +101,11 @@
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Soldata.Utilities, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Soldata.Utilities.1.1.2.0\lib\net452\Soldata.Utilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Soldata.Web.Extensions, Version=1.6.2.40457, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Soldata.Web.Extensions.1.6.2.40457\lib\net452\Soldata.Web.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Soldata.Web.FileManager, Version=1.2.5546.25225, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Soldata.Web.FileManager.1.2.5546.25225\lib\net451\Soldata.Web.FileManager.dll</HintPath>
@@ -167,7 +177,6 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
-    <Import Include="System.Net" />
     <Import Include="System.Text" />
     <Import Include="System.Web" />
     <Import Include="System.Web.Mvc" />
@@ -182,16 +191,20 @@
     <Compile Include="App_Start\RouteConfig.vb" />
     <Compile Include="App_Start\Startup.Auth.vb" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.vb" />
-    <Compile Include="Areas\Admin\Controllers\DashboardController.vb" />
-    <Compile Include="Areas\Admin\Controllers\FilesController.vb" />
+    <Compile Include="Areas\Admin\Controllers\CategoriesController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
-    <Compile Include="Areas\Admin\Controllers\ServicesController.vb" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.vb" />
-    <Compile Include="Areas\Admin\Controllers\ArticlesController.vb" />
+    <Compile Include="Areas\Admin\Controllers\WarehousesController.vb" />
+    <Compile Include="Controllers\BandsController.vb" />
+    <Compile Include="Controllers\CartController.vb" />
+    <Compile Include="Controllers\AccountController.vb" />
+    <Compile Include="Controllers\CategoriesController.vb" />
+    <Compile Include="Areas\Admin\Controllers\DashboardController.vb" />
     <Compile Include="Core\DbController.vb" />
-    <Compile Include="Areas\Admin\Models\DashboardViewModels.vb" />
+    <Compile Include="Extensions\StringExtension.vb" />
+    <Compile Include="Models\Catalog\Category.vb" />
+    <Compile Include="Areas\Admin\Models\Dashboard.vb" />
     <Compile Include="Controllers\AboutController.vb" />
-    <Compile Include="Areas\Admin\Controllers\AccountController.vb" />
     <Compile Include="Controllers\ArticlesController.vb" />
     <Compile Include="Controllers\ComponentsController.vb" />
     <Compile Include="Controllers\ContactsController.vb" />
@@ -199,22 +212,25 @@
     <Compile Include="Controllers\ProductsController.vb" />
     <Compile Include="Controllers\ErrorController.vb" />
     <Compile Include="Controllers\ImagesController.vb" />
-    <Compile Include="Areas\Admin\Controllers\ManageController.vb" />
-    <Compile Include="App_Start\EntityConfig.vb" />
+    <Compile Include="Controllers\ManageController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Admin\Models\AccountViewModels.vb" />
+    <Compile Include="Models\AccountViewModels.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="Models\Article.vb" />
-    <Compile Include="Models\Entity.vb" />
     <Compile Include="Models\ImageModels.vb" />
-    <Compile Include="Models\Page.vb" />
+    <Compile Include="Models\MarginModels.vb" />
+    <Compile Include="Models\OrderModels.vb" />
+    <Compile Include="Models\PageModels.vb" />
+    <Compile Include="Models\PictureModels.vb" />
+    <Compile Include="Models\Catalog\Product.vb" />
+    <Compile Include="Models\Catalog\Warehouse.vb" />
     <Compile Include="Utilities\SlugUtility.vb" />
-    <Compile Include="ViewModels\ContactFormViewModel.vb" />
-    <Compile Include="Areas\Admin\Models\IdentityModels.vb" />
-    <Compile Include="Areas\Admin\Models\ManageViewModels.vb" />
-    <Compile Include="Models\ProductModels.vb" />
+    <Compile Include="Models\ContactFormViewModel.vb" />
+    <Compile Include="Models\IdentityModels.vb" />
+    <Compile Include="Models\ManageViewModels.vb" />
+    <Compile Include="Models\Catalog\CatalogModels.vb" />
     <Compile Include="Models\Service.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -813,8 +829,6 @@
     <Content Include="CKFinder\skins\v1\richcombo.css" />
     <Content Include="CKFinder\skins\v1\skin.js" />
     <Content Include="CKFinder\skins\v1\uipanel.css" />
-    <Content Include="Content\all.css" />
-    <Content Include="Content\all.min.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\azox.css" />
@@ -825,54 +839,57 @@
     <Content Include="Content\bootstrap-support-ie10-width.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\brands.css" />
-    <Content Include="Content\brands.min.css" />
     <Content Include="Content\dashboard-bar.css" />
-    <Content Include="Content\fontawesome.css" />
-    <Content Include="Content\fontawesome.min.css" />
-    <Content Include="Content\regular.css" />
-    <Content Include="Content\regular.min.css" />
     <Content Include="Content\account.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\datepicker.css" />
     <Content Include="Content\dashboard.css" />
-    <Content Include="Content\solid.css" />
-    <Content Include="Content\solid.min.css" />
-    <Content Include="Content\svg-with-js.css" />
-    <Content Include="Content\svg-with-js.min.css" />
-    <Content Include="Content\v4-shims.css" />
-    <Content Include="Content\v4-shims.min.css" />
     <Content Include="favicon.png" />
     <Content Include="CKFinder\plugins\fileeditor\codemirror\LICENSE" />
-    <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\_ViewStart.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.vbhtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Articles\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Articles\Edit.vbhtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Bar.vbhtml" />
-    <Content Include="Areas\Admin\Views\Products\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Products\Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Products\Edit.vbhtml" />
-    <Content Include="Areas\Admin\Views\Products\Index.vbhtml" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\Admin\Views\Pages\Edit.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\Page.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\Index.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\Create.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\Delete.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\Edit.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\EditorTemplates\Warehouse.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\Index.vbhtml" />
+    <Content Include="Areas\Admin\Views\Warehouses\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\Index.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\Edit.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\Create.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\Delete.vbhtml" />
+    <Content Include="Areas\Admin\Views\Categories\EditorTemplates\Category.vbhtml" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Views\Products\Manage.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\EditorTemplates\Product.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Order.vbhtml" />
-    <Content Include="Areas\Admin\Views\Services\EditorTemplates\Service.vbhtml" />
-    <Content Include="Areas\Admin\Views\Services\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Services\Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Services\Edit.vbhtml" />
-    <Content Include="Areas\Admin\Views\Services\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Draft.vbhtml" />
-    <Content Include="Areas\Admin\Views\Nodes\EditorTemplates\Node.vbhtml" />
-    <Content Include="Areas\Admin\Views\Nodes\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Nodes\Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Nodes\Edit.vbhtml" />
-    <Content Include="Areas\Admin\Views\Nodes\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Articles\EditorTemplates\Article.vbhtml" />
-    <Content Include="Areas\Admin\Views\Articles\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Articles\Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Navigation.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\ChangeImage.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Order.vbhtml" />
+    <Content Include="Views\Shared\ChangeImage.vbhtml" />
     <Content Include="CodeTemplates\MvcControllerWithContext\Controller.vb.t4" />
     <Content Include="CodeTemplates\MvcView\Create.vb.t4" />
     <Content Include="CodeTemplates\MvcView\Delete.vb.t4" />
@@ -880,18 +897,27 @@
     <Content Include="CodeTemplates\MvcView\Imports.include.t4" />
     <Content Include="CodeTemplates\MvcView\List.vb.t4" />
     <Content Include="CodeTemplates\MvcView\ModelMetadataFunctions.vb.include.t4" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Currency.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Edit.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\Page.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Content.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Alert.vbhtml" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Views\Shared\EditorTemplates\Currency.vbhtml" />
+    <Content Include="Views\Pages\Manage.vbhtml" />
+    <Content Include="Views\Pages\Edit.vbhtml" />
+    <Content Include="Views\Pages\EditorTemplates\Page.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Content.vbhtml" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.vbhtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\Delete.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\Edit.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\EditorTemplates\Disk.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\EditorTemplates\Sparepart.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\EditorTemplates\Tyre.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\Index.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\_Offers.vbhtml" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -906,11 +932,6 @@
     <Content Include="Images\hero.jpg" />
     <Content Include="Images\logo-dark.svg" />
     <Content Include="Images\logo.svg" />
-    <Content Include="Images\sidebar.jpg" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -920,15 +941,8 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -951,20 +965,20 @@
     <Content Include="Scripts\bootstrap-timepicker.min.js" />
     <Content Include="Scripts\ckeditor-config.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Areas\Admin\Views\Account\_ChangePasswordPartial.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\ForgotPassword.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\ForgotPasswordConfirmation.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\Login.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\Register.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\ResetPassword.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\ResetPasswordConfirmation.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\AddPhoneNumber.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\ChangePassword.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\ManageLogins.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\SetPassword.vbhtml" />
-    <Content Include="Areas\Admin\Views\Manage\VerifyPhoneNumber.vbhtml" />
-    <Content Include="Areas\Admin\Views\Account\_Layout.vbhtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.vbhtml" />
+    <Content Include="Views\Account\ForgotPassword.vbhtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.vbhtml" />
+    <Content Include="Views\Account\Login.vbhtml" />
+    <Content Include="Views\Account\Register.vbhtml" />
+    <Content Include="Views\Account\ResetPassword.vbhtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.vbhtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.vbhtml" />
+    <Content Include="Views\Manage\ChangePassword.vbhtml" />
+    <Content Include="Views\Manage\Index.vbhtml" />
+    <Content Include="Views\Manage\ManageLogins.vbhtml" />
+    <Content Include="Views\Manage\SetPassword.vbhtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.vbhtml" />
+    <Content Include="Views\Account\_Layout.vbhtml" />
     <Content Include="Scripts\tablesorter\jquery.tablesorter.combined.js" />
     <Content Include="Scripts\tablesorter\jquery.tablesorter.combined.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
@@ -976,18 +990,14 @@
     <Content Include="Views\Shared\DisplayTemplates\ImageUrl.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\Large.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\Medium.vbhtml" />
-    <Content Include="Views\Shared\DisplayTemplates\Original.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\Small.vbhtml" />
     <Content Include="Views\Contacts\Index.vbhtml" />
-    <Content Include="Views\Contacts\ContactForm.vbhtml" />
-    <Content Include="Areas\Admin\Views\Files\Index.vbhtml" />
+    <Content Include="Views\Contacts\_ContactForm.vbhtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Files.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\IsPublished.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Date.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Thumbnail.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\MultilineText.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Time.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Upload.vbhtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\WYSIWYG.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultilineText.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Time.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\StaticPage.vbhtml" />
     <Content Include="Views\Shared\DisplayTemplates\Currency.vbhtml" />
     <Content Include="Views\About\Index.vbhtml" />
@@ -996,9 +1006,6 @@
     <Content Include="Views\Shared\DisplayTemplates\DateTime.vbhtml" />
     <Content Include="Views\Articles\Details.vbhtml" />
     <Content Include="Views\Products\Index.vbhtml" />
-    <Content Include="Views\Shared\_Navigation.vbhtml" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Views\Components\Index.vbhtml" />
     <Content Include="Views\Components\Feature.vbhtml" />
     <Content Include="Views\Shared\_Alert.vbhtml" />
@@ -1011,26 +1018,29 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Products\_List.vbhtml" />
     <Content Include="Views\Products\_Filter.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\Image.vbhtml" />
-    <Content Include="webfonts\fa-brands-400.svg" />
-    <Content Include="webfonts\fa-regular-400.svg" />
-    <Content Include="webfonts\fa-solid-900.svg" />
-    <Content Include="webfonts\fa-solid-900.woff2" />
-    <Content Include="webfonts\fa-solid-900.woff" />
-    <Content Include="webfonts\fa-solid-900.ttf" />
-    <Content Include="webfonts\fa-solid-900.eot" />
-    <Content Include="webfonts\fa-regular-400.woff2" />
-    <Content Include="webfonts\fa-regular-400.woff" />
-    <Content Include="webfonts\fa-regular-400.ttf" />
-    <Content Include="webfonts\fa-regular-400.eot" />
-    <Content Include="webfonts\fa-brands-400.woff2" />
-    <Content Include="webfonts\fa-brands-400.woff" />
-    <Content Include="webfonts\fa-brands-400.ttf" />
-    <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\Shared\DisplayTemplates\Thumbnail.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\Thumbnail.vbhtml" />
+    <Content Include="Views\Products\Edit.vbhtml" />
+    <Content Include="Views\Products\Create.vbhtml" />
+    <Content Include="Views\Products\Delete.vbhtml" />
+    <Content Include="Views\Pictures\Create.vbhtml" />
+    <Content Include="Views\Pictures\Delete.vbhtml" />
+    <Content Include="Views\Pictures\Edit.vbhtml" />
+    <Content Include="Views\Products\Pictures.vbhtml" />
+    <Content Include="Views\Shared\EditorTemplates\Upload.vbhtml" />
+    <Content Include="Views\Bands\Create.vbhtml" />
+    <Content Include="Views\Bands\Delete.vbhtml" />
+    <Content Include="Views\Bands\Details.vbhtml" />
+    <Content Include="Views\Bands\Edit.vbhtml" />
+    <Content Include="Views\Bands\EditorTemplates\Brand.vbhtml" />
+    <Content Include="Views\Bands\EditorTemplates\Thumbnail.vbhtml" />
+    <Content Include="Views\Bands\Index.vbhtml" />
+    <Content Include="Views\Bands\Manage.vbhtml" />
+    <Content Include="Views\Bands\_Filter.vbhtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Hierarchical.vbhtml" />
+    <Content Include="Views\Shared\MaxRequest.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -1052,6 +1062,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
+    <Folder Include="Areas\Admin\Views\Shared\EditorTemplates\" />
+    <Folder Include="Views\Cart\" />
+    <Folder Include="Views\Products\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1061,17 +1075,13 @@
       <Project>{a0c2377d-1be4-4d09-8017-724b04ee1936}</Project>
       <Name>Soldata.Azox.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Soldata.Azox.EntityFramework\Soldata.Azox.EntityFramework.vbproj">
-      <Project>{41b20007-4d8c-459d-920e-e35abd3c0dbf}</Project>
-      <Name>Soldata.Azox.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Soldata.Entity\Soldata.Entity.vbproj">
-      <Project>{37526145-2d27-42c5-9b6e-751d1ede1c03}</Project>
-      <Name>Soldata.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Soldata.Imaging\Soldata.Imaging.vbproj">
       <Project>{fd2427e5-9b95-4f05-8c8a-d561f298831f}</Project>
       <Name>Soldata.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Soldata.Web.Extensions\Soldata.Web.Extensions.vbproj">
+      <Project>{9ab095f7-8a98-4e46-8bc7-25c7a1ab1986}</Project>
+      <Name>Soldata.Web.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

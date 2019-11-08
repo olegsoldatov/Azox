@@ -1,21 +1,24 @@
-﻿Imports System.Net
+﻿Imports System.Data.Entity
+Imports System.Net
+Imports System.Threading.Tasks
 Imports Microsoft.AspNet.Identity
 
 Namespace Controllers
 	Public Class ContactsController
 		Inherits Controller
 
-		Function Index() As ActionResult
-			Return View()
+		Private ReadOnly Db As New ApplicationDbContext
+
+		Public Async Function Index() As Task(Of ActionResult)
+			Return View(Await Db.Pages.SingleAsync(Function(x) x.ControllerName = "contacts" And x.ActionName = "index"))
 		End Function
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
-		Function ContactForm(model As ContactFormViewModel) As ActionResult
+		Public Function ContactForm(model As ContactFormViewModel) As ActionResult
 			If ModelState.IsValid Then
 				Dim emailService As New EmailService
 				emailService.Send(New IdentityMessage With {.Body = ContactFormBody(model), .Destination = "company@soldata.ru", .Subject = "Сообщение с сайта"})
-
 				Return New HttpStatusCodeResult(HttpStatusCode.OK)
 			End If
 
@@ -26,11 +29,18 @@ Namespace Controllers
 			Dim body As New StringBuilder
 
 			body.AppendFormat("От: {0} <{1}>", model.Name, model.Email).AppendLine()
-			body.AppendFormat("Тема: {0}", model.Subject).AppendLine().AppendLine()
+			body.AppendFormat("Телефон: {0}", model.Phone).AppendLine().AppendLine()
 			body.AppendLine("Сообщение:")
 			body.AppendLine(model.Message)
 
 			Return body.ToString
 		End Function
+
+		Protected Overrides Sub Dispose(disposing As Boolean)
+			If disposing Then
+				Db.Dispose()
+			End If
+			MyBase.Dispose(disposing)
+		End Sub
 	End Class
 End Namespace

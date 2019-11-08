@@ -1,6 +1,6 @@
 ﻿/*!
- * Dashboard v1.7.0
- * Copyright 2018 Soldata
+ * Dashboard v1.7.5
+ * Copyright 2019 Soldata
  */
 
 html {
@@ -11,8 +11,7 @@ body {
 	background-image: url(../Images/body.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-color: #001D1B;
-	color: #fff;
+	background-color: #999;
 }
 
 /*#region Layout*/
@@ -56,6 +55,7 @@ body {
 	position: relative;
 	overflow-x: hidden;
 	z-index: 3;
+	color: #fff;
 }
 
 .sidebar-toggle {
@@ -201,6 +201,25 @@ body {
 a {
 	color: #2B6597;
 }
+
+.page-link {
+	color: #2b6597;
+}
+
+:first-child.page-item .page-link {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+:last-child.page-item .page-link {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.page-item.active .page-link {
+	background-color: #2b6597;
+	border-color: #2b6597;
+}
 /*#endregion*/
 
 /*#region Toolbar*/
@@ -284,12 +303,26 @@ a {
 	}
 
 	.content > header {
-		margin-bottom: 1rem;
+		position: relative;
 	}
 
-		.content > header .heading {
-			margin-top: 0;
-			margin-bottom: 0;
+		.content > header::after {
+			content: "";
+			display: block;
+			height: 10px;
+			background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+			position: absolute;
+			right: 24px;
+			bottom: -10px;
+			left: 24px;
+		}
+
+		.content > header sup {
+			color: #008576;
+			font-size: .83rem;
+			border: 1px solid currentColor;
+			padding-right: .25em;
+			padding-left: .25em;
 		}
 
 	.content > article {
@@ -309,7 +342,6 @@ a {
 /*#region Heading*/
 h1, .h1, h2, .h2, h3, .h3 {
 	font-weight: 100;
-	margin-top: .5em;
 	margin-bottom: .25em;
 }
 
@@ -355,39 +387,39 @@ h3, .h3 {
 		line-height: 20px;
 	}
 
-	.table > thead > tr > th.tablesorter-header:not(.sorter-false) {
-		cursor: pointer;
-		white-space: nowrap;
-	}
-
-		.table > thead > tr > th.tablesorter-header:not(.sorter-false) > .tablesorter-header-inner::after {
-			content: "";
-			display: inline-block;
-			width: 8px;
-			height: 4px;
-			margin-left: 1em;
-			margin-bottom: 1px;
+		.table > thead > tr > th.tablesorter-header:not(.sorter-false) {
+			cursor: pointer;
+			white-space: nowrap;
 		}
 
-	.table > thead > tr > th.tablesorter-headerAsc,
-	.table > thead > tr > th.tablesorter-headerDesc {
-		border-bottom: 2px solid #666;
-		border-bottom: 2px solid rgba(0,0,0,0.6);
-	}
+			.table > thead > tr > th.tablesorter-header:not(.sorter-false) > .tablesorter-header-inner::after {
+				content: "";
+				display: inline-block;
+				width: 8px;
+				height: 4px;
+				margin-left: 1em;
+				margin-bottom: 1px;
+			}
 
-		.table > thead > tr > th.tablesorter-headerAsc > .tablesorter-header-inner::after {
-			border-top: 4px solid #666;
-			border-top: 4px solid rgba(0,0,0,0.6);
-			border-right: 4px solid transparent;
-			border-left: 4px solid transparent;
+		.table > thead > tr > th.tablesorter-headerAsc,
+		.table > thead > tr > th.tablesorter-headerDesc {
+			border-bottom: 2px solid #666;
+			border-bottom: 2px solid rgba(0,0,0,0.6);
 		}
 
-		.table > thead > tr > th.tablesorter-headerDesc > .tablesorter-header-inner::after {
-			border-right: 4px solid transparent;
-			border-bottom: 4px solid #666;
-			border-bottom: 4px solid rgba(0,0,0,0.6);
-			border-left: 4px solid transparent;
-		}
+			.table > thead > tr > th.tablesorter-headerAsc > .tablesorter-header-inner::after {
+				border-top: 4px solid #666;
+				border-top: 4px solid rgba(0,0,0,0.6);
+				border-right: 4px solid transparent;
+				border-left: 4px solid transparent;
+			}
+
+			.table > thead > tr > th.tablesorter-headerDesc > .tablesorter-header-inner::after {
+				border-right: 4px solid transparent;
+				border-bottom: 4px solid #666;
+				border-bottom: 4px solid rgba(0,0,0,0.6);
+				border-left: 4px solid transparent;
+			}
 
 	.table > tbody > tr > td {
 		white-space: nowrap;
@@ -543,6 +575,10 @@ label {
 			background-color: #008576;
 			border-color: #01bfaa;
 		}
+
+.btn-round {
+	border-radius: 20px;
+}
 /*#endregion*/
 
 /*#region Back to top*/
@@ -657,7 +693,7 @@ label + .checkbox {
 
 .form-control,
 .form-group-sm .form-control,
-.input-group-addon {
+.input-group-text {
 	border-radius: 0;
 }
 
@@ -670,6 +706,14 @@ label + .checkbox {
 		border-color: #009688;
 		box-shadow: none;
 	}
+
+input[type=file] {
+	display: block;
+	width: 100%;
+	height: calc(2px + 2.25rem);
+	font-size: 1rem;
+	line-height: 1.5;
+}
 /*#endregion*/
 
 /*#region Muted*/
@@ -729,3 +773,7 @@ label + .checkbox {
 	line-height: 40px;
 }
 /*#endregion*/
+
+#kladr_autocomplete {
+	position: absolute
+}

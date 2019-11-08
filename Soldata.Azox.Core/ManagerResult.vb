@@ -1,4 +1,7 @@
-﻿Public Class ManagerResult
+﻿''' <summary>
+''' Предоставляет результат действия диспетчера сущностей.
+''' </summary>
+Public Class ManagerResult
 	Public Sub New(errors As IEnumerable(Of String))
 		_Errors = errors
 	End Sub

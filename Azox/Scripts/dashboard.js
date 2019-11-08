@@ -1,6 +1,6 @@
 ﻿/*!
- * Dashboard v1.1.0.0
- * Copyright 2017 Soldata
+ * Dashboard v1.3.0.0
+ * Copyright 2019 Soldata
  */
 
 if (typeof jQuery === 'undefined') {
@@ -59,10 +59,45 @@ $(function () {
 });
 
 // Datepicker.
-$('.input-group.date').datepicker({
+$('input[data-role="datepicker"]').datepicker({
 	format: "dd.mm.yyyy",
 	language: "ru",
 	autoclose: true,
 	todayHighlight: true
 });
+
+// Progress Status.
+function getImportStatus(statusUrl, statusMessageId, startButtonId) {
+	var interval = 300;
+	var timerId = setTimeout(function go() {
+		$.getJSON(statusUrl, function (data) {
+			if (data.State === 0) {
+				$(startButtonId).removeAttr("disabled");
+				clearTimeout(timerId);
+			} else if (data.State === 1) {
+				$(startButtonId).attr("disabled", "disabled");
+				setTimeout(go, interval);
+			} else if (data.State === 2) {
+				$(startButtonId).removeAttr("disabled");
+				clearTimeout(timerId);
+			}
+
+			if (data.Message !== "") {
+				$(statusMessageId).text(data.Message);
+			}
+		});
+	}, interval);
+}
+
+// Delete Checked items.
+function deleteCheckedItems(confirmText, url, guids) {
+	if (confirm(confirmText)) {
+		var params = $.param($(guids));
+		if (params !== "") {
+			$.post(url, params, function (data) {
+				document.location = data.redirect;
+			});
+		}
+	}
+}
 

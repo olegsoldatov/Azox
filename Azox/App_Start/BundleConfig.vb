@@ -23,14 +23,11 @@ Public Module BundleConfig
 		bundles.Add(New ScriptBundle("~/bundles/dashboard").Include(
 					"~/Scripts/bootstrap-datepicker.js",
 					"~/Scripts/bootstrap-datepicker.ru.js",
-					"~/Scripts/tablesorter/jquery.tablesorter.combined.js",
 					"~/Scripts/dashboard.js"))
 
 		bundles.Add(New StyleBundle("~/Content/css").Include(
 					"~/Content/bootstrap.css",
-					"~/Content/fontawesome.css",
-					"~/Content/regular.css",
-					"~/Content/solid.css",
+					"~/Content/font-awesome.css",
 					"~/Content/animate.css",
 					"~/Content/azox.css",
 					"~/Content/site.css"))
@@ -38,9 +35,7 @@ Public Module BundleConfig
 		bundles.Add(New StyleBundle("~/Content/dashboard").Include(
 					"~/Content/bootstrap.css",
 					"~/Content/datepicker.css",
-					"~/Content/fontawesome.css",
-					"~/Content/regular.css",
-					"~/Content/solid.css",
+					"~/Content/font-awesome.css",
 					"~/Content/animate.css",
 					"~/Content/dashboard.css"))
 

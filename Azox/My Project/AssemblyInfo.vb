@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Веб-приложение.")>
 <Assembly: AssemblyCompany("Soldata")> 
 <Assembly: AssemblyProduct("Azox")>
-<Assembly: AssemblyCopyright("© Soldata, 2017")>
+<Assembly: AssemblyCopyright("© Soldata, 2019")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

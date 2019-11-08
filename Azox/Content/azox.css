@@ -1,6 +1,6 @@
 ﻿/*!
- * Bootstrap Azox v1.6.0
- * Copyright 2018 Soldata.
+ * Bootstrap Azox v2.0.2
+ * Copyright 2019 Soldata.
  */
 
 /*#region Theme*/
@@ -75,66 +75,11 @@
 }
 /*#endregion*/
 
-/*#region Card*/
-.card {
-	overflow: hidden;
+/*#region Page footer*/
+.page-footer {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
-
-	.card > picture img {
-		max-width: 100%;
-	}
-
-	.card > div {
-		-webkit-box-flex: 1;
-		-ms-flex: 1 1 auto;
-		-moz-box-flex: 1;
-		flex: 1 1 auto;
-		overflow: hidden;
-		display: flex;
-		align-items: center;
-		background-color: #fff;
-	}
-
-		.card > div > div {
-			padding: 1.25rem;
-		}
-
-	.card .heading {
-		font-size: 1.25rem;
-		margin-bottom: 0.75rem;
-		max-height: 2.4rem;
-		overflow: hidden;
-	}
-
-	.card .paragraph {
-		font-size: 1rem;
-		margin-top: 0;
-		margin-bottom: 1rem;
-		max-height: 6rem;
-		overflow: hidden;
-	}
-
-	.card.left,
-	.card.right {
-		flex-direction: row;
-	}
-
-		.card.left > picture,
-		.card.right > picture,
-		.card.left > div,
-		.card.right > div {
-			flex-basis: 50%;
-		}
-
-		.card.right > picture {
-			order: 1;
-		}
-
-		.card.left > div > div,
-		.card.right > div > div {
-			padding-left: 2.5rem;
-			padding-right: 2.5rem;
-		}
 /*#endregion*/
 
 /*#region Hero*/
@@ -305,6 +250,39 @@
 }
 /*#endregion*/
 
+/*#region Mask*/
+[class*=mask-] {
+	position: relative;
+}
+
+	[class*=mask-]::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	[class*=mask-].bg-secondary::before {
+		background-color: #6c757d;
+	}
+
+	[class*=mask-].bg-dark::before {
+		background-color: #343a40;
+	}
+
+.mask-50::before {
+	opacity: .5;
+}
+
+[class*=mask-] > * {
+	position: relative;
+	z-index: 100;
+}
+/*#endregion*/
+
 /*#region Region*/
 .region {
 	padding-top: 1rem;
@@ -334,6 +312,18 @@
 		padding-bottom: 3rem;
 	}
 }
+/*#endregion*/
+
+/*#region Card*/
+.card {
+	box-shadow: 0px 1.6px 3.6px 0px rgba(0,0,0,0.132), 0px 0.3px 0.9px 0px rgba(0,0,0,0.108);
+	transition: box-shadow 0.5s ease;
+}
+
+	.card:hover {
+		box-shadow: 0px 6.4px 14.4px 0px rgba(0,0,0,0.132), 0px 1.2px 3.6px 0px rgba(0,0,0,0.108);
+		text-decoration: none;
+	}
 /*#endregion*/
 
 /*#region Feature*/
@@ -473,6 +463,16 @@
 	}
 /*#endregion*/
 
+/*#region Cart*/
+.cart-picture {
+	display: block;
+	width: 72px;
+	height: 72px;
+	background-color: rgba(0,0,0,0.1);
+	background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
+}
+/*#endregion*/
+
 /*#region Form*/
 .required::after {
 	content: "*";
@@ -489,7 +489,7 @@
 
 	.input-validation-error:focus {
 		border-color: #dc3545;
-		box-shadow: 0px 0px 0px 0.2rem rgba(220, 53, 69, 0.25);
+		box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 	}
 
 .field-validation-error {
@@ -510,6 +510,7 @@
 	line-height: 44px;
 	font-size: 24px;
 	color: rgba(255, 255, 255,0.8);
+	z-index: 1080;
 }
 
 	.back-to-top:focus,

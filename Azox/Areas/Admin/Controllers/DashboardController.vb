@@ -7,6 +7,10 @@
 			Return View()
 		End Function
 
+		Public Function Files() As ActionResult
+			Return View()
+		End Function
+
 		<AllowAnonymous>
 		Public Function Bar(editUrl As String) As ActionResult
 			Return PartialView(New DashboardBarViewModel With {.EditUrl = editUrl})

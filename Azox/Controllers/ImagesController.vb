@@ -1,21 +1,18 @@
 ﻿Imports System.Data.Entity
+Imports System.Net
 Imports System.Threading.Tasks
 
 Namespace Controllers
 	Public Class ImagesController
 		Inherits Controller
 
-		Public Sub New()
-			_ImageManager = New ImageManager
-		End Sub
-
-		Public ReadOnly Property ImageManager As ImageManager
+		Private db As New ApplicationDbContext
 
 		Public Async Function Thumbnail(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Thumbnail, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await db.Images.Select(Function(x) New With {x.Id, x.Thumbnail, x.ContentType}).SingleOrDefaultAsync(Function(x) x.Id = id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -27,7 +24,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Original, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await db.Images.Select(Function(x) New With {x.Id, x.Original, x.ContentType}).SingleOrDefaultAsync(Function(x) x.Id = id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -39,7 +36,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Large, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await db.Images.Select(Function(x) New With {x.Id, x.Large, x.ContentType}).SingleOrDefaultAsync(Function(x) x.Id = id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -51,7 +48,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Medium, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await db.Images.Select(Function(x) New With {x.Id, x.Medium, x.ContentType}).SingleOrDefaultAsync(Function(x) x.Id = id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -63,7 +60,7 @@ Namespace Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await ImageManager.Entities.Where(Function(x) x.Id = id).Select(Function(x) New With {x.Small, x.ContentType}).SingleOrDefaultAsync
+			Dim model = Await db.Images.Select(Function(x) New With {x.Id, x.Small, x.ContentType}).SingleOrDefaultAsync(Function(x) x.Id = id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -71,11 +68,8 @@ Namespace Controllers
 		End Function
 
 		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-			If (disposing) Then
-				If _ImageManager IsNot Nothing Then
-					_ImageManager.Dispose()
-					_ImageManager = Nothing
-				End If
+			If disposing Then
+				db.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

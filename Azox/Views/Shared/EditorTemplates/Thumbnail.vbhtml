@@ -1,13 +1,7 @@
 ﻿@ModelType Guid?
-@Html.Hidden("", Model)
-<div>
-	<a href="@Url.Action("changeimage", New With {.id = ViewBag.Id})" title="Изменить изображение">
-		@If IsNothing(Model) Then
-			@<img alt="@Html.DisplayNameForModel()" src="http://placehold.it/200x200" />
-		Else
-			@<img alt="@Html.DisplayNameForModel()" src="~/images/thumbnail/@Model" />
-		End If
-	</a>
+<div class="thumbnail">
+	@Html.Hidden("", Model)
+	@If Not IsNothing(Model) Then
+		@<img alt="@ViewBag.Alt" src="@Url.Action("Thumbnail", "Images", New With {.id = Model})" class="@ViewBag.Class" itemprop="image" />
+	End If
 </div>
-
-

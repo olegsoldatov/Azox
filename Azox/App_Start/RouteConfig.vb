@@ -1,6 +1,6 @@
 ﻿Public Module RouteConfig
-    Public Sub RegisterRoutes(ByVal routes As RouteCollection)
-        routes.IgnoreRoute("{resource}.axd/{*pathInfo}")
+	Public Sub RegisterRoutes(ByVal routes As RouteCollection)
+		routes.IgnoreRoute("{resource}.axd/{*pathInfo}")
 
 		routes.MapRoute(
 			name:="Default",

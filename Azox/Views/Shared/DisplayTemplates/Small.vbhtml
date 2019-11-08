@@ -1,8 +1,6 @@
 ﻿@ModelType Guid?
 @If IsNothing(Model) Then
-	@<img alt="@ViewBag.Alt" src="http://placehold.it/160x120" class="@ViewBag.Class" itemprop="image" />
+	@<img src="http://placehold.it/320x180" alt="@ViewData("htmlAttributes").Alt" class="@ViewData("htmlAttributes").Class" itemprop="image" />
 Else
-	@<img alt="@ViewBag.Alt" src="@Url.Action("Small", "Images", New With {.id = Model})" class="@ViewBag.Class" itemprop="image" />
+	@<img src="@Url.Action("Small", "Images", New With {.id = Model})" alt="@ViewData("htmlAttributes").Alt" class="@ViewData("htmlAttributes").Class" itemprop="image" />
 End If
-
-

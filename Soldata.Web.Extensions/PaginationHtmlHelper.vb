@@ -8,7 +8,6 @@ Imports System.Runtime.CompilerServices
 Public Module PaginationHtmlHelper
 	Private _PageIndex As Integer
 	Private _PageCount As Integer
-	Private _StartPageIndex As Integer
 	Private _ViewContext As ViewContext
 
 	''' <summary>
@@ -117,10 +116,10 @@ Public Module PaginationHtmlHelper
 	Private Function BuildPageItem(pageIndex As Integer, innerText As String, state As PageItemState, options As PaginationOptions) As String
 		Dim routeValues As New RouteValueDictionary(_ViewContext.RouteData.Values)
 		Dim queryString = _ViewContext.HttpContext.Request.QueryString
+
 		For Each key In queryString.AllKeys
 			If Not key = options.PageIndexName Then
-				Dim value = queryString(key)
-				routeValues.Add(key, value)
+				routeValues.Add(key, queryString(key))
 			End If
 		Next
 		If pageIndex > 0 Then

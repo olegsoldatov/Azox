@@ -1,9 +1,12 @@
-﻿@Code
+﻿@ModelType IEnumerable(Of Product)
+@Code
 	ViewBag.Title = "Продукция"
 	ViewBag.Description = "Каталог продукции."
 End Code
 
 <div class="container">
+	<h1>@ViewBag.Title</h1>
+
 	<div class="row">
 		<div class="col-md-3">
 			<div>
@@ -14,9 +17,11 @@ End Code
 		</div>
 
 		<div class="col-md-9">
-			<h1>@ViewBag.Title</h1>
-
-			@Html.Action("List")
+			@If Model.Any Then
+				@<text>...</text>
+			Else
+				@<p class="lead text-center">Список пуст.</p>
+			End If
 		</div>
 	</div>
 </div>

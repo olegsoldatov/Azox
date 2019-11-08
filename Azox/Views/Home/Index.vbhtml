@@ -1,5 +1,5 @@
 ﻿@Code
-	ViewBag.Title = "Soldata"
+	ViewBag.Title = "Azox"
 	ViewBag.Description = "Домашняя страница"
 End code
 

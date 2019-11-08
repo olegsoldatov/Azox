@@ -1,5 +1,9 @@
 ﻿@Imports Microsoft.AspNet.Identity
-
+@Code
+	Dim area = Request.RequestContext.RouteData.Values("area")
+	Dim controller = Request.RequestContext.RouteData.Values("controller")
+	Dim action = Request.RequestContext.RouteData.Values("action")
+End Code
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -15,9 +19,39 @@
 <body>
 	<header class="sidebar" id="sidebar">
 		<button class="sidebar-toggle" data-toggle="collapse" aria-expanded="false" data-target="#sidebar">
-			<span class="fas fa-bars"></span>
+			<span class="fa fa-bars"></span>
 		</button>
-		@Html.Partial("_Navigation")
+		<ul class="nav flex-column">
+			<li @If action.Equals("index") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
+				<a href="@Url.Action("index", "dashboard")"><span class="fa fa-tachometer"></span>Панель управления</a>
+			</li>
+			<li @If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then @<text> class="active" </text> End If data-visible="tablet">
+				<button aria-controls="productsMenu" aria-expanded="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>true</text>Else@<text>false</text>End if">
+					<span class="fa fa-folder-o"></span>
+					<span>Каталог</span>
+				</button>
+				<ul id="productsMenu" aria-hidden="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>false</text>Else@<text>true</text>End if">
+					<li @If controller.Equals("products") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "products")">Продукты</a>
+					</li>
+					<li @If controller.Equals("categories") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "categories")">Категории</a>
+					</li>
+					<li @If controller.Equals("brands") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "brands")">Бренды</a>
+					</li>
+					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "warehouses")">Склады</a>
+					</li>
+				</ul>
+			</li>
+			<li @If controller.Equals("pages") Then @<text> class="active" </text> End If>
+				<a href="@Url.Action("index", "pages")"><span class="fa fa-folder-o"></span>Страницы</a>
+			</li>
+			<li @If action.Equals("files") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
+				<a href="@Url.Action("files", "dashboard")"><span class="fa fa-folder-o"></span>Файлы</a>
+			</li>
+		</ul>
 	</header>
 
 	<main class="main" id="main">
@@ -31,13 +65,13 @@
 					<span class="fa fa-globe"></span>
 					<span>Сайт</span>
 				</a>
-				<a href="~/admin/manage" class="btn" title="Управление учетной записью">
-					<span class="fas fa-user"></span>
+				<a href="~/manage" class="btn" title="Управление учетной записью">
+					<span class="fa fa-user"></span>
 					<span>@User.Identity.Name</span>
 				</a>
 				@Using Html.BeginForm("logoff", "account", New With {.area = "admin"}, FormMethod.Post, New With {.id = "logoutForm"})
 					@Html.AntiForgeryToken()
-					@<button class="btn" title="Выход"><span class="fas fa-sign-out-alt"></span></button>
+					@<button class="btn" title="Выход"><span class="fa fa-sign-out"></span></button>
 				End Using
 			</div>
 		</footer>
@@ -48,13 +82,14 @@
 	</main>
 
 	<a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">
-		<div class="fas fa-arrow-up" aria-label="Наверх"></div>
+		<div class="fa fa-arrow-up" aria-label="Наверх"></div>
 	</a>
 
+	@RenderSection("Modals", required:=False)
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@Scripts.Render("~/bundles/dashboard")
 	@RenderSection("Scripts", required:=False)
 </body>
 </html>
-<!-- Дизайн и разработка Софт Бизнес http://soft.business -->
+<!-- Софт Бизнес https://soft.business -->
