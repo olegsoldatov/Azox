@@ -994,7 +994,7 @@
     <Content Include="Views\Contacts\Index.vbhtml" />
     <Content Include="Views\Contacts\_ContactForm.vbhtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Files.vbhtml" />
-    <Content Include="Views\Shared\DisplayTemplates\IsPublished.vbhtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\IsPublished.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.vbhtml" />
@@ -1062,7 +1062,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
     <Folder Include="Areas\Admin\Views\Shared\EditorTemplates\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Products\EditorTemplates\" />
