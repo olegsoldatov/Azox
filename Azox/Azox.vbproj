@@ -203,7 +203,7 @@
     <Compile Include="Core\DbController.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
     <Compile Include="Models\Catalog\Category.vb" />
-    <Compile Include="Areas\Admin\Models\Dashboard.vb" />
+    <Compile Include="Areas\Admin\Models\DashboardBarViewModel.vb" />
     <Compile Include="Controllers\AboutController.vb" />
     <Compile Include="Controllers\ArticlesController.vb" />
     <Compile Include="Controllers\ComponentsController.vb" />
