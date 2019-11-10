@@ -21,8 +21,16 @@ End If
 #>
 End Code
 
-<h1>@ViewBag.Title</h1>
-<hr />
+@Section Toolbar
+	<button class="btn" form="model-form">
+		<span class="fa fa-trash"></span>
+		<span>Удалить</span>
+	</button>
+End Section
+
+<header>
+	<h1>@ViewBag.Title</h1>
+</header>
 
 <#
 Else
@@ -36,7 +44,8 @@ End Code
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><#= ViewName #></title>
 </head>
 <body>
@@ -44,15 +53,19 @@ End Code
     PushIndent("    ")
 End If
 #>
-<p class="lead">Вы уверены, что хотите удалить &laquo;@Model.Title&raquo;?</p>
-
-@Using Html.BeginForm
-    @Html.AntiForgeryToken
-    @<div class="form-actions no-color">
-		<button class="btn btn-default">Удалить</button>
-		<a href="@Request.UrlReferrer.AbsolutePath" class="btn btn-link">Отмена</a>
-    </div>
-End Using
+<article>
+	<p class="lead">
+		Вы уверены, что хотите удалить &laquo;@Model.Name&raquo;?<br />
+		<small class="text-danger"><span class="fa fa-exclamation-circle">&nbsp;</span> Удаленный объект невозможно будет восстановить.</small>
+	</p>
+	@Using Html.BeginForm("delete", Nothing, FormMethod.Post, New With {.id = "model-form"})
+		@Html.AntiForgeryToken
+		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))
+		@<div class="form-group">
+			<button class="btn btn-danger">Удалить</button>
+		</div>
+	End Using
+</article>
 
 <#
 ' The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page

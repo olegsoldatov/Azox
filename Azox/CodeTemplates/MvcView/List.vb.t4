@@ -12,7 +12,7 @@ If (IsPartialView) Then
     ElseIf (IsLayoutPageSelected)
 #>
 @Code
-	ViewBag.Title = "Список"
+	ViewBag.Title = "Управление"
 <#
 If (Not String.IsNullOrEmpty(LayoutPageFile))
 #>
@@ -119,6 +119,7 @@ End If
 #>
 						<td class="text-right">
 							@Html.DisplayFor(Function(m) item.IsPublished)
+							<a href="@Url.Action("edit", New With {.id = item.<#= pkName #>})" data-toggle="tooltip" title="Изменить"><span class="fa fa-pencil"></span></a>
 							<a href="@Url.Action("details", New With {.area = "", .id = item.<#= pkName #>})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
 							<a href="@Url.Action("delete", New With {.id = item.<#= pkName #>})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
 						</td>
@@ -128,6 +129,7 @@ End If
 						<td class="text-right">
 							@*
 							@Html.DisplayFor(Function(m) item.IsPublished)
+							<a href="@Url.Action("edit", New With {.id = item.<#= pkName #>})" data-toggle="tooltip" title="Изменить"><span class="fa fa-pencil"></span></a>
 							<a href="@Url.Action("details", New With {.area = "", .id = item.PrimaryKey})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
 							<a href="@Url.Action("delete", New With {.id = item.PrimaryKey})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
 							*@

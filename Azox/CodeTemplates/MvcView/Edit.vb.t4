@@ -26,21 +26,23 @@ End If
 End Code
 
 @Section Toolbar
-	<a class="button" href="#" onclick="$('#ModelForm').submit(); return false;"><span class="fa fa-save">&nbsp;&nbsp;</span>Сохранить</a>
-	<a class="button" href="@Url.Action("details", New With {.area = "", .id = Model.Id})" target="_blank"><span class="fa fa-eye">&nbsp;&nbsp;</span>Посмотреть</a>
-	<a class="button" href="@Url.Action("create")"><span class="fa fa-plus">&nbsp;&nbsp;</span>Добавить</a>
-	<a class="button" href="@Url.Action("delete", New With {.id = Model.Id})"><span class="fa fa-trash">&nbsp;&nbsp;</span>Удалить</a>
+	<button class="btn" form="model-form">
+		<span class="fa fa-save"></span>
+		<span>Сохранить</span>
+	</button>
+	<a href="@Url.Action("details", New With {.area = "", .id = Model.Id})" class="btn" target="_blank">
+		<span class="fa fa-eye"></span>
+		<span>Посмотреть</span>
+	</a>
+	<a href="@Url.Action("delete", New With {.id = Model.Id})" class="btn">
+		<span class="fa fa-trash"></span>
+		<span>Удалить</span>
+	</a>
 End Section
 
-<h1>@ViewBag.Title</h1>
-<hr />
-
-@If Not IsNothing(TempData("Message")) Then
-	@<div class="alert alert-info alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		@TempData("Message")
-	</div>
-End If
+<header>
+	<h1>@ViewBag.Title</h1>
+</header>
 
 <#
 Else
@@ -54,7 +56,8 @@ End Code
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><#= ViewName #></title>
 </head>
 <body>
@@ -81,38 +84,27 @@ If ReferenceScriptLibraries Then
     End If
 End If
 #>
-@Using Html.BeginForm("edit", Nothing, FormMethod.Post, New With {.id = "ModelForm"})
-    @Html.AntiForgeryToken
-<# 
-    If (isControlHtmlAttributesSupported) Then
-#>
-	@Html.ValidationSummary(True, "", New With { .class = "text-danger" })
-<#
-    Else
-#>
-	@Html.ValidationSummary(True)
-<#
-    End If
-#>
-    @<text>
+<article>
+	@Using Html.BeginForm("edit", Nothing, FormMethod.Post, New With {.id = "model-form"})
+		@Html.AntiForgeryToken
+		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))
 <#
 For Each modelProperty As PropertyMetadata in ModelMetadata.Properties
-    If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsAssociation) Then
-        If (modelProperty.IsPrimaryKey) Then
+	If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsAssociation) Then
+		If (modelProperty.IsPrimaryKey) Then
 #>
-        @Html.HiddenFor(Function(model) model.<#= modelProperty.PropertyName #>)
-
+		@Html.HiddenFor(Function(m) m.<#= modelProperty.PropertyName #>)
 <#
-        ElseIf (Not modelProperty.IsReadOnly)
+		ElseIf (Not modelProperty.IsReadOnly)
 #>
-        <div class="form-group">
+		@<div class="form-group">
 <#
 		Dim isCheckbox = modelProperty.TypeName.Equals(boolType)
-        If (Not isCheckbox) Then
+		If (Not isCheckbox) Then
 #>
-            @Html.LabelFor(Function(m) m.<#= modelProperty.PropertyName #>, htmlAttributes:=New With {.class = "control-label"})
+			@Html.LabelFor(Function(m) m.<#= modelProperty.PropertyName #>, htmlAttributes:=New With {.class = "control-label"})
 <#
-        End If
+		End If
 #>
 <#
 		If (Not isCheckbox) Then
@@ -142,8 +134,8 @@ For Each modelProperty As PropertyMetadata in ModelMetadata.Properties
 			End If
 #>
 <#
-        Else If (isControlHtmlAttributesSupported)
-            If (isCheckbox) Then
+		Else If (isControlHtmlAttributesSupported)
+			If (isCheckbox) Then
 #>
 			<div class="checkbox">
 				<label>
@@ -151,41 +143,37 @@ For Each modelProperty As PropertyMetadata in ModelMetadata.Properties
 					@Html.DisplayNameFor(Function(m) m.<#= modelProperty.PropertyName #>)
 				</label>
 <#
-            Else If (modelProperty.IsEnum AndAlso Not modelProperty.IsEnumFlags) Then
+			Else If (modelProperty.IsEnum AndAlso Not modelProperty.IsEnumFlags) Then
 #>
 			@Html.EnumDropDownListFor(Function(m) m.<#= modelproperty.PropertyName #>, htmlAttributes:=New With {.class = "form-control"})
 <#
-            Else
+			Else
 #>
 			@Html.EditorFor(Function(m) m.<#= modelproperty.PropertyName #>, New With {.htmlAttributes = New With {.class = "form-control"}})
 <#
-            End If
-        Else
+			End If
+		Else
 #>
 			@Html.EditorFor(Function(m) m.<#= modelProperty.PropertyName #>)
 <#
-        End If
+		End If
 #>
 <#
-        If (isCheckbox AndAlso isControlHtmlAttributesSupported) Then
+		If (isCheckbox AndAlso isControlHtmlAttributesSupported) Then
 #>
 			</div>
 <#
-        End If
+		End If
 #>
-        </div>
+		</div>
 <#
-        End If
-    End If
+		End If
+	End If
 Next
 #>
-    </text>
-    @<div class="form-group">
-		<button class="btn btn-default">Сохранить</button>
-		@Html.ActionLink("Отменить", "index", Nothing, New With {.class = "btn btn-link"})
-    </div>
-End Using
-
+		@<button class="btn btn-primary">Сохранить</button>
+	End Using
+</article>
 <#
 If (IsLayoutPageSelected) AndAlso (ReferenceScriptLibraries) AndAlso (IsBundleConfigPresent) Then
 #>
