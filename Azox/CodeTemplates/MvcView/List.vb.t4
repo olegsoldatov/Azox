@@ -23,18 +23,18 @@ End If
 End Code
 
 @Section Toolbar
-	<a class="button" href="@Url.Action("create")"><span class="fa fa-plus">&nbsp;&nbsp;</span>Добавить</a>
+	<a href="@Url.Action("create")" class="btn">
+		<span class="fa fa-plus"></span>
+		<span>Добавить</span>
+	</a>
 End Section
 
-<h1>@ViewBag.Title</h1>
-<hr />
-
-@If Not IsNothing(TempData("Message")) Then
-	@<div class="alert alert-info alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Закрыть"><span aria-hidden="true">&times;</span></button>
-		@TempData("Message")
-	</div>
-End If
+<header>
+	<h1>@ViewBag.Title</h1>
+	@Html.Partial("_Alert")
+	@*@Html.Partial("_Filter", ViewBag.Filter)*@
+	@Html.Pagination(New With {.class = "pagination"})
+</header>
 
 <#
 Else
@@ -48,7 +48,8 @@ End Code
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><#= ViewName #></title>
 </head>
 <body>
@@ -56,16 +57,41 @@ End Code
     PushIndent("    ")
 End If
 #>
-<div class="table-module">
-	<div class="table-wrapper">
-		@If Model.Any Then
-			@<table class="table table-hover tablesorter">
-				<thead>
-					<tr>
+<article>
+	@If Model.Any Then
+		@<table class="table table-hover">
+			<thead>
+				<tr>
 <#
-			Dim properties As IEnumerable(Of PropertyMetadata) = ModelMetadata.Properties
+		Dim properties As IEnumerable(Of PropertyMetadata) = ModelMetadata.Properties
+		For Each modelProperty As PropertyMetadata In properties
+			If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsPrimaryKey) AndAlso (Not modelProperty.IsForeignKey) AndAlso (Not modelProperty.PropertyName = "Order") AndAlso (Not modelProperty.PropertyName = "IsPublished") AndAlso (Not modelProperty.PropertyName = "ImageId") Then
+#>
+<#
+				' We do not want to show any association properties for which there is
+				' no associated foreign key.
+				If (modelProperty.IsAssociation) AndAlso (GetRelatedModelMetadata(modelProperty) Is Nothing)  Then
+					Continue For
+				End If
+#>
+					<th>
+						@Html.DisplayNameFor(Function(m) m.<#= GetValueExpression(modelProperty) #>)
+					</th>
+<#
+				columnCount += 1
+			End If
+		Next
+#>
+					<th width="84"></th>
+				</tr>
+			</thead>
+			<tbody>
+				@For Each item In Model
+					@<tr>
+<#
+			Dim pkName as String = GetPrimaryKeyName()
 			For Each modelProperty As PropertyMetadata In properties
-				If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsPrimaryKey) AndAlso (Not modelProperty.IsForeignKey) AndAlso (Not modelProperty.PropertyName = "Order") AndAlso (Not modelProperty.PropertyName = "Draft") AndAlso (Not modelProperty.PropertyName = "ImageId") Then
+				If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsPrimaryKey) AndAlso (Not modelProperty.IsForeignKey) AndAlso (Not modelProperty.PropertyName = "Order") AndAlso (Not modelProperty.PropertyName = "IsPublished") AndAlso (Not modelProperty.PropertyName = "ImageId") Then
 #>
 <#
 					' We do not want to show any association properties for which there is
@@ -73,95 +99,53 @@ End If
 					If (modelProperty.IsAssociation) AndAlso (GetRelatedModelMetadata(modelProperty) Is Nothing)  Then
 						Continue For
 					End If
+
+					If (modelProperty.PropertyName = "Title") Then
 #>
-						<th>
-							@Html.DisplayNameFor(Function(m) m.<#= GetValueExpression(modelProperty) #>)
-						</th>
+						<td>
+							@Html.ActionLink(<#= "item." + GetValueExpression(modelProperty) #>, "edit", New With {.id = item.<#= pkName #>}, New With {.title = "Изменить"})
+						</td>
 <#
-					columnCount += 1
+					Else
+#>
+						<td>
+							@Html.DisplayFor(Function(m) <#= "item." + GetValueExpression(modelProperty) #>)
+						</td>
+<#
+					End If
 				End If
 			Next
+			If (Not pkName Is Nothing) Then
 #>
-						<th></th>
+						<td class="text-right">
+							@Html.DisplayFor(Function(m) item.IsPublished)
+							<a href="@Url.Action("details", New With {.area = "", .id = item.<#= pkName #>})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
+							<a href="@Url.Action("delete", New With {.id = item.<#= pkName #>})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
+						</td>
+<#
+			Else
+#>
+						<td class="text-right">
+							@*
+							@Html.DisplayFor(Function(m) item.IsPublished)
+							<a href="@Url.Action("details", New With {.area = "", .id = item.PrimaryKey})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
+							<a href="@Url.Action("delete", New With {.id = item.PrimaryKey})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
+							*@
+						</td>
+<#
+			End If
+#>
 					</tr>
-				</thead>
-				<tbody>
-					@For Each item In Model
-						@<tr>
-<#
-				Dim pkName as String = GetPrimaryKeyName()
-				For Each modelProperty As PropertyMetadata In properties
-					If (modelProperty.Scaffold) AndAlso (Not modelProperty.IsPrimaryKey) AndAlso (Not modelProperty.IsForeignKey) AndAlso (Not modelProperty.PropertyName = "Order") AndAlso (Not modelProperty.PropertyName = "Draft") AndAlso (Not modelProperty.PropertyName = "ImageId") Then
-#>
-<#
-						' We do not want to show any association properties for which there is
-						' no associated foreign key.
-						If (modelProperty.IsAssociation) AndAlso (GetRelatedModelMetadata(modelProperty) Is Nothing)  Then
-							Continue For
-						End If
-
-						If (modelProperty.PropertyName = "Title") Then
-#>
-							<td>
-								@Html.ActionLink(<#= "item." + GetValueExpression(modelProperty) #>, "edit", New With {.id = item.<#= pkName #>}, New With {.title = "Изменить"})
-							</td>
-<#
-						Else
-#>
-							<td>
-								@Html.DisplayFor(Function(m) <#= "item." + GetValueExpression(modelProperty) #>)
-							</td>
-<#
-						End If
-					End If
 				Next
-				If (Not pkName Is Nothing) Then
-#>
-							<td class="text-right">
-								@Html.DisplayFor(Function(m) item.Draft) |
-								<a href="@Url.Action("details", New With {.area = "", .id = item.<#= pkName #>})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a> |
-								<a href="@Url.Action("delete", New With {.id = item.<#= pkName #>})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
-							</td>
-<#
-				Else
-#>
-							<td class="text-right">
-								@*
-								@Html.DisplayFor(Function(m) item.Draft) |
-								<a href="@Url.Action("details", New With {.area = "", .id = item.PrimaryKey})" data-toggle="tooltip" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a> |
-								<a href="@Url.Action("delete", New With {.id = item.PrimaryKey})" data-toggle="tooltip" title="Удалить"><span class="fa fa-trash"></span></a>
-								*@
-							</td>
-<#
-				End If
-#>
-						</tr>
-					Next
-				</tbody>
-			</table>
-		Else
-			@<p class="lead text-center">Список пуст.</p>
-		End If
-	</div>
-</div>
+			</tbody>
+		</table>
 
-@Html.Pagination(New With {.class = "pagination"})
+		@Html.Pagination(New With {.class = "pagination"})
+	Else
+		@<p class="lead text-center">Список пуст.</p>
+	End If
+</article>
 
-<#
-If (IsLayoutPageSelected) Then
-#>
-@Section Scripts 
-	<script>
-		$(function () {
-			$(".tablesorter").tablesorter({
-				headers: { <#= columnCount #>: { sorter: false } }
-			});
-		});
-	</script>
-End Section
-<#
-End If
-#>
 <#
 ' The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
 #>
