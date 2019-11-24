@@ -16,8 +16,8 @@ Namespace Controllers
 			Dim entities = db.Categories.AsQueryable
 
 			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchString) Then
-				Dim searchString = filter.SearchString.Trim
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim searchString = filter.SearchText.Trim
 				entities = entities.Where(Function(x) x.Name.Contains(searchString))
 			End If
 
@@ -38,8 +38,8 @@ Namespace Controllers
 			Dim entities = db.Categories.AsQueryable
 
 			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchString) Then
-				Dim searchString = filter.SearchString.Trim
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim searchString = filter.SearchText.Trim
 				entities = entities.Where(Function(x) x.Name.Contains(searchString))
 			End If
 

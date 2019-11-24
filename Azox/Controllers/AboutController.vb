@@ -8,7 +8,7 @@ Namespace Controllers
 		Private ReadOnly Db As New ApplicationDbContext
 
 		Public Async Function Index() As Task(Of ActionResult)
-			Return View(Await Db.Pages.SingleAsync(Function(x) x.ControllerName = "about" And x.ActionName = "index"))
+			Return View(Await Db.Pages.SingleAsync(Function(x) x.ActionName = "index" And x.ControllerName = "about"))
 		End Function
 
 		Protected Overrides Sub Dispose(disposing As Boolean)

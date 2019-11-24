@@ -6,14 +6,33 @@ Public Class Category
 	<Key>
 	Public Property Id As Guid = Guid.NewGuid
 
-	<Required(ErrorMessage:="Укажите название."), Display(Name:="Название")>
+	<Required(ErrorMessage:="Укажите название.")>
+	<StringLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Имя")>
 	Public Property Name As String
 
-	<Display(Name:="Ярлык")>
-	Public Property Slug As String
+	<Required(ErrorMessage:="Укажите название.")>
+	<StringLength(255, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Название")>
+	Public Property Title As String
 
+	<StringLength(255, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Заголовок")>
+	Public Property Heading As String
+
+	<DataType(DataType.MultilineText)>
+	<Display(Name:="Содержание")>
+	<UIHint("Content")>
+	<AllowHtml>
+	Public Property Content As String
+
+	<StringLength(1000, ErrorMessage:="Не более {1} символов.")>
 	<Display(Name:="Описание")>
 	Public Property Description As String
+
+	<Obsolete>
+	<Display(Name:="Ярлык")>
+	Public Property Slug As String
 
 	<DataType(DataType.ImageUrl), Display(Name:="Изображение")>
 	Public Property ImageId As Guid?
@@ -21,8 +40,14 @@ Public Class Category
 	<NotMapped, DataType(DataType.Upload), Display(Name:="Файл изображения")>
 	Public Property ImageFile As HttpPostedFileWrapper
 
-	<Required(ErrorMessage:="Укажите порядок."), Display(Name:="Порядок"), UIHint("Order")>
+	<Required(ErrorMessage:="Укажите порядок.")>
+	<Display(Name:="Порядок")>
+	<UIHint("Order")>
 	Public Property Order As Integer
+
+	<Display(Name:="Опубликовано")>
+	<UIHint("IsPublished")>
+	Public Property IsPublished As Boolean
 
 	<Display(Name:="Продукция")>
 	Public Overridable Property Products As ICollection(Of Product)
@@ -40,11 +65,11 @@ Public Class Category
 	''' </summary>
 	''' <param name="divider">Разделитель. Если не указывать, то в качестве разделителя будет косая черта отбитая пробелами.</param>
 	Public Function GetPath(Optional divider As String = " / ") As String
-		Dim names As New List(Of String) From {Name}
+		Dim names As New List(Of String) From {Title}
 		Dim parent = Me.Parent
 CategoryParent:
 		If Not IsNothing(parent) Then
-			names.Insert(0, parent.Name)
+			names.Insert(0, parent.Title)
 			parent = parent.Parent
 			GoTo CategoryParent
 		End If
@@ -67,5 +92,5 @@ End Class
 
 Public Class CategoryFilterViewModel
 	<Display(Name:="Поиск")>
-	Public Property SearchString As String
+	Public Property SearchText As String
 End Class

@@ -12,20 +12,26 @@ Namespace Areas.Admin.Controllers
 		Private ReadOnly db As New ApplicationDbContext
 
 		Public Async Function Index(filter As CategoryFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim categories = db.Categories.AsQueryable
+			Dim entities = db.Categories.AsQueryable
+
+			' Поиск.
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Name.Trim.ToLower.Replace("ё", "е").Contains(s)) ' Or x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Heading.Trim.ToLower.Replace("ё", "е").Contains(s))
+			End If
+
+			' Сортировка.
+			entities = entities.OrderBy(Function(x) x.Name) '.ThenBy(Function(x) x.Title).ThenBy(Function(x) x.Heading).ThenBy(Function(x) x.Order)
+
+			' Количество и пагинация.
+			ViewBag.EntityCount = Await entities.CountAsync
+			ViewBag.PageIndex = pageIndex
+			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.EntityCount / pageSize))
 
 			' Фильтр.
 			ViewBag.Filter = filter
 
-			' Количество и пагинация.
-			ViewBag.TotalCount = Await ApplyFilterAndOrder(categories, filter).Select(Function(x) x.Id).CountAsync
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.TotalCount / pageSize))
-
-			' Модель.
-			Dim model = (Await ApplyFilterAndOrder(categories, filter).Skip(pageIndex * pageSize).Take(pageSize).ToListAsync).Select(Function(x) New CategoryAdminViewModel With {.Id = x.Id, .Name = x.GetPath, .Slug = x.Slug, .ProductCount = x.Products.Count})
-
-			Return View(model)
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
 		End Function
 
 		Public Async Function Create() As Task(Of ActionResult)
@@ -139,8 +145,8 @@ Namespace Areas.Admin.Controllers
 		Private Function ApplyFilterAndOrder(categories As IQueryable(Of Category), filter As CategoryFilterViewModel) As IOrderedQueryable(Of Category)
 
 			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchString) Then
-				Dim searchString = filter.SearchString.Trim.ToLower.Replace("ё", "е")
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim searchString = filter.SearchText.Trim.ToLower.Replace("ё", "е")
 				categories = categories.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Slug.ToLower.Contains(searchString))
 			End If
 
