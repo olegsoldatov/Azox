@@ -12,7 +12,7 @@ Public Class Category
 	Public Property Name As String
 
 	<Required(ErrorMessage:="Укажите название.")>
-	<StringLength(255, ErrorMessage:="Не более {1} символов.")>
+	<StringLength(128, ErrorMessage:="Не более {1} символов.")>
 	<Display(Name:="Название")>
 	Public Property Title As String
 
@@ -34,10 +34,13 @@ Public Class Category
 	<Display(Name:="Ярлык")>
 	Public Property Slug As String
 
-	<DataType(DataType.ImageUrl), Display(Name:="Изображение")>
+	<DataType(DataType.ImageUrl)>
+	<Display(Name:="Изображение")>
 	Public Property ImageId As Guid?
 
-	<NotMapped, DataType(DataType.Upload), Display(Name:="Файл изображения")>
+	<NotMapped>
+	<DataType(DataType.Upload)>
+	<Display(Name:="Файл изображения")>
 	Public Property ImageFile As HttpPostedFileWrapper
 
 	<Required(ErrorMessage:="Укажите порядок.")>
@@ -65,15 +68,15 @@ Public Class Category
 	''' </summary>
 	''' <param name="divider">Разделитель. Если не указывать, то в качестве разделителя будет косая черта отбитая пробелами.</param>
 	Public Function GetPath(Optional divider As String = " / ") As String
-		Dim names As New List(Of String) From {Title}
+		Dim titles As New List(Of String) From {If(String.IsNullOrEmpty(Title), Name, Title)}
 		Dim parent = Me.Parent
 CategoryParent:
 		If Not IsNothing(parent) Then
-			names.Insert(0, parent.Title)
+			titles.Insert(0, If(String.IsNullOrEmpty(parent.Title), parent.Name, parent.Title))
 			parent = parent.Parent
 			GoTo CategoryParent
 		End If
-		Return String.Join(divider, names.ToArray)
+		Return String.Join(divider, titles.ToArray)
 	End Function
 End Class
 
