@@ -1,6 +1,6 @@
 ﻿/*!
- * Dashboard v1.3.0.0
- * Copyright 2019 Soldata
+ * Dashboard v1.6.0.0
+ * Copyright 2020 Soldata
  */
 
 if (typeof jQuery === 'undefined') {
@@ -66,6 +66,11 @@ $('input[data-role="datepicker"]').datepicker({
 	todayHighlight: true
 });
 
+// Currency.
+$(document).ready(function () {
+	$("input[type=currency]").inputmask({ "alias": "decimal", "groupSeparator": " ", "radixPoint": ",", "digits": "2", "digitsOptional": false });
+});
+
 // Progress Status.
 function getImportStatus(statusUrl, statusMessageId, startButtonId) {
 	var interval = 300;
@@ -100,4 +105,3 @@ function deleteCheckedItems(confirmText, url, guids) {
 		}
 	}
 }
-

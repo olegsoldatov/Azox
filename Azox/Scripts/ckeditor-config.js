@@ -1,18 +1,12 @@
 ﻿CKEDITOR.editorConfig = function (config) {
-	config.height = '362';
+	config.height = '369';
 	config.toolbar = [
-		{ name: 'file', items: ['Save'] },
-		{ name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
-		{ name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-		{ name: 'including', items: ['Link', 'Unlink', 'Anchor', '-', 'Image', 'Flash', 'Table', 'HorizontalRule'] },
-		{ name: 'editortools', items: ['Maximize', 'ShowBlocks'] },
-		{ name: 'editorhelp', items: ['About'] },
-		'/',
-		{ name: 'document', items: ['Source'] },
-		{ name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
-		{ name: 'formatstyles', items: ['Format', 'Font', 'FontSize'] },
-		{ name: 'textstyles', items: ['TextColor', 'BGColor'] },
-		{ name: 'correction', items: ['Find', 'Replace', '-', 'Scayt'] }
+		{ name: 'editable', items: ['Undo', 'Redo'] },
+		{ name: 'formatstyles', items: ['Font', 'FontSize'] },
+		{ name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Superscript', 'Subscript', 'BGColor', 'TextColor', 'RemoveFormat'] },
+		{ name: 'paragraph', items: ['BulletedList', 'NumberedList', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+		{ name: 'including', items: ['Link', 'Unlink', 'Image'] },
+		{ name: 'document', items: ['Source'] }
 	];
 	config.removePlugins = 'elementspath';
 	config.entities = false;

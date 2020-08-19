@@ -3,32 +3,94 @@ Imports System.Data.Entity
 
 Public Class Article
 	<Key>
-	Public Property Id As Guid = Guid.NewGuid
+	Public Property Id As Guid
 
-	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date = Date.Now.Date
+	<Required>
+	<MaxLength(128)>
+	Public Property Name As String
 
-	<Required(ErrorMessage:="Укажите название.")>
-	<Display(Name:="Название")>
-	Public Property Title As String
-
-	<AllowHtml>
-	<DataType(DataType.MultilineText), UIHint("Content")>
-	<Display(Name:="Содержание")>
 	Public Property Content As String
 
-	<Display(Name:="Ярлык")>
+	<DataType(DataType.Date)>
+	Public Property LastUpdateDate As Date
+
+	<MaxLength(128)>
+	Public Property Title As String
+
+	Public Property Description As String
+
+	Public Property Keywords As String
+
 	Public Property Slug As String
-
-	<UIHint("Order")>
-	<Display(Name:="Порядок")>
-	Public Property Order As Integer
-
-	<UIHint("Draft")>
-	<Display(Name:="Черновик")>
-	Public Property Draft As Boolean
 End Class
 
 Partial Public Class ApplicationDbContext
 	Public Property Articles As DbSet(Of Article)
 End Class
+
+Public Class ArticleAdminViewModel
+	Public Property Id As Guid
+
+	<Display(Name:="Имя")>
+	Public Property Name As String
+
+	<Display(Name:="Путь")>
+	Public Property Slug As String
+End Class
+
+Public Class ArticleCreateViewModel
+	<Required(ErrorMessage:="Укажите имя.")>
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Имя")>
+	Public Property Name As String
+
+	<AllowHtml>
+	<Display(Name:="Содержание")>
+	<UIHint("Content")>
+	Public Property Content As String
+
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Название")>
+	Public Property Title As String
+
+	<Display(Name:="Описание")>
+	Public Property Description As String
+
+	<Display(Name:="Ключевые слова")>
+	Public Property Keywords As String
+
+	<RegularExpression("^(\/[a-z0-9_-]+)+$", ErrorMessage:="Неверный путь.")>
+	<Remote("SlugValid", "Articles", AdditionalFields:="Id", ErrorMessage:="Такой путь уже существует.")>
+	<Display(Name:="Путь")>
+	Public Property Slug As String
+End Class
+
+Public Class ArticleEditViewModel
+	Public Property Id As Guid
+
+	<Required(ErrorMessage:="Укажите имя.")>
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Имя")>
+	Public Property Name As String
+
+	<AllowHtml>
+	<Display(Name:="Содержание")>
+	<UIHint("Content")>
+	Public Property Content As String
+
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Название")>
+	Public Property Title As String
+
+	<Display(Name:="Описание")>
+	Public Property Description As String
+
+	<Display(Name:="Ключевые слова")>
+	Public Property Keywords As String
+
+	<RegularExpression("^(\/[a-z0-9_-]+)+$", ErrorMessage:="Неверный путь.")>
+	<Remote("SlugValid", "Articles", AdditionalFields:="Id", ErrorMessage:="Такой путь уже существует.")>
+	<Display(Name:="Путь")>
+	Public Property Slug As String
+End Class
+

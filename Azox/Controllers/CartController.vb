@@ -25,7 +25,7 @@ Namespace Controllers
 			If Not IsNothing(product) AndAlso (product.Price > Decimal.Zero And product.AvailableQuantity > 0) And model.Quantity > 0 Then
 				Dim good As New Good With {
 					.Id = Guid.NewGuid,
-					.Name = product.Name,
+					.Name = product.Title,
 					.Sku = product.Sku,
 					.ProductId = product.Id,
 					.ProductUrl = Url.Action("details", "products", New With {product.Id}, Request.Url.Scheme),

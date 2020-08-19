@@ -7,8 +7,10 @@ Public Class MvcApplication
         AreaRegistration.RegisterAllAreas()
         FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters)
         RouteConfig.RegisterRoutes(RouteTable.Routes)
-        BundleConfig.RegisterBundles(BundleTable.Bundles)
-    End Sub
+		BundleConfig.RegisterBundles(BundleTable.Bundles)
+		ModelBinders.Binders.Add(GetType(Decimal), New DecimalModelBinder())
+		ModelBinders.Binders.Add(GetType(Decimal?), New DecimalModelBinder())
+	End Sub
 
 	Protected Sub Application_Error()
 		Dim exception = Server.GetLastError

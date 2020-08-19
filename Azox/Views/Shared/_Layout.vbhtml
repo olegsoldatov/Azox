@@ -1,48 +1,72 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head prefix="og: http://ogp.me/ns#">
-	<title>@ViewBag.Title</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="title" content="@ViewBag.Title" property="og:title" />
-	<meta name="description" content="@ViewBag.Description" property="og:description" />
-	<meta name="author" content="Soldata" />
-	<meta content="@Request.Url.AbsoluteUri" property="og:url" />
-	<meta content="@ViewBag.ImageUrl" property="og:image" />
-	<meta content="website" property="og:type" />
-	<meta content="ru_RU" property="og:locale" />
-	@RenderSection("Meta", required:=False)
-	<link href="~/favicon.png" rel="icon" type="image/png" />
-	@RenderSection("Links", required:=False)
+	<title>@ViewBag.Title</title>
+	<meta property="og:url" content="@Request.Url.AbsoluteUri" />
+	<meta property="og:title" name="title" content="@ViewBag.Title" itemprop="name" />
+	<meta property="og:image" content="@ViewBag.ImageUrl" itemprop="image" />
+	<meta property="og:description" name="description" content="@ViewBag.Description" itemprop="description" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="ru_RU" />
+	<meta name="keywords" content="@ViewBag.Keywords" />
+	@If String.IsNullOrEmpty(ViewBag.Canonical) Then
+		@<link href="@Request.Url.AbsoluteUri" rel="canonical" />
+	Else
+		@<link href="@ViewBag.Canonical" rel="canonical" />
+	End If
+	<link href="~/favicon.ico" rel="icon" type="image/x-icon" />
 	@Styles.Render("~/Content/css")
-	@RenderSection("Styles", required:=False)
+	@RenderSection("Head", required:=False)
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
 			<div class="container">
-				@Html.HomeLink("Azox", New With {.class = "navbar-brand"})
-
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Меню">
+				<a class="navbar-brand" href="~/">Azox</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
+
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					@Html.Nav(New NavOptions With {.CssClass = "navbar-nav ml-auto"})
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Dropdown
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Something else here</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="~/about">О компании</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="~/contacts">Контакты</a>
+						</li>
+					</ul>
+					<form class="form-inline my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
 				</div>
 			</div>
 		</nav>
-
-		@RenderSection("Hero", required:=False)
 	</header>
 
 	<main>
 		@RenderBody()
 	</main>
 
-	<footer class="page-footer">
+	<footer>
+		<hr />
 		<div class="container">
-			<div>&copy; Софт Бизнес, @DateTime.Now.Year</div>
+			&copy; @Now.Year, Софт Бизнес
 		</div>
 	</footer>
 
@@ -50,7 +74,7 @@
 		<div class="fa fa-arrow-up" aria-label="Наверх"></div>
 	</a>
 
-	@Html.Action("bar", "dashboard", New With {.area = "admin", .editUrl = ViewBag.EditUrl})
+	@*@Html.Action("bar", "dashboard", New With {.area = "admin", .editUrl = ViewBag.EditUrl})*@
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
@@ -58,4 +82,4 @@
 	@RenderSection("Scripts", required:=False)
 </body>
 </html>
-<!-- Дизайн и разработка Софт Бизнес https://soft.business -->
+<!-- Софт Бизнес https://soft.business -->

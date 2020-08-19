@@ -2,6 +2,7 @@
 	Public Class HomeController
 		Inherits Controller
 
+		<HttpGet>
 		Public Function Index() As ActionResult
 			Return View()
 		End Function

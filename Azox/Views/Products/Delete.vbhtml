@@ -1,7 +1,6 @@
 ﻿@ModelType Product
 @Code
-	ViewBag.Title = "Удаление продукта"
-	Layout = "~/Views/Shared/_Dashboard.vbhtml"
+    ViewBag.Title = "Удаление продукта"
 End Code
 
 <header>

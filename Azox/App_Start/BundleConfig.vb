@@ -14,8 +14,7 @@ Public Module BundleConfig
 					"~/Scripts/jquery.unobtrusive-ajax.js"))
 
 		bundles.Add(New ScriptBundle("~/bundles/bootstrap").Include(
-					"~/Scripts/popper.js",
-					"~/Scripts/bootstrap.js"))
+					"~/Scripts/bootstrap.bundle.js"))
 
 		bundles.Add(New ScriptBundle("~/bundles/scripts").Include(
 					"~/Scripts/site.js"))
@@ -23,6 +22,8 @@ Public Module BundleConfig
 		bundles.Add(New ScriptBundle("~/bundles/dashboard").Include(
 					"~/Scripts/bootstrap-datepicker.js",
 					"~/Scripts/bootstrap-datepicker.ru.js",
+					"~/Scripts/inputmask/jquery.inputmask.js",
+					"~/Scripts/inputmask/bindings/inputmask.binding.js",
 					"~/Scripts/dashboard.js"))
 
 		bundles.Add(New StyleBundle("~/Content/css").Include(
@@ -40,6 +41,7 @@ Public Module BundleConfig
 					"~/Content/dashboard.css"))
 
 		bundles.Add(New StyleBundle("~/Content/dashboard/bar").Include(
+					"~/Content/font-awesome.css",
 					"~/Content/dashboard-bar.css"))
 
 		bundles.Add(New StyleBundle("~/Content/account").Include(

@@ -12,7 +12,31 @@ Namespace Areas.Admin.Controllers
 		Private ReadOnly db As New ApplicationDbContext
 
 		Public Async Function Index(filter As ProductFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = db.Products.AsQueryable
+			Dim entities = db.Products.Include(Function(x) x.Category)
+
+			' Поиск.
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Sku.Contains(s) Or x.Vendor.Trim.ToLower.Replace("ё", "е").Contains(s))
+			End If
+
+			' Производитель.
+			If Not String.IsNullOrEmpty(filter.Vendor) Then
+				entities = entities.Where(Function(x) x.Vendor = filter.Vendor)
+			End If
+
+			' Категория.
+			If Not IsNothing(filter.CategoryId) Then
+				entities = entities.Where(Function(x) x.CategoryId = filter.CategoryId)
+			End If
+
+			' Склад.
+			If Not IsNothing(filter.WarehouseId) Then
+				entities = entities.Where(Function(x) x.WarehouseId = filter.WarehouseId)
+			End If
+
+			' Сортировка.
+			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
 
 			' Фильтр.
 			Dim parameters = Await entities.Select(Function(x) New With {x.Category, x.Brand, x.Warehouse}).ToListAsync
@@ -22,14 +46,11 @@ Namespace Areas.Admin.Controllers
 			ViewBag.Filter = filter
 
 			' Количество и пагинация.
-			ViewBag.TotalCount = Await ApplyFilter(entities, filter).Select(Function(x) x.Id).CountAsync
+			ViewBag.TotalCount = Await entities.CountAsync
 			ViewBag.PageIndex = pageIndex
 			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.TotalCount / pageSize))
 
-			' Модель.
-			Dim model = (Await ApplyFilter(entities, filter).Select(Function(x) New With {x.Id, x.Name, x.Sku, x.Price, x.OldPrice, x.Category, x.Brand, x.Warehouse, x.IsPublished}).Skip(pageIndex * pageSize).Take(pageSize).ToListAsync).Select(Function(x) New ProductAdminViewModel With {.Id = x.Id, .Name = x.Name, .Sku = x.Sku, .Price = x.Price, .OldPrice = x.OldPrice, .CategoryName = If(IsNothing(x.Category), "", x.Category.Name), .BrandName = If(IsNothing(x.Brand), "", x.Brand.Name), .WarehouseName = If(IsNothing(x.Warehouse), "", x.Warehouse.Name), .IsPublished = x.IsPublished})
-
-			Return View(model)
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
 		End Function
 
 		Public Async Function Create(categoryId As Guid?, brandId As Guid?, warehouseId As Guid?) As Task(Of ActionResult)
@@ -131,9 +152,9 @@ Namespace Areas.Admin.Controllers
 		Private Function ApplyFilter(Of T As Product)(products As IQueryable(Of T), filter As ProductFilterViewModel) As IOrderedQueryable(Of T)
 
 			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchString) Then
-				Dim searchString = filter.SearchString.Trim.ToLower.Replace("ё", "е")
-				products = products.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Sku.Contains(searchString))
+			If Not String.IsNullOrEmpty(filter.SearchText) Then
+				Dim searchString = filter.SearchText.Trim.ToLower.Replace("ё", "е")
+				products = products.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(searchString) Or x.Sku.Contains(searchString))
 			End If
 
 			' Категория.

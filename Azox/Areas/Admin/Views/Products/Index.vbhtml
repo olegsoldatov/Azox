@@ -1,6 +1,6 @@
-﻿@ModelType IEnumerable(Of ProductAdminViewModel)
+﻿@ModelType IEnumerable(Of Product)
 @Code
-	ViewBag.Title = "Управление продуктами"
+	ViewBag.Title = "Управление товарами"
 End Code
 
 @Section Toolbar
@@ -14,13 +14,14 @@ End Code
 			<span>Действия</span>
 		</button>
 		<div class="dropdown-menu">
-			<a href="#" class="dropdown-item" onclick="deleteCheckedItems('Вы действительно хотите удалить выбранные продукты?', '@Url.Action("DeleteChecked")', $('#contentForm [type=checkbox]:checked')); return false;">Удалить</a>
+			<a href="#" class="dropdown-item" data-toggle="modal" data-target="#changeModal">Изменить</a>
+			<a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Удалить</a>
 		</div>
 	</div>
 End Section
 
 <header>
-	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("продукт", "продукта", "продуктов")</sup></h1>
+	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("товар", "товара", "товаров")</sup></h1>
 	@Html.Partial("_Alert")
 	@Html.Partial("_Filter", ViewBag.Filter)
 	@Html.Pagination(New With {.class = "pagination"})
@@ -28,29 +29,36 @@ End Section
 
 <article>
 	@If Model.Any Then
-		@<form id="contentForm">
+		@<form id="contentForm" method="post">
+			@Html.AntiForgeryToken
+			@Html.Hidden("ReturnUrl", Request.Url.PathAndQuery)
+			@*@Html.Partial("_Change", New ProductChangeViewModel)
+				@Html.Partial("_Delete")*@
 			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th width="40">
-							<input type="checkbox" />
+							<input type="checkbox" data-toggle="check-all" aria-controls="id" />
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.Name)
+							@Html.DisplayNameFor(Function(model) model.Title)
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.CategoryName)
+							@Html.DisplayNameFor(Function(model) model.Vendor)
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.BrandName)
+							@Html.DisplayNameFor(Function(model) model.Category)
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.WarehouseName)
+							@Html.DisplayNameFor(Function(model) model.Warehouse)
+						</th>
+						<th>
+							@Html.DisplayNameFor(Function(model) model.Availability)
 						</th>
 						<th>
 							@Html.DisplayNameFor(Function(model) model.Price)
 						</th>
-						<th width="84"></th>
+						<th width="64"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,31 +68,38 @@ End Section
 								<input type="checkbox" name="id" value="@item.Id" />
 							</td>
 							<td>
-								@Html.ActionLink(item.Name, "edit", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery}, New With {.title = item.Name})
+								@Html.ActionLink(item.Title, "edit", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery}, New With {.title = item.Title})
 								<div>
-									<small class="text-muted">@Html.DisplayFor(Function(modelItem) item.Sku)</small>
+									<small class="text-muted">@Html.DisplayFor(Function(model) item.Sku)</small>
 								</div>
+								@If Not item.IsPublished Then
+									@<div>
+										<small><b>Скрыт</b></small>
+									</div>
+								End If
 							</td>
 							<td>
-								@Html.DisplayFor(Function(modelItem) item.CategoryName)
+								@Html.DisplayFor(Function(model) item.Vendor)
 							</td>
 							<td>
-								@Html.DisplayFor(Function(modelItem) item.BrandName)
+								...
 							</td>
 							<td>
-								@Html.DisplayFor(Function(modelItem) item.WarehouseName)
+								...
 							</td>
 							<td>
-								@Html.DisplayFor(Function(modelItem) item.Price)
+								@Html.DisplayFor(Function(model) item.Availability)
+							</td>
+							<td>
+								@Html.DisplayFor(Function(model) item.Price)
 								@If item.OldPrice > Decimal.Zero AndAlso Not item.OldPrice = item.Price Then
 									@<div>
-										<small class="text-muted"><s>@Html.DisplayFor(Function(modelItem) item.OldPrice)</s></small>
+										<small class="text-muted"><s>@Html.DisplayFor(Function(model) item.OldPrice)</s></small>
 									</div>
 								End If
 							</td>
 							<td class="text-right">
-								@Html.DisplayFor(Function(model) item.IsPublished)
-								<a href="@Url.Action("details", New With {.area = "", .id = item.Id})" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
+								<a href="@Url.Action("product", "catalog", New With {.area = "", .id = item.Id})" title="Посмотреть" target="_blank"><span class="fa fa-external-link"></span></a>
 								<a href="@Url.Action("delete", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery})" title="Удалить"><span class="fa fa-trash"></span></a>
 							</td>
 						</tr>

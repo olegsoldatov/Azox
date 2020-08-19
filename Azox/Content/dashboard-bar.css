@@ -1,6 +1,4 @@
-﻿@import 'font-awesome.min.css';
-
-html {
+﻿html {
 	margin-top: 44px;
 }
 
@@ -56,3 +54,13 @@ html {
 		color: #fff;
 		text-decoration: none;
 	}
+
+.dashboard-bar__button__text {
+	display: none;
+}
+
+@media all and (min-width: 992px) {
+	.dashboard-bar__button__text {
+		display: inline;
+	}
+}

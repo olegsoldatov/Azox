@@ -23,39 +23,48 @@ End Code
 		</button>
 		<ul class="nav flex-column">
 			<li @If action.Equals("index") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
-				<a href="@Url.Action("index", "dashboard")"><span class="fa fa-tachometer"></span>Панель управления</a>
+				<a href="@Url.Action("index", "dashboard")">
+					<span class="fa fa-tachometer"></span>
+					<span>Панель управления</span>
+				</a>
 			</li>
-			<li @If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then @<text> class="active" </text> End If data-visible="tablet">
+			<li @If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then @<text> class="active" </text> End If>
 				<button aria-controls="productsMenu" aria-expanded="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>true</text>Else@<text>false</text>End if">
 					<span class="fa fa-folder-o"></span>
 					<span>Каталог</span>
 				</button>
 				<ul id="productsMenu" aria-hidden="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>false</text>Else@<text>true</text>End if">
 					<li @If controller.Equals("products") Then @<text> class="active" </text> End If>
-						<a href="@Url.Action("index", "products")">Продукты</a>
+						<a href="@Url.Action("index", "products")">Товары</a>
 					</li>
 					<li @If controller.Equals("categories") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "categories")">Категории</a>
 					</li>
+					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "warehouses")">Магазины / Склады</a>
+					</li>
 					<li @If controller.Equals("brands") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "brands")">Бренды</a>
 					</li>
-					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
-						<a href="@Url.Action("index", "warehouses")">Склады</a>
-					</li>
 				</ul>
 			</li>
-			<li @If controller.Equals("pages") Then @<text> class="active" </text> End If>
-				<a href="@Url.Action("index", "pages")"><span class="fa fa-folder-o"></span>Страницы</a>
+			<li @If controller.Equals("articles") Then @<text> class="active" </text> End If>
+				<a href="@Url.Action("index", "articles")">
+					<span class="fa fa-folder-o"></span>
+					<span>Статьи</span>
+				</a>
 			</li>
 			<li @If action.Equals("files") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
-				<a href="@Url.Action("files", "dashboard")"><span class="fa fa-folder-o"></span>Файлы</a>
+				<a href="@Url.Action("files", "dashboard")">
+					<span class="fa fa-folder-o"></span>
+					<span>Файлы</span>
+				</a>
 			</li>
 		</ul>
 	</header>
 
 	<main class="main" id="main">
-		<footer class="toolbar" id="toolbar" tabindex="-1">
+		<footer class="toolbar" id="toolbar">
 			<div>
 				@RenderSection("Toolbar", required:=False)
 			</div>
@@ -69,14 +78,14 @@ End Code
 					<span class="fa fa-user"></span>
 					<span>@User.Identity.Name</span>
 				</a>
-				@Using Html.BeginForm("logoff", "account", New With {.area = "admin"}, FormMethod.Post, New With {.id = "logoutForm"})
+				@Using Html.BeginForm("logoff", "account", New With {.area = ""}, FormMethod.Post, New With {.id = "logoutForm"})
 					@Html.AntiForgeryToken()
 					@<button class="btn" title="Выход"><span class="fa fa-sign-out"></span></button>
 				End Using
 			</div>
 		</footer>
 
-		<section class="content" id="content" tabindex="-1">
+		<section class="content" id="content">
 			@RenderBody()
 		</section>
 	</main>

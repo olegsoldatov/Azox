@@ -15,4 +15,4 @@
 	@RenderSection("scripts", required:=False)
 </body>
 </html>
-<!-- Дизайн и разработка Софт Бизнес http://soft.business -->
+<!-- Дизайн и разработка Софт Бизнес https://soft.business -->
