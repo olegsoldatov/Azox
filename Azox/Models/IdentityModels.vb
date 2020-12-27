@@ -24,8 +24,4 @@ Public Class ApplicationDbContext
 	Public Shared Function Create() As ApplicationDbContext
 		Return New ApplicationDbContext()
 	End Function
-
-	Public Function ToSlug(source As String) As String
-		'a
-	End Function
 End Class

@@ -8,6 +8,7 @@ Public Class MvcApplication
         FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters)
         RouteConfig.RegisterRoutes(RouteTable.Routes)
 		BundleConfig.RegisterBundles(BundleTable.Bundles)
+		CatalogManager.Load()
 		ModelBinders.Binders.Add(GetType(Decimal), New DecimalModelBinder())
 		ModelBinders.Binders.Add(GetType(Decimal?), New DecimalModelBinder())
 	End Sub

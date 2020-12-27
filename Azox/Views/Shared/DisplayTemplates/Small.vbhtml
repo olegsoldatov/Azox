@@ -1,6 +1,11 @@
 ﻿@ModelType Guid?
-@If IsNothing(Model) Then
-	@<img src="http://placehold.it/320x180" alt="@ViewData("htmlAttributes").Alt" class="@ViewData("htmlAttributes").Class" itemprop="image" />
-Else
-	@<img src="@Url.Action("Small", "Images", New With {.id = Model})" alt="@ViewData("htmlAttributes").Alt" class="@ViewData("htmlAttributes").Class" itemprop="image" />
-End If
+@Code
+	If Model IsNot Nothing Then
+		Dim img As New TagBuilder("img")
+		img.Attributes.Add("src", Url.Action("small", "images", New With {.area = "", .id = Model}))
+		img.MergeAttributes(New RouteValueDictionary(ViewData("htmlAttributes")), True)
+		@Html.Raw(img.ToString(TagRenderMode.SelfClosing))
+	End If
+End Code
+
+

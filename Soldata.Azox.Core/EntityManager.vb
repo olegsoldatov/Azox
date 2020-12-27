@@ -1,11 +1,13 @@
 ﻿Imports System.Data.Entity
 
 ''' <summary>
-''' Абстрактный API для управления сущностями в базе данных через EntityFramework.
+''' Диспетчер сущностей.
 ''' </summary>
 ''' <typeparam name="TEntity">Тип сущности.</typeparam>
-Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
+Public Class EntityManager(Of TEntity As {Class, IEntity})
 	Implements IDisposable
+
+	Private disposedValue As Boolean
 
 	''' <summary>
 	''' Возвращает контекст данных.
@@ -13,7 +15,7 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	''' <value>
 	''' Контекст данных.
 	''' </value>
-	Public ReadOnly Property Context As DbContext
+	Protected ReadOnly Property Context As DbContext
 
 	''' <summary>
 	''' Инициализирует новый экземпляр класса <see cref="EntityManager(Of TEntity)"/>.
@@ -24,30 +26,35 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	End Sub
 
 	''' <summary>
-	''' Возвращает перечисление сущностей с возможностью расчета запросов к источнику данных.
+	''' Асинхронно находит сущность по уникальному идентификатору.
 	''' </summary>
-	''' <returns></returns>
-	Public Overridable ReadOnly Property Entities As IQueryable(Of TEntity)
-		Get
-			Return _Context.Set(Of TEntity)
-		End Get
-	End Property
+	''' <param name="id">Уникальный идентификатор.</param>
+	Public Overridable Async Function FindByIdAsync(id As Guid?) As Task(Of TEntity)
+		Return Await Context.Set(Of TEntity).FindAsync(id)
+	End Function
 
 	''' <summary>
 	''' Находит сущность по уникальному идентификатору.
 	''' </summary>
 	''' <param name="id">Уникальный идентификатор.</param>
 	''' <returns>Экземпляр класса сущности.</returns>
-	Public Overridable Function FindById(id As Guid) As TEntity
-		Return Context.Set(Of TEntity).Find(id)
+	Public Overridable Function FindById(id As Guid?) As TEntity
+		Return Task.Run(Function() FindById(id)).Result
 	End Function
 
 	''' <summary>
-	''' Находит сущность по уникальному идентификатору.
+	''' Асинхронно добавляет экземпляр сущности в источник данных.
 	''' </summary>
-	''' <param name="id">Уникальный идентификатор.</param>
-	Public Overridable Async Function FindByIdAsync(id As Guid) As Task(Of TEntity)
-		Return Await Context.Set(Of TEntity).FindAsync(id)
+	''' <param name="entity">Экземпляр сущности, добавляемый в источник данных.</param>
+	''' <exception cref="ArgumentNullException"></exception>
+	Public Overridable Async Function CreateAsync(entity As TEntity) As Task(Of TEntity)
+		If IsNothing(entity) Then
+			Throw New ArgumentNullException(NameOf(entity))
+		End If
+		entity.Id = Guid.NewGuid()
+		Context.Set(Of TEntity).Add(entity)
+		Await Context.SaveChangesAsync()
+		Return entity
 	End Function
 
 	''' <summary>
@@ -55,27 +62,25 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	''' </summary>
 	''' <param name="entity">Экземпляр сущности, добавляемый в источник данных.</param>
 	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Function Create(entity As TEntity) As ManagerResult
+	Public Overridable Function Create(entity As TEntity) As TEntity
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-		Context.Set(Of TEntity).Add(entity)
-		Context.SaveChanges()
-		Return ManagerResult.Success
+		Return Task.Run(Function() CreateAsync(entity)).Result
 	End Function
 
 	''' <summary>
-	''' Добавляет экземпляр сущности в источник данных.
+	''' Асинхронно обновляет сущность в источнике данных.
 	''' </summary>
-	''' <param name="entity">Экземпляр сущности, добавляемый в источник данных.</param>
+	''' <param name="entity">Экземпляр сущности, обновляемый в источнике данных.</param>
 	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Async Function CreateAsync(entity As TEntity) As Task(Of ManagerResult)
+	Public Overridable Async Function UpdateAsync(entity As TEntity) As Task(Of TEntity)
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-		Context.Set(Of TEntity).Add(entity)
+		Context.Entry(entity).State = EntityState.Modified
 		Await Context.SaveChangesAsync()
-		Return ManagerResult.Success
+		Return entity
 	End Function
 
 	''' <summary>
@@ -83,27 +88,21 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	''' </summary>
 	''' <param name="entity">Экземпляр сущности, обновляемый в источнике данных.</param>
 	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Function Update(entity As TEntity) As ManagerResult
-		If IsNothing(entity) Then
-			Throw New ArgumentNullException(NameOf(entity))
-		End If
-		Context.Entry(entity).State = EntityState.Modified
-		Context.SaveChanges()
-		Return ManagerResult.Success
+	Public Overridable Function Update(entity As TEntity) As TEntity
+		Return Task.Run(Function() UpdateAsync(entity)).Result
 	End Function
 
 	''' <summary>
-	''' Обновляет сущность в источнике данных.
+	''' Асинхронно удаляет экземпляр сущности из источника данных.
 	''' </summary>
-	''' <param name="entity">Экземпляр сущности, обновляемый в источнике данных.</param>
+	''' <param name="entity">Экземпляр сущности, удаляемый из источника данных.</param>
 	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Async Function UpdateAsync(entity As TEntity) As Task(Of ManagerResult)
+	Public Overridable Async Function DeleteAsync(entity As TEntity) As Task
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-		Context.Entry(entity).State = EntityState.Modified
+		Context.Set(Of TEntity).Remove(entity)
 		Await Context.SaveChangesAsync()
-		Return ManagerResult.Success
 	End Function
 
 	''' <summary>
@@ -111,31 +110,14 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	''' </summary>
 	''' <param name="entity">Экземпляр сущности, удаляемый из источника данных.</param>
 	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Function Delete(entity As TEntity) As ManagerResult
+	Public Overridable Sub Delete(entity As TEntity)
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
-		Context.Set(Of TEntity).Remove(entity)
-		Context.SaveChanges()
-		Return ManagerResult.Success
-	End Function
-
-	''' <summary>
-	''' Удаляет экземпляр сущности из источника данных.
-	''' </summary>
-	''' <param name="entity">Экземпляр сущности, удаляемый из источника данных.</param>
-	''' <exception cref="ArgumentNullException"></exception>
-	Public Overridable Async Function DeleteAsync(entity As TEntity) As Task(Of ManagerResult)
-		If IsNothing(entity) Then
-			Throw New ArgumentNullException(NameOf(entity))
-		End If
-		Context.Set(Of TEntity).Remove(entity)
-		Await Context.SaveChangesAsync()
-		Return ManagerResult.Success
-	End Function
+		Task.Run(Function() DeleteAsync(entity))
+	End Sub
 
 #Region "IDisposable Support"
-	Private disposedValue As Boolean
 
 	Protected Overridable Sub Dispose(disposing As Boolean)
 		If Not disposedValue Then

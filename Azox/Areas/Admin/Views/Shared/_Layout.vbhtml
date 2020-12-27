@@ -40,11 +40,11 @@ End Code
 					<li @If controller.Equals("categories") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "categories")">Категории</a>
 					</li>
-					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
-						<a href="@Url.Action("index", "warehouses")">Магазины / Склады</a>
-					</li>
 					<li @If controller.Equals("brands") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "brands")">Бренды</a>
+					</li>
+					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "warehouses")">Магазины / Склады</a>
 					</li>
 				</ul>
 			</li>
@@ -86,6 +86,50 @@ End Code
 		</footer>
 
 		<section class="content" id="content">
+			<div style="position: absolute; right: 24px; z-index: 100;">
+				<div class="toast fade hide bg-success" id="toast-message" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+					<div class="toast-header">
+						<span class="fa fa-info-circle text-success mr-2"></span>
+						<strong class="text-success mr-auto">Сообщение</strong>
+						<small class="ml-5">@Now.ToShortTimeString</small>
+						<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Закрыть">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="toast-body text-white">
+						@TempData("Message")
+					</div>
+				</div>
+
+				<div class="toast fade hide bg-warning" id="toast-warning" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+					<div class="toast-header">
+						<span class="fa fa-info-circle text-warning mr-2"></span>
+						<strong class="text-warning mr-auto">Предупреждение</strong>
+						<small class="ml-5">@Now.ToShortTimeString</small>
+						<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Закрыть">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="toast-body text-white">
+						@TempData("Warning")
+					</div>
+				</div>
+
+				<div class="toast fade hide bg-danger" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+					<div class="toast-header">
+						<span class="fa fa-info-circle text-danger mr-2"></span>
+						<strong class="text-danger mr-auto">Ошибка</strong>
+						<small class="ml-5">@Now.ToShortTimeString</small>
+						<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Закрыть">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="toast-body text-white">
+						@TempData("Error")
+					</div>
+				</div>
+			</div>
+
 			@RenderBody()
 		</section>
 	</main>
@@ -99,6 +143,19 @@ End Code
 	@Scripts.Render("~/bundles/bootstrap")
 	@Scripts.Render("~/bundles/dashboard")
 	@RenderSection("Scripts", required:=False)
+	@If Not IsNothing(TempData("Message")) Then
+		@<script>
+			 $("#toast-message").toast("show");
+		</script>
+	ElseIf Not IsNothing(TempData("Warning")) Then
+		@<script>
+			 $("#toast-warning").toast("show");
+		</script>
+	ElseIf Not IsNothing(TempData("Error")) Then
+		@<script>
+			 $("#toast-error").toast("show");
+		</script>
+	End If
 </body>
 </html>
 <!-- Софт Бизнес https://soft.business -->

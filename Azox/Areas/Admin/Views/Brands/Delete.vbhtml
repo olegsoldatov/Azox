@@ -1,7 +1,6 @@
 ﻿@ModelType Brand
 @Code
 	ViewBag.Title = "Удаление бренда"
-	Layout = "~/Views/Shared/_Dashboard.vbhtml"
 End Code
 
 <header>
@@ -9,10 +8,9 @@ End Code
 </header>
 
 <article>
-	<p class="lead">Вы уверены, что хотите удалить бренд &laquo;@Model.Name&raquo;?</p>
-	@Using Html.BeginForm
+	<p class="lead">Вы уверены, что хотите удалить бренд &laquo;@Model.Title&raquo;?</p>
+	@Using Html.BeginForm(New With {.returnUrl = If(Request.QueryString("ReturnUrl"), Request.UrlReferrer.PathAndQuery)})
 		@Html.AntiForgeryToken
-		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))
 		@<div class="form-actions no-color">
 			<button class="btn btn-danger">Удалить</button>
 		</div>

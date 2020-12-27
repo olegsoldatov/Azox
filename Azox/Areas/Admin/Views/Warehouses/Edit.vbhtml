@@ -12,11 +12,10 @@ End Section
 
 <header>
 	<h1 class="heading">@ViewBag.Title</h1>
+	@Html.Partial("_Alert")
 </header>
 
 <article>
-	@Html.Partial("_Alert")
-
 	@Using Html.BeginForm("edit", Nothing, FormMethod.Post, New With {.enctype = "multipart/form-data", .id = "model-form"})
 		@Html.AntiForgeryToken
 		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))

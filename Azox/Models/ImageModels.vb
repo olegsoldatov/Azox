@@ -28,18 +28,6 @@ Partial Public Class ApplicationDbContext
 	Public Property Images As DbSet(Of Image)
 End Class
 
-Public Class ImageManager
-	Inherits EntityManager(Of Image)
-
-	Public Sub New()
-		MyClass.New(New ApplicationDbContext)
-	End Sub
-
-	Public Sub New(context As DbContext)
-		MyBase.New(context)
-	End Sub
-End Class
-
 Public Class ChangeImageViewModel
 	<HiddenInput(DisplayValue:=False)>
 	Public Property Id As Guid

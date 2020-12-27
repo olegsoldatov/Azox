@@ -3,54 +3,104 @@ Imports System.Threading.Tasks
 Imports System.Net
 Imports System.Web.Configuration
 Imports Soldata.Imaging
+Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class CategoriesController
 		Inherits Controller
 
-		Private ReadOnly db As New ApplicationDbContext
+		Private ReadOnly manager As New CatalogManager
 
-		Public Async Function Index(filter As CategoryFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = db.Categories.AsQueryable
+		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
+			Dim entities = manager.Categories.AsNoTracking
 
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
-				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				entities = entities.Where(Function(x) x.Name.Trim.ToLower.Replace("ё", "е").Contains(s)) ' Or x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Heading.Trim.ToLower.Replace("ё", "е").Contains(s))
+				Dim s = filter.SearchText.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s) Or x.Name.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
-			' Сортировка.
-			entities = entities.OrderBy(Function(x) x.Name) '.ThenBy(Function(x) x.Title).ThenBy(Function(x) x.Heading).ThenBy(Function(x) x.Order)
-
 			' Количество и пагинация.
-			ViewBag.EntityCount = Await entities.CountAsync
+			Dim count = Await entities.CountAsync
+			ViewBag.Count = count
 			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.EntityCount / pageSize))
+			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
+
+			' Сортировка.
+			entities = entities.OrderBy(Function(x) x.Parent.Title).ThenBy(Function(x) x.Title)
 
 			' Фильтр.
 			ViewBag.Filter = filter
 
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
+			Return View((Await entities _
+				.Select(Function(x) New With {
+					x.Id,
+					x.Name,
+					x.Title,
+					x.Path,
+					x.Products.Count,
+					x.Order,
+					x.Draft}) _
+				.Skip(pageIndex * pageSize) _
+				.Take(pageSize) _
+				.ToListAsync) _
+				.Select(Function(x) New CategoryAdminItem With {
+					.Id = x.Id,
+					.Title = If(manager.GetCategoryPath(x.Path), x.Title),
+					.Name = x.Name,
+					.Products = x.Count,
+					.Order = x.Order,
+					.Draft = x.Draft}))
+		End Function
+
+		<HttpPost>
+		<ValidateAntiForgeryToken>
+		Public Async Function Index(id As Guid(), returnUrl As String, Optional delete As Boolean = False) As Task(Of ActionResult)
+			If Not IsNothing(id) AndAlso id.Any Then
+				If delete Then
+					Await manager.Context.Categories.Where(Function(x) id.Contains(x.Id)).ForEachAsync(Sub(x As Category) If manager.Context.Images.Find(x.ImageId) IsNot Nothing Then manager.Context.Images.Remove(manager.Context.Images.Find(x.ImageId)))
+
+					For Each category In Await manager.Context.Categories.Where(Function(x) id.Contains(x.Id)).ToListAsync
+						Dim entityPath = category.Id.ToString & "/"
+						Await manager.Context.Categories.Where(Function(x) x.Path.Contains(entityPath)).ForEachAsync(Sub(c As Category) c.Path = c.Path.Replace(entityPath, ""))
+						Await manager.Context.Categories.Where(Function(x) x.ParentId = category.Id).ForEachAsync(Sub(c As Category) c.ParentId = category.ParentId)
+						Await manager.Context.Products.Where(Function(x) x.CategoryId = category.Id).ForEachAsync(Sub(p As Product) p.CategoryId = category.ParentId)
+						category.ParentId = Nothing
+					Next
+
+					Await manager.Context.Categories.Where(Function(x) id.Contains(x.Id)).ForEachAsync(Sub(x As Category) manager.Context.Entry(x).State = EntityState.Deleted)
+					Await manager.Context.SaveChangesAsync
+					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("категория", "категории", "категорий"))
+				End If
+			End If
+
+			Return Redirect(returnUrl)
 		End Function
 
 		Public Async Function Create() As Task(Of ActionResult)
-			ViewBag.ParentId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name")
+			ViewBag.ParentId = New SelectList((Await manager.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name")
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View()
 		End Function
 
 		<HttpPost, ValidateAntiForgeryToken>
-		Public Async Function Create(model As Category, returnUrl As String) As Task(Of ActionResult)
-			If ModelState.IsValid Then
-				model.Slug = ValidateSlug(model.Id, If(model.Slug, model.Name.ToSlug(True)))
-				db.Categories.Add(model)
-				Await AddImageAsync(model, model.ImageFile)
-				Await db.SaveChangesAsync
-				TempData("Message") = "Категория добавлена."
-				Return RedirectToLocal(returnUrl)
+		Public Async Function Create(model As Category) As Task(Of ActionResult)
+			If Await manager.CategoryNameExistsAsync(model.Name) Then
+				ModelState.AddModelError("Name", "Такое имя уже существует.")
 			End If
-			ViewBag.ParentId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
+			If ModelState.IsValid Then
+				'model.Id = Guid.NewGuid
+				'model.Name = ValidateSlug(model.Id, If(model.Name, model.Name.ToSlug(True)))
+				'model.Path = ""
+				'CatalogManager.Context.Categories.Add(model)
+				'Await AddImageAsync(model, model.ImageFile)
+				'Await CatalogManager.Context.SaveChangesAsync
+				Await manager.AddCategoryAsync(model)
+				TempData("Message") = "Категория добавлена."
+				Return RedirectToAction("index")
+			End If
+			ViewBag.ParentId = New SelectList((Await manager.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function
@@ -59,26 +109,28 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await db.Categories.FindAsync(id)
+			Dim model = Await manager.FindCategoryByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
-			ViewBag.ParentId = New SelectList((Await db.Categories.Where(Function(c) Not c.Id = model.Id).ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
+			ViewBag.ParentId = New SelectList((Await manager.Categories.Where(Function(c) Not c.Id = model.Id).ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function
 
 		<HttpPost, ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Category, returnUrl As String) As Task(Of ActionResult)
-			If ModelState.IsValid Then
-				model.Slug = ValidateSlug(model.Id, If(model.Slug, model.Name.ToSlug(True)))
-				db.Entry(model).State = EntityState.Modified
-				Await AddImageAsync(model, model.ImageFile)
-				Await db.SaveChangesAsync
-				TempData("Message") = "Категория изменена."
-				Return RedirectToLocal(returnUrl)
+			If Await manager.CategoryNameExistsAsync(model.Name, model.Id) Then
+				ModelState.AddModelError("Name", "Такое имя уже существует.")
 			End If
-			ViewBag.ParentId = New SelectList((Await db.Categories.Where(Function(c) Not c.Id = model.Id).ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
+			If ModelState.IsValid Then
+				manager.Context.Entry(model).State = EntityState.Modified
+				Await AddImageAsync(model, model.ImageFile)
+				Await manager.Context.SaveChangesAsync
+				TempData("Message") = "Категория изменена."
+				Return Redirect(returnUrl)
+			End If
+			ViewBag.ParentId = New SelectList((Await manager.Categories.Where(Function(c) Not c.Id = model.Id).ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.ParentId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function
@@ -87,16 +139,17 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await db.Categories.FindAsync(id)
+			Dim model = Await manager.FindCategoryByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
 			Return View(model)
 		End Function
 
-		<HttpPost, ActionName("Delete"), ValidateAntiForgeryToken>
-		Public Async Function DeleteConfirmed(id As Guid, returnUrl As String) As Task(Of ActionResult)
-			Dim entity = Await db.Categories.FindAsync(id)
+		<HttpPost>
+		<ValidateAntiForgeryToken>
+		Public Async Function Delete(id As Guid, returnUrl As String) As Task(Of ActionResult)
+			Dim entity = Await manager.FindCategoryByIdAsync(id)
 			For Each item In entity.Products
 				item.CategoryId = Nothing
 			Next
@@ -105,35 +158,15 @@ Namespace Areas.Admin.Controllers
 				item.ParentId = Nothing
 			Next
 
-			Dim image = Await db.Images.FindAsync(entity.ImageId)
+			Dim image = Await manager.Context.Images.FindAsync(entity.ImageId)
 			If image IsNot Nothing Then
-				db.Images.Remove(image)
+				manager.Context.Images.Remove(image)
 			End If
 
-			db.Categories.Remove(entity)
-			Await db.SaveChangesAsync
+			manager.Context.Categories.Remove(entity)
+			Await manager.Context.SaveChangesAsync
 			TempData("Message") = "Категория удалена."
-			Return RedirectToLocal(returnUrl)
-		End Function
-
-		<HttpPost>
-		Public Async Function DeleteChecked(id As Guid()) As Task(Of ActionResult)
-			Try
-				Await db.Categories.Where(Function(x) id.Contains(x.Id)).Include(Function(x) x.Products).ForEachAsync(Sub(x As Category) x.Products.ToList.ForEach(Function(p) p.CategoryId = Nothing))
-
-				Await db.Categories.Where(Function(x) id.Contains(x.Id)).Include(Function(x) x.Childs).ForEachAsync(Sub(x As Category) x.Childs.ToList.ForEach(Function(c) c.ParentId = Nothing))
-
-				Await db.Categories.Where(Function(x) id.Contains(x.Id)).Select(Function(x) x.ImageId).ForEachAsync(Sub(x As Guid?) If db.Images.Find(x) IsNot Nothing Then db.Images.Remove(db.Images.Find(x)))
-
-				Await db.Categories.Where(Function(x) id.Contains(x.Id)).ForEachAsync(Sub(c As Category) db.Entry(c).State = EntityState.Deleted)
-				Await db.SaveChangesAsync
-
-				TempData("Message") = String.Format("Удалено категорий: {0}", id.Length)
-				Return Json(New With {.redirect = Url.Action("index")})
-			Catch ex As Exception
-				TempData("Error") = ex.Message
-				Return Json(New With {.redirect = Url.Action("index")})
-			End Try
+			Return Redirect(returnUrl)
 		End Function
 
 		''' <summary>
@@ -147,7 +180,7 @@ Namespace Areas.Admin.Controllers
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
 				Dim searchString = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				categories = categories.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Slug.ToLower.Contains(searchString))
+				categories = categories.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Name.ToLower.Contains(searchString))
 			End If
 
 			' Сортировка (по умолчанию по названию).
@@ -171,10 +204,10 @@ Namespace Areas.Admin.Controllers
 				Return 0
 			End If
 
-			Dim image = Await db.Images.FindAsync(model.ImageId)
+			Dim image = Await manager.Context.Images.FindAsync(model.ImageId)
 
 			If image Is Nothing Then
-				image = db.Images.Add(New Image With {.Id = Guid.NewGuid})
+				image = manager.Context.Images.Add(New Image With {.Id = Guid.NewGuid})
 				model.ImageId = image.Id
 			End If
 
@@ -190,24 +223,24 @@ Namespace Areas.Admin.Controllers
 			Return 1
 		End Function
 
-		Private Function RedirectToLocal(returnUrl As String) As ActionResult
-			If Url.IsLocalUrl(returnUrl) Then
-				Return Redirect(returnUrl)
-			End If
+		'Protected Friend Function ValidateSlug(entityId As Guid, slug As String, Optional suffix As Integer = 0) As String
+		'	Dim result = If(suffix = 0, slug, String.Join("-", slug, suffix))
+		'	If CatalogManager.Context.Set(Of Category).AsNoTracking.Any(Function(m) m.Name.Equals(result) And Not m.Id.Equals(entityId)) Then
+		'		Return ValidateSlug(entityId, slug, suffix + 1)
+		'	End If
+		'	Return result
+		'End Function
+
+		<HttpGet>
+		Public Function UploadCache() As ActionResult
+			CatalogManager.Load()
+			TempData("Message") = "Кэш обновлен."
 			Return RedirectToAction("index")
 		End Function
 
-		Protected Friend Function ValidateSlug(entityId As Guid, slug As String, Optional suffix As Integer = 0) As String
-			Dim result = If(suffix = 0, slug, String.Join("-", slug, suffix))
-			If db.Set(Of Category).AsNoTracking.Any(Function(m) m.Slug.Equals(result) And Not m.Id.Equals(entityId)) Then
-				Return ValidateSlug(entityId, slug, suffix + 1)
-			End If
-			Return result
-		End Function
-
-		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+		Protected Overrides Sub Dispose(disposing As Boolean)
 			If disposing Then
-				db.Dispose()
+				manager.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

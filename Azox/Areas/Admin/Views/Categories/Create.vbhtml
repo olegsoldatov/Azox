@@ -17,7 +17,6 @@ End Section
 <article>
 	@Using Html.BeginForm("create", Nothing, FormMethod.Post, New With {.enctype = "multipart/form-data", .id = "model-form"})
 		@Html.AntiForgeryToken
-		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))
 		@Html.EditorForModel
 	End Using
 </article>

@@ -14,7 +14,7 @@ End Code
 			<span>Действия</span>
 		</button>
 		<div class="dropdown-menu">
-			<a href="#" class="dropdown-item" onclick="deleteCheckedItems('Вы действительно хотите удалить выбранные склады?', '@Url.Action("DeleteChecked")', $('#contentForm [type=checkbox]:checked')); return false;">Удалить</a>
+			<a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Удалить</a>
 		</div>
 	</div>
 End Section
@@ -28,32 +28,31 @@ End Section
 
 <article>
 	@If Model.Any Then
-		@<form id="contentForm">
-			<table class="table table-hover">
+		@Using Html.BeginForm(Nothing, Nothing, New With {.returnUrl = Request.Url.PathAndQuery}, FormMethod.Post, New With {.id = "contentForm"})
+			@Html.AntiForgeryToken
+			@Html.Partial("_Delete")
+			@<table class="table table-hover">
 				<thead>
 					<tr>
 						<th width="40">
-							<input type="checkbox" />
+							<input type="checkbox" data-toggle="check-all" aria-controls="id" />
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.Name)
+							@Html.DisplayNameFor(Function(model) model.Title)
 						</th>
 						<th>
 							@Html.DisplayNameFor(Function(model) model.Company)
 						</th>
 						<th>
-							@Html.DisplayNameFor(Function(model) model.City)
-						</th>
-						<th>
-							@Html.DisplayNameFor(Function(model) model.DeliveryDays)
-						</th>
-						<th>
-							@Html.DisplayNameFor(Function(model) model.Products)
+							@Html.DisplayNameFor(Function(model) model.MarginGroup)
 						</th>
 						<th class="text-right" width="100">
-							@Html.DisplayNameFor(Function(model) model.Order)
+							@Html.DisplayNameFor(Function(model) model.Margin), %
 						</th>
-						<th width="64"></th>
+						@*<th class="text-right" width="100">
+							@Html.DisplayNameFor(Function(model) model.Offers)
+						</th>*@
+						<th width="100"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,39 +62,38 @@ End Section
 								<input type="checkbox" name="id" value="@item.Id" />
 							</td>
 							<td>
-								@Html.ActionLink(item.Name, "edit", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery}, New With {.title = "Изменить"})
+								@Html.ActionLink(item.Title, "edit", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery}, New With {.title = "Изменить"})
 								<div>
-									<small class="text-muted">@item.Slug</small>
+									<small class="text-muted">@Html.DisplayFor(Function(model) item.Name)</small>
 								</div>
+								@If Not item.IsPublished Then
+									@<div>
+										<small><strong>Черновик</strong></small>
+									</div>
+								End If
 							</td>
 							<td>
 								@Html.DisplayFor(Function(model) item.Company)
 							</td>
 							<td>
-								@Html.DisplayFor(Function(model) item.City)
-							</td>
-							<td>
-								@Html.DisplayFor(Function(model) item.DeliveryDays)
-							</td>
-							<td>
-								@If item.Products.Any Then
-									@Html.ActionLink(item.Products.Count, "index", "watches", New With {.warehouseId = item.Id}, Nothing)
-								Else
-									@<text>0</text>
+								@If item.MarginGroup IsNot Nothing Then
+									@Html.ActionLink(item.MarginGroup.Title, "index", "margingroups", New With {.searchText = item.MarginGroup.Title}, Nothing)
 								End If
 							</td>
-							<td class="text-right">
-								@item.Order
+							<td Class="text-right">
+								@Html.DisplayFor(Function(model) item.Margin)
 							</td>
+							@*<td class="text-right">
+								@Html.DisplayFor(Function(model) item.Offers.Count)
+							</td>*@
 							<td class="text-right">
-								@Html.DisplayFor(Function(model) item.IsPublished)
-								<a href="@Url.Action("delete", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery})" title="Удалить"><span class="fa fa-trash"></span></a>
+								<a href="@Url.Action("delete", New With {.id = item.Id, .returnUrl = Request.Url.PathAndQuery})" title="Удалить"><span class="fa fa-remove"></span></a>
 							</td>
 						</tr>
 					Next
 				</tbody>
 			</table>
-		</form>
+		End Using
 	Else
 		@<p class="lead text-center">Список пуст.</p>
 	End If

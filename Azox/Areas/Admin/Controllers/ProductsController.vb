@@ -12,7 +12,7 @@ Namespace Areas.Admin.Controllers
 		Private ReadOnly db As New ApplicationDbContext
 
 		Public Async Function Index(filter As ProductFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = db.Products.Include(Function(x) x.Category)
+			Dim entities = db.Products.AsNoTracking
 
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
@@ -35,28 +35,54 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.WarehouseId = filter.WarehouseId)
 			End If
 
-			' Сортировка.
-			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
-
 			' Фильтр.
-			Dim parameters = Await entities.Select(Function(x) New With {x.Category, x.Brand, x.Warehouse}).ToListAsync
-			ViewBag.CategoryId = New SelectList(parameters.Select(Function(x) x.Category).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).Select(Function(x) New With {x.Key.Id, .Name = x.Key.GetPath}).OrderBy(Function(x) x.Name), "Id", "Name")
+			Dim parameters = Await entities.Select(Function(x) New With {x.Brand, x.Category, x.Warehouse}).ToListAsync
 			ViewBag.BrandId = New SelectList(parameters.Select(Function(x) x.Brand).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).OrderBy(Function(x) x.Key.Name).Select(Function(x) New With {x.Key.Id, x.Key.Name}), "Id", "Name")
-			ViewBag.WarehouseId = New SelectList(parameters.Select(Function(x) x.Warehouse).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).OrderBy(Function(x) x.Key.Name).Select(Function(x) New With {x.Key.Id, x.Key.Name}), "Id", "Name")
+			ViewBag.CategoryId = New SelectList(parameters.Select(Function(x) x.Category).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).Select(Function(x) New With {x.Key.Id, .Name = x.Key.GetPath}).OrderBy(Function(x) x.Name), "Id", "Name")
+			ViewBag.WarehouseId = New SelectList(parameters.Select(Function(x) x.Warehouse).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).OrderBy(Function(x) x.Key.Title).Select(Function(x) New With {x.Key.Id, x.Key.Title}), "Id", "Title")
 			ViewBag.Filter = filter
 
 			' Количество и пагинация.
-			ViewBag.TotalCount = Await entities.CountAsync
+			Dim count = Await entities.CountAsync
+			ViewBag.TotalCount = count
 			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(ViewBag.TotalCount / pageSize))
+			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
 
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
+			' Сортировка.
+			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
+
+			Return View((Await entities _
+				.Select(Function(x) New With {
+					x.Id,
+					x.Sku,
+					x.Title,
+					.BrandName = x.Vendor,
+					.BrandTitle = x.Brand.Title,
+					x.BrandId,
+					.CategoryName = "",
+					.CategoryTitle = x.Category.Title,
+					x.CategoryId,
+					.Offers = x.Offers.Count,
+					.Draft = Not x.IsPublished}) _
+				.Skip(pageIndex * pageSize) _
+				.Take(pageSize) _
+				.ToListAsync) _
+				.Select(Function(x) New ProductAdminItem With {
+					.Id = x.Id,
+					.Sku = x.Sku,
+					.Title = x.Title,
+					.Brand = If(x.BrandTitle, x.BrandName),
+					.BrandId = x.BrandId,
+					.Category = If(x.CategoryTitle, x.CategoryName),
+					.CategoryId = x.CategoryId,
+					.Offers = x.Offers,
+					.Draft = x.Draft}))
 		End Function
 
 		Public Async Function Create(categoryId As Guid?, brandId As Guid?, warehouseId As Guid?) As Task(Of ActionResult)
 			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", categoryId)
 			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", brandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", warehouseId)
+			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", warehouseId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View()
 		End Function
@@ -74,7 +100,7 @@ Namespace Areas.Admin.Controllers
 			End If
 			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
 			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.WarehouseId)
+			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function
@@ -89,7 +115,7 @@ Namespace Areas.Admin.Controllers
 			End If
 			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
 			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.WarehouseId)
+			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function
@@ -105,7 +131,7 @@ Namespace Areas.Admin.Controllers
 			End If
 			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
 			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.WarehouseId)
+			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
 			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
 			Return View(model)
 		End Function

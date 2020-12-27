@@ -1,5 +1,5 @@
 ﻿/*!
- * Dashboard v1.6.0.0
+ * Dashboard v1.7.0.0
  * Copyright 2020 Soldata
  */
 
@@ -64,6 +64,14 @@ $('input[data-role="datepicker"]').datepicker({
 	language: "ru",
 	autoclose: true,
 	todayHighlight: true
+});
+
+// Filter form submit.
+$("#filterForm").submit(function () {
+	$(this).find(":input").filter(function () {
+		return !this.value;
+	}).attr("disabled", true);
+	return true;
 });
 
 // Currency.

@@ -5,13 +5,13 @@
 		<version>$version$</version>
 		<title>$title$</title>
 		<authors>Oleg Soldatov</authors>
-		<owners>Soft Business</owners>
+		<owners>Софт Бизнес</owners>
 		<language>ru-ru</language>
 		<projectUrl>https://github.com/olegsoldatov/Azox</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<releaseNotes></releaseNotes>
-		<copyright>Soft Business, 2018</copyright>
+		<copyright>Софт Бизнес, 2020</copyright>
 		<dependencies>
 			<dependency id="EntityFramework" version="6.2.0" />
 		</dependencies>

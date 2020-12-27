@@ -17,12 +17,12 @@ Public Class Product
 	Public Property LastUpdateDate As Date = Date.Now.Date
 
 	<Required(ErrorMessage:="Укажите название.")>
-	<StringLength(255, ErrorMessage:="Длина строки не более {1} символов.")>
+	<StringLength(128, ErrorMessage:="Длина строки не более {1} символов.")>
 	<Display(Name:="Название")>
 	Public Property Title As String
 
 	<Required(ErrorMessage:="Укажите артикул.")>
-	<StringLength(255, ErrorMessage:="Длина строки не более {1} символов.")>
+	<StringLength(128, ErrorMessage:="Длина строки не более {1} символов.")>
 	<Display(Name:="Артикул")>
 	Public Property Sku As String
 
@@ -32,9 +32,13 @@ Public Class Product
 	<AllowHtml>
 	Public Property Content As String
 
-	<StringLength(255, ErrorMessage:="Не более {1} символов.")>
+	<StringLength(128, ErrorMessage:="Не более {1} символов.")>
 	<Display(Name:="Производитель")>
 	Public Property Vendor As String
+
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Модель")>
+	Public Property ModelName As String
 
 	<Required(ErrorMessage:="Укажите цену.")>
 	<DataType(DataType.Currency)>
@@ -66,6 +70,9 @@ Public Class Product
 	<DataType(DataType.ImageUrl), Display(Name:="URL изображения")>
 	Public Property ImageUrl As String
 
+	<Display(Name:="Цены и остатки")>
+	Public Overridable Property Offers As ICollection(Of Offer)
+
 	<Display(Name:="Категория")>
 	Public Overridable Property Category As Category
 
@@ -90,7 +97,12 @@ End Class
 
 Public Class Picture
 	<Key>
-	Public Property Id As Guid = Guid.NewGuid
+	Public Property Id As Guid
+
+	<Required(ErrorMessage:="Укажите ссылу на изображение.")>
+	<DataType(DataType.ImageUrl)>
+	<Display(Name:="Ссылка на изображение")>
+	Public Property ImageUrl As String
 
 	<Required(ErrorMessage:="Укажите название."), Display(Name:="Название")>
 	Public Property Name As String
@@ -106,7 +118,6 @@ Public Class Picture
 
 	<Display(Name:="Продукт")>
 	Public Overridable Property Product As Product
-
 	<Display(Name:="Продукт")>
 	Public Overridable Property ProductId As Guid
 End Class

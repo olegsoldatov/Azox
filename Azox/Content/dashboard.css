@@ -1,5 +1,5 @@
 ﻿/*!
- * Dashboard v1.7.9.0
+ * Dashboard v1.7.12.0
  * Copyright 2020 Soldata
  */
 
@@ -10,8 +10,9 @@ html {
 body {
 	background-image: url(../Images/body.jpg);
 	background-repeat: no-repeat;
-	background-size: cover;
 	background-color: #333;
+	background-size: cover;
+	background-attachment: fixed;
 }
 
 /*#region Layout*/
@@ -332,6 +333,7 @@ a {
 		}
 
 	.content > article {
+		padding-top: 10px;
 		flex: 1 0 0;
 		overflow-y: auto;
 	}
@@ -434,9 +436,14 @@ h3, .h3 {
 	}
 
 		.table > tbody > tr > td:last-child a {
-			color: rgba(0, 0, 0, 0.6);
+			color: #0009;
 			margin-left: .25em;
+			visibility: hidden;
 		}
+
+	.table > tbody > tr:hover > td:last-child a {
+		visibility: visible;
+	}
 
 	.table.table-checkable > thead > tr > th:first-child {
 		width: 40px;
@@ -694,19 +701,28 @@ label + .checkbox {
 /*#region Form*/
 .form-control,
 .form-group-sm .form-control,
+.custom-select,
+.form-group-sm .custom-select,
 .input-group-text {
 	border-radius: 0;
 }
 
-.form-control {
+.form-control,
+.custom-select {
 	color: #000;
 	padding: .4rem .7rem;
 }
 
-	.form-control:focus {
+	.form-control:focus,
+	.custom-select:focus {
 		border-color: #009688;
 		box-shadow: none;
 	}
+
+.form-control-sm,
+.custom-select-sm {
+	padding: .25rem .5rem;
+}
 
 input[type=file] {
 	display: block;
