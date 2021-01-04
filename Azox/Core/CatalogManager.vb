@@ -6,6 +6,7 @@ Imports System.Runtime.Caching
 Public Class CatalogManager
 	Implements IDisposable
 
+	Private disposedValue As Boolean
 	Private Const cacheKey = "CatalogDocument"
 	Public ReadOnly Property Context As ApplicationDbContext
 	Public ReadOnly Property MarginService As MarginService
@@ -54,6 +55,16 @@ Public Class CatalogManager
 	Public Function GetDocument() As CatalogDocument
 		Return Task.Run(Function() GetDocumentAsync()).Result
 	End Function
+
+#Region "Products"
+
+	Public ReadOnly Property Products As IQueryable(Of Product)
+		Get
+			Return Context.Products
+		End Get
+	End Property
+
+#End Region
 
 #Region "Categories"
 
@@ -267,7 +278,7 @@ Public Class CatalogManager
 		If products Is Nothing Then
 			products = Await Context.Products _
 				.Where(Function(x) x.IsPublished) _
-				.Select(Function(x) New Catalog.Models.Product With {.Id = x.Id, .Sku = x.Sku, .Title = x.Title, .Brand = x.Vendor, .Model = x.ModelName, .CategoryId = x.CategoryId, .CreateDate = x.CreateDate, .LastUpdateDate = x.LastUpdateDate}) _
+				.Select(Function(x) New Catalog.Models.Product With {.Id = x.Id, .Sku = x.Sku, .Title = x.Title, .Brand = x.BrandName, .Model = x.ModelName, .CategoryId = x.CategoryId, .CreateDate = x.CreateDate, .LastUpdateDate = x.LastUpdateDate}) _
 				.AsNoTracking _
 				.ToListAsync
 
@@ -343,7 +354,6 @@ Public Class CatalogManager
 	End Sub
 
 #Region "IDisposable Support"
-	Private disposedValue As Boolean
 
 	Protected Overridable Sub Dispose(disposing As Boolean)
 		If Not disposedValue Then

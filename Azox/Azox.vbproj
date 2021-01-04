@@ -237,7 +237,6 @@
     <Compile Include="Core\CategoryListItem.vb" />
     <Compile Include="Core\ICategory.vb" />
     <Compile Include="Core\Popular.vb" />
-    <Compile Include="Core\ProductAdminItem.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
     <Compile Include="Models\Brand.vb" />
     <Compile Include="Core\BrandListItem.vb" />
@@ -265,6 +264,7 @@
     <Compile Include="Models\MarginModels.vb" />
     <Compile Include="Models\Offer.vb" />
     <Compile Include="Models\OrderModels.vb" />
+    <Compile Include="Models\ProductViewModels.vb" />
     <Compile Include="Models\ProductModels.vb" />
     <Compile Include="Models\WarehouseModels.vb" />
     <Compile Include="Utilities\SlugUtility.vb" />
@@ -956,6 +956,7 @@
     <Content Include="Areas\Admin\Views\Products\DisplayTemplates\Category.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\DisplayTemplates\Brand.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\_Delete.vbhtml" />
+    <Content Include="Areas\Admin\Views\Products\Create.vbhtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

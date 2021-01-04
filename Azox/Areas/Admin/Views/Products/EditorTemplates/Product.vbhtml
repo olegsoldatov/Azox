@@ -2,7 +2,7 @@
 
 <ul class="nav nav-tabs mt-3">
 	<li class="nav-item">
-		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Общее</a>
+		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Товар</a>
 	</li>
 	<li class="nav-item">
 		<a class="nav-link" id="price-tab" data-toggle="tab" href="#price" role="tab" aria-controls="price" aria-selected="false">Цены и остатки</a>
@@ -18,18 +18,24 @@
 <div class="tab-content">
 	<div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-lg-9">
 				<div class="row">
-					<div class="form-group col-md-8">
-						@Html.LabelFor(Function(model) model.Name, htmlAttributes:=New With {.class = "control-label required"})
-						@Html.ValidationMessageFor(Function(model) model.Name, "", New With {.class = "text-danger"})
-						@Html.EditorFor(Function(model) model.Name, New With {.htmlAttributes = New With {.class = "form-control"}})
+					<div class="form-group col-lg-4">
+						@Html.LabelFor(Function(model) model.Title, htmlAttributes:=New With {.class = "control-label required"})
+						@Html.ValidationMessageFor(Function(model) model.Title, "", New With {.class = "text-danger"})
+						@Html.EditorFor(Function(model) model.Title, New With {.htmlAttributes = New With {.class = "form-control"}})
 					</div>
 
-					<div class="form-group col-md-4">
+					<div class="form-group col-lg-4">
 						@Html.LabelFor(Function(model) model.Sku, htmlAttributes:=New With {.class = "control-label required"})
 						@Html.ValidationMessageFor(Function(model) model.Sku, "", New With {.class = "text-danger"})
 						@Html.EditorFor(Function(model) model.Sku, New With {.htmlAttributes = New With {.class = "form-control"}})
+					</div>
+
+					<div class="form-group col-lg-4">
+						@Html.LabelFor(Function(model) model.ModelName, htmlAttributes:=New With {.class = "control-label"})
+						@Html.ValidationMessageFor(Function(model) model.ModelName, "", New With {.class = "text-danger"})
+						@Html.EditorFor(Function(model) model.ModelName, New With {.htmlAttributes = New With {.class = "form-control"}})
 					</div>
 				</div>
 
@@ -39,21 +45,16 @@
 					@Html.EditorFor(Function(model) model.Content, New With {.htmlAttributes = New With {.class = "form-control"}})
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					@Html.LabelFor(Function(model) model.CategoryId, htmlAttributes:=New With {.class = "control-label"})
-					@Html.ValidationMessageFor(Function(model) model.CategoryId, "", New With {.class = "text-danger"})
-					@Html.DropDownListFor(Function(model) model.CategoryId, Nothing, "", htmlAttributes:=New With {.class = "form-control"})
-				</div>
+			<div class="col-lg-3">
 				<div class="form-group">
 					@Html.LabelFor(Function(model) model.BrandId, htmlAttributes:=New With {.class = "control-label"})
 					@Html.ValidationMessageFor(Function(model) model.BrandId, "", New With {.class = "text-danger"})
 					@Html.DropDownListFor(Function(model) model.BrandId, Nothing, "", htmlAttributes:=New With {.class = "form-control"})
 				</div>
 				<div class="form-group">
-					@Html.LabelFor(Function(model) model.WarehouseId, htmlAttributes:=New With {.class = "control-label"})
-					@Html.ValidationMessageFor(Function(model) model.WarehouseId, "", New With {.class = "text-danger"})
-					@Html.DropDownListFor(Function(model) model.WarehouseId, Nothing, "", htmlAttributes:=New With {.class = "form-control"})
+					@Html.LabelFor(Function(model) model.CategoryId, htmlAttributes:=New With {.class = "control-label"})
+					@Html.ValidationMessageFor(Function(model) model.CategoryId, "", New With {.class = "text-danger"})
+					@Html.DropDownListFor(Function(model) model.CategoryId, Nothing, "", htmlAttributes:=New With {.class = "form-control"})
 				</div>
 				<div class="form-group">
 					@Html.LabelFor(Function(model) model.ImageFile, htmlAttributes:=New With {.class = "control-label"})
@@ -102,15 +103,6 @@
 				@Html.ValidationMessageFor(Function(model) model.ImageUrl, "", New With {.class = "text-danger"})
 				@Html.EditorFor(Function(model) model.ImageUrl, New With {.htmlAttributes = New With {.class = "form-control"}})
 			</div>
-
-			<div class="form-group col-md-9">
-				@Html.LabelFor(Function(model) model.ThumbnailUrl, htmlAttributes:=New With {.class = "control-label"})
-				@Html.ValidationMessageFor(Function(model) model.ThumbnailUrl, "", New With {.class = "text-danger"})
-				@Html.EditorFor(Function(model) model.ThumbnailUrl, New With {.htmlAttributes = New With {.class = "form-control"}})
-			</div>
 		</div>
 	</div>
-</div>
-<div class="form-group">
-	<button class="btn btn-primary">Сохранить</button>
 </div>

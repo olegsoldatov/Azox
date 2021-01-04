@@ -2,6 +2,100 @@
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity
 
+Public Class Product
+	<Key>
+	Public Property Id As Guid
+
+	<DataType(DataType.Date)>
+	<HiddenInput(DisplayValue:=False)>
+	<Display(Name:="Дата добавления")>
+	Public Property CreateDate As Date
+
+	<DataType(DataType.Date)>
+	<ScaffoldColumn(False)>
+	<Display(Name:="Дата изменения")>
+	Public Property LastUpdateDate As Date
+
+	<Required(ErrorMessage:="Укажите название.")>
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Название")>
+	Public Property Title As String
+
+	<Required(ErrorMessage:="Укажите артикул.")>
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Артикул")>
+	Public Property Sku As String
+
+	<AllowHtml>
+	<DataType(DataType.MultilineText)>
+	<Display(Name:="Содержание")>
+	<UIHint("Content")>
+	Public Property Content As String
+
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Модель")>
+	Public Property ModelName As String
+
+	<Required(ErrorMessage:="Укажите цену.")>
+	<DataType(DataType.Currency)>
+	<Display(Name:="Цена")>
+	Public Property Price As Decimal
+
+	<DataType(DataType.Currency)>
+	<Display(Name:="Старая цена")>
+	Public Property OldPrice As Decimal?
+
+	<Display(Name:="Наличие")>
+	Public Property Availability As ProductAvailability
+
+	<Required(ErrorMessage:="Укажите количество."), Display(Name:="Количество"), UIHint("Quantity")>
+	Public Property AvailableQuantity As Integer
+
+	<Display(Name:="Порядок"), UIHint("Order")>
+	Public Property Order As Integer?
+
+	<Display(Name:="Опубликовано"), UIHint("IsPublished")>
+	Public Property IsPublished As Boolean
+
+	<Display(Name:="Изображение")>
+	Public Property ImageId As Guid?
+
+	<NotMapped, DataType(DataType.Upload), Display(Name:="Файл изображения")>
+	Public Property ImageFile As HttpPostedFileWrapper
+
+	<DataType(DataType.ImageUrl), Display(Name:="URL изображения")>
+	Public Property ImageUrl As String
+
+	<Display(Name:="Цены и остатки")>
+	Public Overridable Property Offers As ICollection(Of Offer)
+
+	<Display(Name:="Категория")>
+	Public Overridable Property Category As Category
+
+	<Display(Name:="Категория")>
+	Public Overridable Property CategoryId As Guid?
+
+	<StringLength(128, ErrorMessage:="Не более {1} символов.")>
+	<HiddenInput(DisplayValue:=True)>
+	Public Property BrandName As String
+
+	<Obsolete("Убрать связь.")>
+	<Display(Name:="Бренд")>
+	Public Overridable Property Brand As Brand
+
+	<Display(Name:="Бренд")>
+	Public Overridable Property BrandId As Guid?
+
+	<Display(Name:="Склад")>
+	Public Overridable Property Warehouse As Warehouse
+
+	<Display(Name:="Склад")>
+	Public Overridable Property WarehouseId As Guid?
+
+	<Display(Name:="Изображения")>
+	Public Overridable Property Pictures As ICollection(Of Picture)
+End Class
+
 Public Class Category
 	Implements ICategory
 
@@ -97,6 +191,7 @@ Public Class CategoryFilterViewModel
 End Class
 
 Partial Public Class ApplicationDbContext
+	Public Property Products As DbSet(Of Product)
 	Public Property Categories As DbSet(Of Category)
 End Class
 

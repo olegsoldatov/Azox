@@ -1,6 +1,6 @@
 ﻿/*!
- * Dashboard v1.7.0.0
- * Copyright 2020 Soldata
+ * Dashboard v1.8.0.0
+ * Copyright 2021 Soldata
  */
 
 if (typeof jQuery === 'undefined') {
@@ -67,11 +67,19 @@ $('input[data-role="datepicker"]').datepicker({
 });
 
 // Filter form submit.
-$("#filterForm").submit(function () {
+function filterFormSubmit(e) {
+	$(e).submit();
+}
+
+$("form[data-toggle=filter]").submit(function () {
 	$(this).find(":input").filter(function () {
 		return !this.value;
 	}).attr("disabled", true);
 	return true;
+});
+
+$("form[data-toggle=filter] :input").change(function () {
+	filterFormSubmit($("form[data-toggle=filter]"));
 });
 
 // Currency.
@@ -100,16 +108,4 @@ function getImportStatus(statusUrl, statusMessageId, startButtonId) {
 			}
 		});
 	}, interval);
-}
-
-// Delete Checked items.
-function deleteCheckedItems(confirmText, url, guids) {
-	if (confirm(confirmText)) {
-		var params = $.param($(guids));
-		if (params !== "") {
-			$.post(url, params, function (data) {
-				document.location = data.redirect;
-			});
-		}
-	}
 }

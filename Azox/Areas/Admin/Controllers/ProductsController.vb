@@ -10,19 +10,20 @@ Namespace Areas.Admin.Controllers
 		Inherits Controller
 
 		Private ReadOnly db As New ApplicationDbContext
+		Private ReadOnly manager As New CatalogManager
 
 		Public Async Function Index(filter As ProductFilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = db.Products.AsNoTracking
+			Dim entities = manager.Products.AsNoTracking
 
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
-				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				entities = entities.Where(Function(x) x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Sku.Contains(s) Or x.Vendor.Trim.ToLower.Replace("ё", "е").Contains(s))
+				Dim s = filter.SearchText.ToLower.Replace("ё", "е")
+				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s) Or x.Sku.Contains(s))
 			End If
 
 			' Производитель.
 			If Not String.IsNullOrEmpty(filter.Vendor) Then
-				entities = entities.Where(Function(x) x.Vendor = filter.Vendor)
+				entities = entities.Where(Function(x) x.BrandName = filter.Vendor)
 			End If
 
 			' Категория.
@@ -44,7 +45,7 @@ Namespace Areas.Admin.Controllers
 
 			' Количество и пагинация.
 			Dim count = Await entities.CountAsync
-			ViewBag.TotalCount = count
+			ViewBag.Count = count
 			ViewBag.PageIndex = pageIndex
 			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
 
@@ -56,7 +57,7 @@ Namespace Areas.Admin.Controllers
 					x.Id,
 					x.Sku,
 					x.Title,
-					.BrandName = x.Vendor,
+					x.BrandName,
 					.BrandTitle = x.Brand.Title,
 					x.BrandId,
 					.CategoryName = "",
@@ -79,61 +80,56 @@ Namespace Areas.Admin.Controllers
 					.Draft = x.Draft}))
 		End Function
 
-		Public Async Function Create(categoryId As Guid?, brandId As Guid?, warehouseId As Guid?) As Task(Of ActionResult)
-			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", categoryId)
-			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", brandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", warehouseId)
-			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
+		<HttpGet>
+		Public Function Create() As ActionResult
+			ViewBag.BrandId = New SelectList(manager.Brands.OrderBy(Function(x) x.Title), "Id", "Title")
+			ViewBag.CategoryId = New SelectList(manager.Categories.OrderBy(Function(x) x.Title), "Id", "Title")
 			Return View()
 		End Function
 
-		<HttpPost, ValidateAntiForgeryToken>
-		Public Async Function Create(model As Product, returnUrl As String) As Task(Of ActionResult)
+		<HttpPost>
+		<ValidateAntiForgeryToken>
+		Public Async Function Create(product As Product, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				db.Products.Add(model)
+				db.Products.Add(product)
 
-				Await AddImageAsync(model, model.ImageFile)
+				Await AddImageAsync(product, product.ImageFile)
 
 				Await db.SaveChangesAsync
 				TempData("Message") = "Продукт добавлен."
 				Return RedirectToLocal(returnUrl)
 			End If
-			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
-			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
-			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
-			Return View(model)
+			ViewBag.BrandId = New SelectList(manager.Brands.OrderBy(Function(x) x.Title), "Id", "Title", product.BrandId)
+			ViewBag.CategoryId = New SelectList(manager.Categories.OrderBy(Function(x) x.Title), "Id", "Title", product.CategoryId)
+			Return View(product)
 		End Function
 
 		Public Async Function Edit(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await db.Products.FindAsync(id)
-			If IsNothing(model) Then
+			Dim product = Await db.Products.FindAsync(id)
+			If IsNothing(product) Then
 				Return HttpNotFound()
 			End If
-			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
-			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
-			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
-			Return View(model)
+			ViewBag.BrandId = New SelectList(manager.Brands.OrderBy(Function(x) x.Title), "Id", "Title", product.BrandId)
+			ViewBag.CategoryId = New SelectList(manager.Categories.OrderBy(Function(x) x.Title), "Id", "Title", product.CategoryId)
+			Return View(product)
 		End Function
 
-		<HttpPost, ValidateAntiForgeryToken>
-		Public Async Function Edit(model As Product, returnUrl As String) As Task(Of ActionResult)
+		<HttpPost>
+		<ValidateAntiForgeryToken>
+		Public Async Function Edit(product As Product, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				db.Entry(model).State = EntityState.Modified
-				Await AddImageAsync(model, model.ImageFile)
+				db.Entry(product).State = EntityState.Modified
+				Await AddImageAsync(product, product.ImageFile)
 				Await db.SaveChangesAsync
 				TempData("Message") = "Продукт изменен."
 				Return RedirectToLocal(returnUrl)
 			End If
-			ViewBag.CategoryId = New SelectList((Await db.Categories.ToListAsync).Select(Function(c) New With {c.Id, .Name = c.GetPath}).OrderBy(Function(a) a.Name), "Id", "Name", model.CategoryId)
-			ViewBag.BrandId = New SelectList(Await db.Brands.Select(Function(x) New With {x.Id, x.Name}).OrderBy(Function(a) a.Name).ToListAsync, "Id", "Name", model.BrandId)
-			ViewBag.WarehouseId = New SelectList(Await db.Warehouses.Select(Function(x) New With {x.Id, x.Title}).OrderBy(Function(a) a.Title).ToListAsync, "Id", "Title", model.WarehouseId)
-			ViewBag.Length = CType(WebConfigurationManager.GetSection("system.web/httpRuntime"), HttpRuntimeSection).MaxRequestLength
-			Return View(model)
+			ViewBag.BrandId = New SelectList(manager.Brands.OrderBy(Function(x) x.Title), "Id", "Title", product.BrandId)
+			ViewBag.CategoryId = New SelectList(manager.Categories.OrderBy(Function(x) x.Title), "Id", "Title", product.CategoryId)
+			Return View(product)
 		End Function
 
 		Public Async Function Delete(id As Guid?) As Task(Of ActionResult)
@@ -245,9 +241,10 @@ Namespace Areas.Admin.Controllers
 			Return RedirectToAction("index")
 		End Function
 
-		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+		Protected Overrides Sub Dispose(disposing As Boolean)
 			If disposing Then
 				db.Dispose()
+				manager.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

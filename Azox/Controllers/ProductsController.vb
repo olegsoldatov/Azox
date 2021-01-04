@@ -19,12 +19,12 @@ Namespace Controllers
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
 				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				entities = entities.Where(Function(x) x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Sku.Contains(s) Or x.Vendor.Trim.ToLower.Replace("ё", "е").Contains(s))
+				entities = entities.Where(Function(x) x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Sku.Contains(s) Or x.BrandName.Trim.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
 			' Производитель.
 			If Not String.IsNullOrEmpty(filter.Vendor) Then
-				entities = entities.Where(Function(x) x.Vendor = filter.Vendor)
+				entities = entities.Where(Function(x) x.BrandName = filter.Vendor)
 			End If
 
 			' Категория.
