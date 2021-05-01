@@ -10,13 +10,12 @@ Namespace Controllers
 		Private ReadOnly Db As New ApplicationDbContext
 
 		<HttpGet>
-		<OutputCache(Duration:=1200, VaryByParam:="none")>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim article = Await Db.Articles.SingleOrDefaultAsync(Function(x) x.Slug = "/contacts")
-			If IsNothing(article) Then
+			Dim model = Await Db.Pages.FirstOrDefaultAsync(Function(x) x.Slug = Request.Url.AbsolutePath)
+			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
-			Return View("Article", article)
+			Return View(model)
 		End Function
 
 		<HttpPost>

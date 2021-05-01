@@ -40,21 +40,9 @@ Public Class ProductFilterViewModel
 	<Display(Name:="Склад")>
 	Public Property WarehouseId As Guid?
 
-	<Display(Name:="Наличие")>
-	Public Property Availability As ProductAvailability?
-
 	<Display(Name:="Сортировать по")>
 	Public Property SortBy As ProductSortBy
 End Class
-
-Public Enum ProductAvailability
-	<Display(Name:="Нет в наличии")>
-	OutOfStock
-	<Display(Name:="В наличии")>
-	InStock
-	<Display(Name:="На заказ")>
-	PreOrder
-End Enum
 
 Public Enum ProductSortBy
 	<Display(Name:="Цене (по возрастанию)")>

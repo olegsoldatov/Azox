@@ -11,12 +11,10 @@ Namespace Controllers
 
         Private ReadOnly manager As New CatalogManager
 
-        <OutputCache(CacheProfile:="Index")>
         Public Async Function Index() As Task(Of ActionResult)
             Return View(Await manager.GetDocumentAsync)
         End Function
 
-        <OutputCache(CacheProfile:="Index")>
         Public Async Function Brands(id As String) As Task(Of ActionResult)
             If String.IsNullOrEmpty(id) Then
                 Return View(Await manager.GetDocumentAsync)

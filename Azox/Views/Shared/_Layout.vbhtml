@@ -1,23 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@Code
+	Dim imageUrl = If(ViewBag.ImageUrl, Url.Action("default.jpg", "images", New With {.area = ""}, Request.Url.Scheme))
+	Dim controllerName = Request.RequestContext.RouteData.Values("controller")
+	Dim actionName = Request.RequestContext.RouteData.Values("action")
+End Code
+<!DOCTYPE html>
 <html lang="ru">
 <head prefix="og: http://ogp.me/ns#">
+	<title>@ViewBag.Title</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>@ViewBag.Title</title>
 	<meta property="og:url" content="@Request.Url.AbsoluteUri" />
-	<meta property="og:title" name="title" content="@ViewBag.Title" itemprop="name" />
-	<meta property="og:image" content="@ViewBag.ImageUrl" itemprop="image" />
-	<meta property="og:description" name="description" content="@ViewBag.Description" itemprop="description" />
+	<meta property="og:title" name="title" content="@ViewBag.Title" />
+	<meta property="og:image" content="@imageUrl" />
+	<meta property="og:description" name="description" content="@ViewBag.Description" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="ru_RU" />
-	<meta name="keywords" content="@ViewBag.Keywords" />
-	@If String.IsNullOrEmpty(ViewBag.Canonical) Then
-		@<link href="@Request.Url.AbsoluteUri" rel="canonical" />
-	Else
-		@<link href="@ViewBag.Canonical" rel="canonical" />
-	End If
-	<link href="~/favicon.ico" rel="icon" type="image/x-icon" />
+	<link href="~/favicon.png" rel="icon" type="image/png" />
+	<link href="@Url.Action(Nothing, Nothing, Nothing, Request.Url.Scheme)" rel="canonical" />
 	@Styles.Render("~/Content/css")
 	@RenderSection("Head", required:=False)
 </head>
@@ -82,4 +82,4 @@
 	@RenderSection("Scripts", required:=False)
 </body>
 </html>
-<!-- Софт Бизнес https://soft.business -->
+<!-- Дизайн и разработка Софт Бизнес https://soft.business -->

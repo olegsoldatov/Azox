@@ -1,5 +1,5 @@
 ﻿/*!
- * Dashboard v1.8.0.0
+ * Dashboard v1.9.0.0
  * Copyright 2021 Soldata
  */
 
@@ -56,14 +56,6 @@ $(function () {
 		$('.content').animate({ scrollTop: 0 }, 400);
 		return false;
 	});
-});
-
-// Datepicker.
-$('input[data-role="datepicker"]').datepicker({
-	format: "dd.mm.yyyy",
-	language: "ru",
-	autoclose: true,
-	todayHighlight: true
 });
 
 // Filter form submit.

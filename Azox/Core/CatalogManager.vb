@@ -10,7 +10,6 @@ Public Class CatalogManager
 	Private Const cacheKey = "CatalogDocument"
 	Public ReadOnly Property Context As ApplicationDbContext
 	Public ReadOnly Property MarginService As MarginService
-	Public ReadOnly Property ImageManager As New ImageManager
 
 	Public Sub New()
 		_Context = New ApplicationDbContext
@@ -66,6 +65,85 @@ Public Class CatalogManager
 
 #End Region
 
+#Region "Brands"
+
+	Public ReadOnly Property Brands As IQueryable(Of Brand)
+		Get
+			Return Context.Brands
+		End Get
+	End Property
+
+	Public Async Function FindBrandAsync(id As Guid?) As Task(Of Brand)
+		Return Await Context.Brands.FindAsync(id)
+	End Function
+
+	Public Async Function GetBrandAsync(name As String) As Task(Of Brand)
+		Return Await Context.Brands.AsNoTracking.FirstOrDefaultAsync(Function(x) x.Name = name)
+	End Function
+
+	Public Async Function CreateBrandAsync(brand As Brand) As Task(Of Brand)
+		If IsNothing(brand) Then
+			Throw New ArgumentNullException(NameOf(brand))
+		End If
+		brand.Id = Guid.NewGuid
+		brand.LastUpdateDate = Now
+		Context.Brands.Add(brand)
+		Await Context.SaveChangesAsync
+		Return brand
+	End Function
+
+	Public Async Function UpdateBrandAsync(brand As Brand) As Task(Of Brand)
+		If IsNothing(brand) Then
+			Throw New ArgumentNullException(NameOf(brand))
+		End If
+		brand.LastUpdateDate = Now
+		Context.Entry(brand).State = EntityState.Modified
+		Await Context.SaveChangesAsync
+		Return brand
+	End Function
+
+	Public Async Function DeleteBrandAsync(brand As Brand) As Task
+		If IsNothing(brand) Then
+			Throw New ArgumentNullException(NameOf(brand))
+		End If
+		Await Context.Products.Where(Function(x) x.BrandId = brand.Id).ForEachAsync(Sub(p) p.BrandId = Nothing)
+		Context.Brands.Remove(brand)
+		Await Context.SaveChangesAsync
+	End Function
+
+	Public Async Function DeleteBrandRangeAsync(brands As IEnumerable(Of Brand)) As Task
+		If IsNothing(brands) Then
+			Throw New ArgumentNullException(NameOf(brands))
+		End If
+		brands.Join(Context.Products, Function(x) x.Id, Function(y) y.BrandId, Function(x, y) y).ToList.ForEach(Sub(p) p.BrandId = Nothing)
+		Context.Brands.RemoveRange(brands)
+		Await Context.SaveChangesAsync
+	End Function
+
+	Public Async Function GetBrandListAsync() As Task(Of IReadOnlyList(Of BrandListItem))
+		Return Await Context.Brands.AsNoTracking _
+			.Where(Function(x) Not x.Draft) _
+			.Select(Function(x) New BrandListItem With {
+				.Id = x.Id,
+				.Name = x.Name,
+				.Title = x.Title,
+				.ImageId = x.ImageId}) _
+			.ToListAsync
+	End Function
+
+	Public Function GetBrandList() As IReadOnlyList(Of BrandListItem)
+		Return Task.Run(Function() GetBrandListAsync()).Result
+	End Function
+
+	Public Async Function ExistsBrandAsync(brand As Brand, Optional id As Guid? = Nothing) As Task(Of Boolean)
+		If IsNothing(brand) Then
+			Throw New ArgumentNullException(NameOf(brand))
+		End If
+		Return Await Context.Brands.AsNoTracking.AnyAsync(Function(x) x.Name = brand.Name And Not x.Id = id)
+	End Function
+
+#End Region
+
 #Region "Categories"
 
 	Public ReadOnly Property Categories As IQueryable(Of Category)
@@ -80,7 +158,7 @@ Public Class CatalogManager
 			.Select(Function(x) New CategoryListItem With {
 				.Id = x.Id,
 				.Title = x.Title,
-				.Name = x.Name,
+				.Name = x.Slug,
 				.Path = x.Path,
 				.ParentId = x.ParentId,
 				.ImageId = x.ImageId,
@@ -104,7 +182,7 @@ Public Class CatalogManager
 		If String.IsNullOrEmpty(name) Then
 			Return False
 		End If
-		Return Await Context.Categories.AsNoTracking.AnyAsync(Function(x) x.Name = name And Not x.Id = id)
+		Return Await Context.Categories.AsNoTracking.AnyAsync(Function(x) x.Slug = name And Not x.Id = id)
 	End Function
 
 	Public Async Function FindCategoryByIdAsync(id As Guid) As Task(Of Category)
@@ -142,95 +220,12 @@ Public Class CatalogManager
 
 #End Region
 
-#Region "Brands"
-
-	Public ReadOnly Property Brands As IQueryable(Of Brand)
-		Get
-			Return Context.Brands
-		End Get
-	End Property
-
-	Public Async Function FindBrandAsync(id As Guid?) As Task(Of Brand)
-		Return Await Context.Brands.FindAsync(id)
-	End Function
-
-	Public Async Function GetBrandAsync(name As String) As Task(Of Brand)
-		Return Await Context.Brands.AsNoTracking.FirstOrDefaultAsync(Function(x) x.Name = name)
-	End Function
-
-	Public Async Function CreateBrandAsync(brand As Brand) As Task(Of Brand)
-		If IsNothing(brand) Then
-			Throw New ArgumentNullException(NameOf(brand))
-		End If
-		brand.Id = Guid.NewGuid
-		Context.Brands.Add(brand)
-		Await Context.SaveChangesAsync
-		Return brand
-	End Function
-
-	Public Async Function UpdateBrandAsync(brand As Brand) As Task(Of Brand)
-		If IsNothing(brand) Then
-			Throw New ArgumentNullException(NameOf(brand))
-		End If
-		Context.Entry(brand).State = EntityState.Modified
-		Await Context.SaveChangesAsync
-		Return brand
-	End Function
-
-	Public Async Function DeleteBrandAsync(brand As Brand) As Task
-		If IsNothing(brand) Then
-			Throw New ArgumentNullException(NameOf(brand))
-		End If
-		Await Context.Products.Where(Function(x) x.BrandId = brand.Id).ForEachAsync(Sub(p) p.BrandId = Nothing)
-		Dim image = Await ImageManager.FindByIdAsync(brand.ImageId.GetValueOrDefault)
-		If image IsNot Nothing Then
-			Await ImageManager.DeleteAsync(image)
-		End If
-		Context.Brands.Remove(brand)
-		Await Context.SaveChangesAsync
-	End Function
-
-	Public Async Function DeleteBrandRangeAsync(brands As IEnumerable(Of Brand)) As Task
-		If IsNothing(brands) Then
-			Throw New ArgumentNullException(NameOf(brands))
-		End If
-		brands.Join(Context.Products, Function(x) x.Id, Function(y) y.BrandId, Function(x, y) y).ToList.ForEach(Sub(p) p.BrandId = Nothing)
-		Dim images = brands.Join(ImageManager.Images, Function(x) x.ImageId, Function(y) y.Id, Function(x, y) y).ToList
-		Await ImageManager.DeleteRangeAsync(images)
-		Context.Brands.RemoveRange(brands)
-		Await Context.SaveChangesAsync
-	End Function
-
-	Public Async Function GetBrandListAsync() As Task(Of IReadOnlyList(Of BrandListItem))
-		Return Await Context.Brands.AsNoTracking _
-			.Where(Function(x) Not x.Draft) _
-			.Select(Function(x) New BrandListItem With {
-				.Id = x.Id,
-				.Name = x.Name,
-				.Title = x.Title,
-				.ImageId = x.ImageId}) _
-			.ToListAsync
-	End Function
-
-	Public Function GetBrandList() As IReadOnlyList(Of BrandListItem)
-		Return Task.Run(Function() GetBrandListAsync()).Result
-	End Function
-
-	Public Async Function ExistsBrandAsync(brand As Brand, Optional id As Guid? = Nothing) As Task(Of Boolean)
-		If IsNothing(brand) Then
-			Throw New ArgumentNullException(NameOf(brand))
-		End If
-		Return Await Context.Brands.AsNoTracking.AnyAsync(Function(x) x.Name = brand.Name And Not x.Id = id)
-	End Function
-
-#End Region
-
 	Public Async Function GetWarehousesAsync() As Task(Of IReadOnlyCollection(Of Catalog.Models.Warehouse))
 		Const key As String = "Warehouses"
 		Dim warehouses = TryCast(GetCacheItem(key), IReadOnlyCollection(Of Catalog.Models.Warehouse))
 		If warehouses Is Nothing Then
 			warehouses = Await Context.Warehouses _
-				.Where(Function(x) x.IsPublished) _
+				.Where(Function(x) Not x.Draft) _
 				.Select(Function(x) New Catalog.Models.Warehouse With {.Id = x.Id, .Name = x.Name, .Title = x.Title}) _
 				.ToListAsync
 
@@ -251,7 +246,7 @@ Public Class CatalogManager
 			Dim entities = Await Context.Offers _
 				.AsNoTracking _
 				.Include(Function(x) x.Product) _
-				.Where(Function(x) x.Warehouse.IsPublished) _
+				.Where(Function(x) Not x.Warehouse.Draft) _
 				.Select(Function(x) New With {x.Price, x.OldPrice, x.ProductId, x.LastUpdateDate, x.WarehouseId, x.Product.CategoryId}) _
 				.ToListAsync
 
@@ -277,8 +272,8 @@ Public Class CatalogManager
 		Dim products = TryCast(GetCacheItem(key), IReadOnlyCollection(Of Catalog.Models.Product))
 		If products Is Nothing Then
 			products = Await Context.Products _
-				.Where(Function(x) x.IsPublished) _
-				.Select(Function(x) New Catalog.Models.Product With {.Id = x.Id, .Sku = x.Sku, .Title = x.Title, .Brand = x.BrandName, .Model = x.ModelName, .CategoryId = x.CategoryId, .CreateDate = x.CreateDate, .LastUpdateDate = x.LastUpdateDate}) _
+				.Where(Function(x) Not x.Draft) _
+				.Select(Function(x) New Catalog.Models.Product With {.Id = x.Id, .Sku = x.Sku, .Title = x.Title, .Brand = x.BrandName, .Model = x.ModelName, .CategoryId = x.CategoryId, .LastUpdateDate = x.LastUpdateDate}) _
 				.AsNoTracking _
 				.ToListAsync
 
@@ -358,7 +353,6 @@ Public Class CatalogManager
 	Protected Overridable Sub Dispose(disposing As Boolean)
 		If Not disposedValue Then
 			If disposing Then
-				ImageManager.Dispose()
 				_Context.Dispose()
 			End If
 		End If

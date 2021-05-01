@@ -35,25 +35,43 @@
 }
 
 .dashboard-bar__button,
-.dashboard-bar__button:link,
-.dashboard-bar__button:visited {
+.dashboard-bar__text {
 	display: inline-block;
 	height: 44px;
 	min-width: 44px;
 	text-align: center;
 	font-size: 15px;
 	line-height: 20px;
-	color: #fff;
-	text-decoration: none;
 	padding: 12px;
 }
 
+	.dashboard-bar__button:link {
+		text-decoration: none;
+	}
+
+	.dashboard-bar__button:link,
+	.dashboard-bar__button:visited {
+		color: #fff;
+	}
+
+	.dashboard-bar__button:visited {
+		color: #fff;
+	}
+
+	.dashboard-bar__button:focus {
+		outline: none;
+	}
+
+	.dashboard-bar__button:focus,
 	.dashboard-bar__button:hover,
 	.dashboard-bar__button:active {
 		background: #2f2f2f;
-		color: #fff;
-		text-decoration: none;
 	}
+
+.dashboard-bar__text {
+	color: #fff8;
+	cursor: default;
+}
 
 .dashboard-bar__button__text {
 	display: none;

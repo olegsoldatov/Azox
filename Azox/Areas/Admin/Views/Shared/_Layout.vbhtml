@@ -1,8 +1,8 @@
 ﻿@Imports Microsoft.AspNet.Identity
 @Code
 	Dim area = Request.RequestContext.RouteData.Values("area")
-	Dim controller = Request.RequestContext.RouteData.Values("controller")
-	Dim action = Request.RequestContext.RouteData.Values("action")
+	Dim controllerName = Request.RequestContext.RouteData.Values("controller")
+	Dim actionName = Request.RequestContext.RouteData.Values("action")
 End Code
 <!DOCTYPE html>
 <html lang="ru">
@@ -22,42 +22,56 @@ End Code
 			<span class="fa fa-bars"></span>
 		</button>
 		<ul class="nav flex-column">
-			<li @If action.Equals("index") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
+			<li @If actionName.Equals("index") And controllerName.Equals("dashboard") Then @<text> class="active" </text> End If>
 				<a href="@Url.Action("index", "dashboard")">
 					<span class="fa fa-tachometer"></span>
 					<span>Панель управления</span>
 				</a>
 			</li>
-			<li @If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then @<text> class="active" </text> End If>
-				<button aria-controls="productsMenu" aria-expanded="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>true</text>Else@<text>false</text>End if">
+			<li @If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then @<text> class="active" </text> End If>
+				<button aria-controls="productsMenu" aria-expanded="@If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then@<text>true</text>Else@<text>false</text>End if">
 					<span class="fa fa-folder-o"></span>
 					<span>Каталог</span>
 				</button>
-				<ul id="productsMenu" aria-hidden="@If controller.Equals("products") Or controller.Equals("categories") Or controller.Equals("brands") Or controller.Equals("warehouses") Then@<text>false</text>Else@<text>true</text>End if">
-					<li @If controller.Equals("products") Then @<text> class="active" </text> End If>
+				<ul id="productsMenu" aria-hidden="@If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then@<text>false</text>Else@<text>true</text>End if">
+					<li @If controllerName.Equals("products") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "products")">Товары</a>
 					</li>
-					<li @If controller.Equals("categories") Then @<text> class="active" </text> End If>
+					<li @If controllerName.Equals("categories") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "categories")">Категории</a>
 					</li>
-					<li @If controller.Equals("brands") Then @<text> class="active" </text> End If>
+					<li @If controllerName.Equals("brands") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "brands")">Бренды</a>
 					</li>
-					<li @If controller.Equals("warehouses") Then @<text> class="active" </text> End If>
+					<li @If controllerName.Equals("warehouses") Then @<text> class="active" </text> End If>
 						<a href="@Url.Action("index", "warehouses")">Магазины / Склады</a>
 					</li>
 				</ul>
 			</li>
-			<li @If controller.Equals("articles") Then @<text> class="active" </text> End If>
-				<a href="@Url.Action("index", "articles")">
+			<li @If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then @<text> class="active" </text> End If>
+				<button aria-controls="contentMenu" aria-expanded="@If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then@<text>true</text>Else@<text>false</text>End if">
 					<span class="fa fa-folder-o"></span>
-					<span>Статьи</span>
+					<span>Содержание</span>
+				</button>
+				<ul id="contentMenu" aria-hidden="@If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then@<text>false</text>Else@<text>true</text>End if">
+					<li @If controllerName.Equals("pages") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("index", "pages")">Страницы</a>
+					</li>
+					<li @If actionName.Equals("files") And controllerName.Equals("dashboard") Then @<text> class="active" </text> End If>
+						<a href="@Url.Action("files", "dashboard")">Файлы</a>
+					</li>
+				</ul>
+			</li>
+			<li @If controllerName.Equals("customers") Then @<text> class="active" </text> End If>
+				<a href="@Url.Action("index", "customers")">
+					<span class="fa fa-folder-o"></span>
+					<span>Клиенты <sup>&beta;</sup></span>
 				</a>
 			</li>
-			<li @If action.Equals("files") And controller.Equals("dashboard") Then @<text> class="active" </text> End If>
-				<a href="@Url.Action("files", "dashboard")">
-					<span class="fa fa-folder-o"></span>
-					<span>Файлы</span>
+			<li title="@String.Format("Доступно памяти: {0} МБ ({1}%)", Cache.EffectivePrivateBytesLimit / 1048576, Cache.EffectivePercentagePhysicalMemoryLimit)">
+				<a href="@Url.Action("uploadCache", "dashboard")">
+					<span class="fa fa-microchip"></span>
+					<span>Обновить кэш</span>
 				</a>
 			</li>
 		</ul>

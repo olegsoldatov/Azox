@@ -4,7 +4,7 @@
 End Code
 
 @Section Toolbar
-	<button class="btn" form="model-form">
+	<button class="btn" form="modelForm">
 		<span class="fa fa-save"></span>
 		<span>Сохранить</span>
 	</button>
@@ -15,7 +15,7 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, New With {.returnUrl = If(Request.QueryString("ReturnUrl"), Request.UrlReferrer.PathAndQuery)}, FormMethod.Post, New With {.id = "model-form"})
+	@Using Html.BeginForm(Nothing, Nothing, FormMethod.Post, New With {.id = "modelForm", .enctype = "multipart/form-data"})
 		@Html.AntiForgeryToken
 		@Html.EditorForModel
 	End Using

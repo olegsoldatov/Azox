@@ -1,6 +1,6 @@
 ﻿@ModelType FilterViewModel
-<form method="get">
-	<div class="form-group">
+@Using Html.BeginForm(Nothing, Nothing, FormMethod.Get, New With {.data_toggle = "filter"})
+	@<div class="form-group">
 		<div class="input-group">
 			@Html.TextBoxFor(Function(model) model.SearchText, New With {.class = "form-control form-control-sm", .placeholder = "Поиск"})
 			<div class="input-group-append">
@@ -9,4 +9,4 @@
 			</div>
 		</div>
 	</div>
-</form>
+End Using

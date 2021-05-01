@@ -31,16 +31,10 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.CategoryId = filter.CategoryId)
 			End If
 
-			' Склад.
-			If Not IsNothing(filter.WarehouseId) Then
-				entities = entities.Where(Function(x) x.WarehouseId = filter.WarehouseId)
-			End If
-
 			' Фильтр.
-			Dim parameters = Await entities.Select(Function(x) New With {x.Brand, x.Category, x.Warehouse}).ToListAsync
+			Dim parameters = Await entities.Select(Function(x) New With {x.Brand, x.Category}).ToListAsync
 			ViewBag.BrandId = New SelectList(parameters.Select(Function(x) x.Brand).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).OrderBy(Function(x) x.Key.Name).Select(Function(x) New With {x.Key.Id, x.Key.Name}), "Id", "Name")
 			ViewBag.CategoryId = New SelectList(parameters.Select(Function(x) x.Category).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).Select(Function(x) New With {x.Key.Id, .Name = x.Key.GetPath}).OrderBy(Function(x) x.Name), "Id", "Name")
-			ViewBag.WarehouseId = New SelectList(parameters.Select(Function(x) x.Warehouse).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).OrderBy(Function(x) x.Key.Title).Select(Function(x) New With {x.Key.Id, x.Key.Title}), "Id", "Title")
 			ViewBag.Filter = filter
 
 			' Количество и пагинация.
@@ -64,7 +58,7 @@ Namespace Areas.Admin.Controllers
 					.CategoryTitle = x.Category.Title,
 					x.CategoryId,
 					.Offers = x.Offers.Count,
-					.Draft = Not x.IsPublished}) _
+					x.Draft}) _
 				.Skip(pageIndex * pageSize) _
 				.Take(pageSize) _
 				.ToListAsync) _
@@ -93,8 +87,6 @@ Namespace Areas.Admin.Controllers
 			If ModelState.IsValid Then
 				db.Products.Add(product)
 
-				Await AddImageAsync(product, product.ImageFile)
-
 				Await db.SaveChangesAsync
 				TempData("Message") = "Продукт добавлен."
 				Return RedirectToLocal(returnUrl)
@@ -122,7 +114,6 @@ Namespace Areas.Admin.Controllers
 		Public Async Function Edit(product As Product, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				db.Entry(product).State = EntityState.Modified
-				Await AddImageAsync(product, product.ImageFile)
 				Await db.SaveChangesAsync
 				TempData("Message") = "Продукт изменен."
 				Return RedirectToLocal(returnUrl)
@@ -187,11 +178,6 @@ Namespace Areas.Admin.Controllers
 			' Бренд.
 			If Not IsNothing(filter.BrandId) Then
 				products = products.Where(Function(x) x.BrandId = filter.BrandId)
-			End If
-
-			' Склад.
-			If Not IsNothing(filter.WarehouseId) Then
-				products = products.Where(Function(x) x.WarehouseId = filter.WarehouseId)
 			End If
 
 			' Сортировка (по умолчанию по дате изменения).

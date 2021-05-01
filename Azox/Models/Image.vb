@@ -1,10 +1,10 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity
-Imports Soldata.Azox
 
 Public Class Image
-	Inherits Entity
+	<Key>
+	Public Property Id As Guid
 
 	Public Property ContentType As String
 
@@ -26,12 +26,4 @@ End Class
 
 Partial Public Class ApplicationDbContext
 	Public Property Images As DbSet(Of Image)
-End Class
-
-Public Class ChangeImageViewModel
-	<HiddenInput(DisplayValue:=False)>
-	Public Property Id As Guid
-
-	<Display(Name:="Файл изображения")>
-	Public Property ImageFile As HttpPostedFileWrapper
 End Class

@@ -18,7 +18,7 @@ Public Class Offer
 	Public Property Quantity As Integer?
 
 	<Display(Name:="Наличие")>
-	Public Property Availability As ProductAvailability?
+	Public Property Availability As OfferAvailability
 
 	<Display(Name:="Дата изменения")>
 	Public Property LastUpdateDate As Date
@@ -29,12 +29,21 @@ Public Class Offer
 	<Display(Name:="Товар")>
 	Public Overridable Property Product As Product
 
-	<Required(ErrorMessage:="Укажите магазин / склад.")>
-	<Display(Name:="Магазин / Склад")>
+	<Required(ErrorMessage:="Укажите склад.")>
+	<Display(Name:="Склад")>
 	Public Overridable Property WarehouseId As Guid
-	<Display(Name:="Магазин / Склад")>
+	<Display(Name:="Склад")>
 	Public Overridable Property Warehouse As Warehouse
 End Class
+
+Public Enum OfferAvailability
+	<Display(Name:="В наличии")>
+	InStock
+	<Display(Name:="На заказ")>
+	PreOrder
+	<Display(Name:="Нет в наличии")>
+	OutOfStock
+End Enum
 
 Partial Public Class ApplicationDbContext
 	Public Property Offers As DbSet(Of Offer)

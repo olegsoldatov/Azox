@@ -22,28 +22,28 @@ Namespace Controllers
 			Dim product = Await db.Products.FindAsync(model.ProductId)
 
 			' Если товар электронный или доступное количество не имеет значения, то из условия нужно убрать использование поля AvailableQuantity.
-			If Not IsNothing(product) AndAlso (product.Price > Decimal.Zero And product.AvailableQuantity > 0) And model.Quantity > 0 Then
-				Dim good As New Good With {
-					.Id = Guid.NewGuid,
-					.Name = product.Title,
-					.Sku = product.Sku,
-					.ProductId = product.Id,
-					.ProductUrl = Url.Action("details", "products", New With {product.Id}, Request.Url.Scheme),
-					.ImageUrl = product.ImageUrl,
-					.Price = product.Price,
-					.Quantity = model.Quantity
-				}
+			'If Not IsNothing(product) AndAlso (product.Price > Decimal.Zero And product.AvailableQuantity > 0) And model.Quantity > 0 Then
+			'	Dim good As New Good With {
+			'		.Id = Guid.NewGuid,
+			'		.Name = product.Title,
+			'		.Sku = product.Sku,
+			'		.ProductId = product.Id,
+			'		.ProductUrl = Url.Action("details", "products", New With {product.Id}, Request.Url.Scheme),
+			'		.ImageUrl = product.ImageUrl,
+			'		.Price = product.Price,
+			'		.Quantity = model.Quantity
+			'	}
 
-				If IsNothing(Session("Order")) Then
-					Session.Add("Order", New Order With {.Goods = New List(Of Good) From {good}})
-				ElseIf CType(Session("Order"), Order).Goods.Any(Function(x) x.ProductId = good.ProductId) Then
-					CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = good.ProductId).Quantity += good.Quantity
-				Else
-					CType(Session("Order"), Order).Goods.Add(good)
-				End If
+			'	If IsNothing(Session("Order")) Then
+			'		Session.Add("Order", New Order With {.Goods = New List(Of Good) From {good}})
+			'	ElseIf CType(Session("Order"), Order).Goods.Any(Function(x) x.ProductId = good.ProductId) Then
+			'		CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = good.ProductId).Quantity += good.Quantity
+			'	Else
+			'		CType(Session("Order"), Order).Goods.Add(good)
+			'	End If
 
-				TempData("Message") = "Товар добавлен в корзину."
-			End If
+			'	TempData("Message") = "Товар добавлен в корзину."
+			'End If
 			Return RedirectToLocal(returnUrl)
 		End Function
 
@@ -52,16 +52,16 @@ Namespace Controllers
 		<HttpPost, ValidateAntiForgeryToken>
 		Public Async Function Update(<Bind(Include:="ProductId,Quantity")> model As CartUpdateViewModel) As Task(Of ActionResult)
 			Dim i As Integer = 0
-			For Each item In model.ProductId
-				Dim product = Await db.Products.FindAsync(item)
-				' Если товар электронный или доступное количество не имеет значения, то из условия нужно убрать использование поля AvailableQuantity.
-				If Not IsNothing(product) AndAlso (product.Price > Decimal.Zero And product.AvailableQuantity > 0) And model.Quantity(i) > 0 Then
-					CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = item).Quantity = If(product.AvailableQuantity < model.Quantity(i), product.AvailableQuantity, model.Quantity(i))
-				Else
-					CType(Session("Order"), Order).Goods.Remove(CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = item))
-				End If
-				i += 1
-			Next
+			'For Each item In model.ProductId
+			'	Dim product = Await db.Products.FindAsync(item)
+			'	' Если товар электронный или доступное количество не имеет значения, то из условия нужно убрать использование поля AvailableQuantity.
+			'	If Not IsNothing(product) AndAlso (product.Price > Decimal.Zero And product.AvailableQuantity > 0) And model.Quantity(i) > 0 Then
+			'		CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = item).Quantity = If(product.AvailableQuantity < model.Quantity(i), product.AvailableQuantity, model.Quantity(i))
+			'	Else
+			'		CType(Session("Order"), Order).Goods.Remove(CType(Session("Order"), Order).Goods.Single(Function(x) x.ProductId = item))
+			'	End If
+			'	i += 1
+			'Next
 			Return RedirectToAction("index")
 		End Function
 
@@ -134,15 +134,15 @@ Namespace Controllers
 				.CreateDate = Date.Now.Date
 			End With
 			db.Orders.Add(CType(Session("Order"), Order))
-			For Each item In CType(Session("Order"), Order).Goods
-				item.OrderId = CType(Session("Order"), Order).Id
+			'For Each item In CType(Session("Order"), Order).Goods
+			'	item.OrderId = CType(Session("Order"), Order).Id
 
-				' Если учитывается поле AvailableQuantity, то нужно вычесть заказанное количество товара.
-				Dim product = Await db.Products.FindAsync(item.ProductId)
-				If Not IsNothing(product) Then
-					product.AvailableQuantity -= item.Quantity
-				End If
-			Next
+			'	' Если учитывается поле AvailableQuantity, то нужно вычесть заказанное количество товара.
+			'	Dim product = Await db.Products.FindAsync(item.ProductId)
+			'	If Not IsNothing(product) Then
+			'		product.AvailableQuantity -= item.Quantity
+			'	End If
+			'Next
 			db.Goods.AddRange(CType(Session("Order"), Order).Goods)
 
 			Await db.SaveChangesAsync

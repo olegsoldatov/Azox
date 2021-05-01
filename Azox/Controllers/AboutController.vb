@@ -5,21 +5,20 @@ Namespace Controllers
 	Public Class AboutController
 		Inherits Controller
 
-		Private ReadOnly Db As New ApplicationDbContext
+		Private ReadOnly db As New ApplicationDbContext
 
 		<HttpGet>
-		<OutputCache(Duration:=1200, VaryByParam:="none")>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim article = Await Db.Articles.SingleOrDefaultAsync(Function(x) x.Slug = "/about")
-			If IsNothing(article) Then
+			Dim model = Await db.Pages.FirstOrDefaultAsync(Function(x) x.Slug = Request.Url.AbsolutePath)
+			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
-			Return View("Article", article)
+			Return View(model)
 		End Function
 
 		Protected Overrides Sub Dispose(disposing As Boolean)
 			If disposing Then
-				Db.Dispose()
+				db.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

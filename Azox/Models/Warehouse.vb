@@ -5,19 +5,23 @@ Public Class Warehouse
 	<Key>
 	Public Property Id As Guid
 
-	<Required(ErrorMessage:="Укажите идентификатор.")>
-	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<Display(Name:="Идентификатор")>
-	Public Property Name As String
-
 	<Required(ErrorMessage:="Укажите название.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
 	<Display(Name:="Название")>
 	Public Property Title As String
 
-	<Required(ErrorMessage:="Укажите компанию.")>
+	<Display(Name:="Порядок")>
+	Public Property Order As Integer?
+
+	<Display(Name:="Черновик")>
+	Public Property Draft As Boolean
+
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<Display(Name:="Компания")>
+	<Display(Name:="Имя", Description:="Необходимо для службы обновления цен.")>
+	Public Property Name As String
+
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Компания", Description:="Необходимо для службы обновления цен.")>
 	Public Property Company As String
 
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
@@ -29,23 +33,14 @@ Public Class Warehouse
 	<UIHint("Percent")>
 	Public Property Margin As Double
 
-	<Required(ErrorMessage:="Укажите порядок.")>
-	<Display(Name:="Порядок")>
-	<UIHint("Order")>
-	Public Property Order As Integer
-
-	<Display(Name:="Опубликовано")>
-	<UIHint("IsPublished")>
-	Public Property IsPublished As Boolean
-
 	<Display(Name:="Группа наценок")>
 	Public Overridable Property MarginGroup As MarginGroup
 
 	<Display(Name:="Группа наценок")>
 	Public Overridable Property MarginGroupId As Guid?
 
-	<Display(Name:="Продукты")>
-	Public Overridable Property Products As ICollection(Of Product)
+	<Display(Name:="Остатки")>
+	Public Overridable Property Offers As ICollection(Of Offer)
 End Class
 
 Public Class WarehouseFilterViewModel

@@ -61,10 +61,10 @@ End Section
 								</td>
 								<td>
 									@Html.ActionLink(item.Title, "edit", New With {.id = item.Id}, New With {.title = "Изменить"})
-									<div>
-										<small class="text-muted">@Html.DisplayFor(Function(m) item.Name)</small>
-									</div>
-									@Html.DisplayFor(Function(model) item.Draft)
+									<small class="d-block text-muted">@Html.DisplayFor(Function(m) item.Name)</small>
+									@If item.Draft Then
+										@<small class="d-block"><b>@Html.DisplayNameFor(Function(model) model.Draft)</b></small>
+									End If
 								</td>
 								<td class="text-right">
 									@Html.ActionLink(item.Products, "index", "products", New With {.categoryId = item.Id}, Nothing)
