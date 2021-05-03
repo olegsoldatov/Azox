@@ -1,15 +1,16 @@
 ﻿Imports System.Data.Entity
 Imports System.Threading.Tasks
 Imports System.Net
-Imports Soldata.Imaging
 Imports Soldata.Web.Extensions
+Imports System.Drawing
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class BrandsController
 		Inherits Controller
 
-		Private ReadOnly manager As New CatalogManager
+		Private ReadOnly manager As New BrandManager
+		Private ReadOnly imageService As New ImageService With {.SmallConfiguration = New ImageConfiguration With {.Width = 320, .Height = 320, .Background = Color.White}}
 
 		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
 			ViewBag.Filter = filter
@@ -42,10 +43,13 @@ Namespace Areas.Admin.Controllers
 				Dim entities = manager.Brands.Where(Function(x) id.Contains(x.Id))
 
 				If delete Then
-					Await manager.DeleteBrandRangeAsync(Await entities.ToListAsync)
-					TempData("Message") = String.Format("Удалено: {0}", id.Length.ToString("бренд", "бренда", "брендов"))
+					Dim brands = Await entities.ToListAsync
+					Await imageService.DeleteAsync(brands)
+					Await manager.DeleteAsync(brands)
+					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("бренд", "бренда", "брендов"))
 				End If
 			End If
+
 			Return Redirect(Request.UrlReferrer.PathAndQuery)
 		End Function
 
@@ -56,23 +60,26 @@ Namespace Areas.Admin.Controllers
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
-		Public Async Function Create(brand As Brand, imageFile As HttpPostedFileWrapper) As Task(Of ActionResult)
-			If Await manager.ExistsBrandAsync(brand) Then
-				ModelState.AddModelError("Name", "Такой бренд уже существует.")
+		Public Async Function Create(model As Brand, imageFile As HttpPostedFileWrapper) As Task(Of ActionResult)
+			If Not IsNothing(imageFile) AndAlso Not imageFile.ContentType.Contains("image") Then
+				ModelState.AddModelError("ImageId", "Файл не является изображением.")
 			End If
 			If ModelState.IsValid Then
-				Await manager.CreateBrandAsync(brand)
+				If Not IsNothing(imageFile) Then
+					Await imageService.UploadAsync(model, imageFile.InputStream, imageFile.ContentType)
+				End If
+				Await manager.AddAsync(model)
 				TempData("Message") = "Бренд добавлен."
 				Return RedirectToAction("index")
 			End If
-			Return View(brand)
+			Return View(model)
 		End Function
 
 		Public Async Function Edit(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim brand = Await manager.FindBrandAsync(id)
+			Dim brand = Await manager.GetByIdAsync(id)
 			If IsNothing(brand) Then
 				Return HttpNotFound()
 			End If
@@ -82,11 +89,14 @@ Namespace Areas.Admin.Controllers
 		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Brand, imageFile As HttpPostedFileWrapper, returnUrl As String) As Task(Of ActionResult)
-			If Await manager.ExistsBrandAsync(model, model.Id) Then
-				ModelState.AddModelError("Name", "Такой бренд уже существует.")
+			If Not IsNothing(imageFile) AndAlso Not imageFile.ContentType.Contains("image") Then
+				ModelState.AddModelError("ImageId", "Файл не является изображением.")
 			End If
 			If ModelState.IsValid Then
-				Await manager.UpdateBrandAsync(model)
+				If Not IsNothing(imageFile) Then
+					Await imageService.UploadAsync(model, imageFile.InputStream, imageFile.ContentType)
+				End If
+				Await manager.UpdateAsync(model)
 				TempData("Message") = "Бренд изменен."
 				If String.IsNullOrEmpty(returnUrl) Then
 					Return RedirectToAction("index")
@@ -101,19 +111,22 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim brand = Await manager.FindBrandAsync(id)
-			If IsNothing(brand) Then
+			Dim model = Await manager.GetByIdAsync(id)
+			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
-			Return View(brand)
+			Return View(model)
 		End Function
 
 		<HttpPost>
 		<ActionName("Delete")>
 		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
-			Dim brand = Await manager.FindBrandAsync(id)
-			Await manager.DeleteBrandAsync(brand)
+			Dim entity = Await manager.GetByIdAsync(id)
+			If Not IsNothing(entity.ImageId) Then
+				Await imageService.DeleteAsync(entity)
+			End If
+			Await manager.DeleteAsync(entity)
 			TempData("Message") = "Бренд удален."
 			Return RedirectToAction("index")
 		End Function
@@ -121,6 +134,7 @@ Namespace Areas.Admin.Controllers
 		Protected Overrides Sub Dispose(disposing As Boolean)
 			If disposing Then
 				manager.Dispose()
+				imageService.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

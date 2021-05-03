@@ -220,6 +220,7 @@
     <Compile Include="Areas\Admin\Controllers\CustomersController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
+    <Compile Include="Core\BrandManager.vb" />
     <Compile Include="Core\CatalogManager.vb" />
     <Compile Include="App_Start\FormatConfig.vb" />
     <Compile Include="App_Start\FilterConfig.vb" />
@@ -238,6 +239,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.vb" />
     <Compile Include="Core\CategoryAdminItem.vb" />
     <Compile Include="Core\CategoryListItem.vb" />
+    <Compile Include="Core\ImageService.vb" />
     <Compile Include="Core\Popular.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
     <Compile Include="Models\ApplicationDbContext.vb" />
@@ -266,7 +268,7 @@
     <Compile Include="Models\Category.vb" />
     <Compile Include="Models\Customers.vb" />
     <Compile Include="Models\IEntity.vb" />
-    <Compile Include="Models\IImageable.vb" />
+    <Compile Include="Core\IImageable.vb" />
     <Compile Include="Models\Image.vb" />
     <Compile Include="Models\IPage.vb" />
     <Compile Include="Models\MarginModels.vb" />
