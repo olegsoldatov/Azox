@@ -35,6 +35,17 @@ Public Class BrandManager
 		Await db.SaveChangesAsync
 	End Function
 
+	Public Async Function UpdateAsync(entities As IEnumerable(Of Brand)) As Task
+		If IsNothing(entities) Then
+			Throw New ArgumentNullException(NameOf(entities))
+		End If
+		For Each item In entities
+			item.LastUpdateDate = Now
+			db.Entry(item).State = EntityState.Modified
+		Next
+		Await db.SaveChangesAsync
+	End Function
+
 	Public Async Function DeleteAsync(entity As Brand) As Task
 		If IsNothing(entity) Then
 			Throw New ArgumentNullException(NameOf(entity))

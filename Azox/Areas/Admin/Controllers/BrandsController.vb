@@ -40,12 +40,11 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = manager.Brands.Where(Function(x) id.Contains(x.Id))
+				Dim entities = Await manager.Brands.Where(Function(x) id.Contains(x.Id)).ToListAsync()
 
 				If delete Then
-					Dim brands = Await entities.ToListAsync
-					Await imageService.DeleteAsync(brands)
-					Await manager.DeleteAsync(brands)
+					Await imageService.DeleteAsync(entities)
+					Await manager.DeleteAsync(entities)
 					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("бренд", "бренда", "брендов"))
 				End If
 			End If
