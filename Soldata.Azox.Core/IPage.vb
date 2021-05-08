@@ -1,6 +1,4 @@
-﻿Imports Soldata.Azox
-
-''' <summary>
+﻿''' <summary>
 ''' Предоставляет интерфейс страницы.
 ''' </summary>
 Public Interface IPage

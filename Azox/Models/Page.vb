@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Data.Entity
+Imports Soldata.Azox
 
 Public Class Page
 	Implements IPage
