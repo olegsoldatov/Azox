@@ -267,7 +267,6 @@
     <Compile Include="Models\CatalogViewModels.vb" />
     <Compile Include="Models\Category.vb" />
     <Compile Include="Models\Customers.vb" />
-    <Compile Include="Core\IEntity.vb" />
     <Compile Include="Core\IImageable.vb" />
     <Compile Include="Models\Image.vb" />
     <Compile Include="Core\IPage.vb" />

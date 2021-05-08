@@ -8,7 +8,7 @@ Public Class Category
 	Implements IPage, IImageable
 
 	<Key>
-	Public Property Id As Guid Implements IEntity.Id
+	Public Property Id As Guid Implements IPage.Id
 
 	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>

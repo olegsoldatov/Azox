@@ -11,10 +11,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<releaseNotes></releaseNotes>
-		<copyright>Софт Бизнес, 2020</copyright>
-		<dependencies>
-			<dependency id="EntityFramework" version="6.2.0" />
-		</dependencies>
+		<copyright>Софт Бизнес, 2021</copyright>
 		<tags>Azox</tags>
 	</metadata>
 </package>

@@ -1,5 +1,5 @@
 ﻿''' <summary>
-''' Предоставляет результат действия диспетчера сущностей.
+''' Предоставляет результат действия менеджера сущности.
 ''' </summary>
 Public Class ManagerResult
 	Public Sub New(errors As IEnumerable(Of String))
