@@ -1,22 +1,25 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Data.Entity
 
+''' <summary>
+''' Предоставляет модель данных категории.
+''' </summary>
 Public Class Category
-	Implements IImageable
+	Implements IPage, IImageable
 
 	<Key>
-	Public Property Id As Guid
+	Public Property Id As Guid Implements IEntity.Id
 
 	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
 	<Display(Name:="Название")>
-	Public Property Title As String
+	Public Property Title As String Implements IPage.Title
 
 	<AllowHtml>
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Содержание")>
 	<UIHint("Content")>
-	Public Property Content As String
+	Public Property Content As String Implements IPage.Content
 
 	<Display(Name:="Изображение")>
 	Public Property ImageId As Guid? Implements IImageable.ImageId
@@ -57,10 +60,10 @@ Public Class Category
 
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>
-	Public Property Description As String
+	Public Property Description As String Implements IPage.Description
 
 	<Display(Name:="Ключевые слова")>
-	Public Property Keywords As String
+	Public Property Keywords As String Implements IPage.Keywords
 
 	''' <summary>
 	''' Возвращает путь категории.

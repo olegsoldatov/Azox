@@ -267,10 +267,10 @@
     <Compile Include="Models\CatalogViewModels.vb" />
     <Compile Include="Models\Category.vb" />
     <Compile Include="Models\Customers.vb" />
-    <Compile Include="Models\IEntity.vb" />
+    <Compile Include="Core\IEntity.vb" />
     <Compile Include="Core\IImageable.vb" />
     <Compile Include="Models\Image.vb" />
-    <Compile Include="Models\IPage.vb" />
+    <Compile Include="Core\IPage.vb" />
     <Compile Include="Models\MarginModels.vb" />
     <Compile Include="Models\Offer.vb" />
     <Compile Include="Models\OrderModels.vb" />

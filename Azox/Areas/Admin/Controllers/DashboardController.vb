@@ -13,8 +13,8 @@
 			Return View()
 		End Function
 
-		<AllowAnonymous>
 		<HttpGet>
+		<AllowAnonymous>
 		Public Function Bar(editUrl As String) As ActionResult
 			Return PartialView(New DashboardBarViewModel With {.EditUrl = editUrl})
 		End Function
