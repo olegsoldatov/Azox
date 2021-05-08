@@ -17,11 +17,11 @@ Namespace Controllers
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
 				Dim s = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				entities = entities.Where(Function(x) x.Slug.Trim.ToLower.Replace("ё", "е").Contains(s)) ' Or x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Heading.Trim.ToLower.Replace("ё", "е").Contains(s))
+				entities = entities.Where(Function(x) x.Name.Trim.ToLower.Replace("ё", "е").Contains(s)) ' Or x.Title.Trim.ToLower.Replace("ё", "е").Contains(s) Or x.Heading.Trim.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
 			' Сортировка.
-			entities = entities.OrderBy(Function(x) x.Slug) '.ThenBy(Function(x) x.Title).ThenBy(Function(x) x.Heading).ThenBy(Function(x) x.Order)
+			entities = entities.OrderBy(Function(x) x.Name) '.ThenBy(Function(x) x.Title).ThenBy(Function(x) x.Heading).ThenBy(Function(x) x.Order)
 
 			' Количество и пагинация.
 			ViewBag.EntityCount = Await entities.CountAsync
@@ -43,7 +43,7 @@ Namespace Controllers
 		<HttpPost, ValidateAntiForgeryToken>
 		Public Async Function Create(model As Category, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				model.Slug = ValidateSlug(model.Id, If(model.Slug, model.Slug.ToSlug(True)))
+				model.Name = ValidateSlug(model.Id, If(model.Name, model.Name.ToSlug(True)))
 				db.Categories.Add(model)
 				'Await AddImageAsync(model, model.ImageFile)
 				Await db.SaveChangesAsync
@@ -71,7 +71,7 @@ Namespace Controllers
 		<HttpPost, ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Category, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				model.Slug = ValidateSlug(model.Id, If(model.Slug, model.Slug.ToSlug(True)))
+				model.Name = ValidateSlug(model.Id, If(model.Name, model.Name.ToSlug(True)))
 				db.Entry(model).State = EntityState.Modified
 				'Await AddImageAsync(model, model.ImageFile)
 				Await db.SaveChangesAsync
@@ -147,11 +147,11 @@ Namespace Controllers
 			' Поиск.
 			If Not String.IsNullOrEmpty(filter.SearchText) Then
 				Dim searchString = filter.SearchText.Trim.ToLower.Replace("ё", "е")
-				categories = categories.Where(Function(x) x.Slug.ToLower.Replace("ё", "е").Contains(searchString) Or x.Slug.ToLower.Contains(searchString))
+				categories = categories.Where(Function(x) x.Name.ToLower.Replace("ё", "е").Contains(searchString) Or x.Name.ToLower.Contains(searchString))
 			End If
 
 			' Сортировка (по умолчанию по названию).
-			categories = categories.OrderBy(Function(x) x.Slug)
+			categories = categories.OrderBy(Function(x) x.Name)
 
 			Return categories
 		End Function
@@ -199,7 +199,7 @@ Namespace Controllers
 
 		Protected Friend Function ValidateSlug(entityId As Guid, slug As String, Optional suffix As Integer = 0) As String
 			Dim result = If(suffix = 0, slug, String.Join("-", slug, suffix))
-			If db.Set(Of Category).AsNoTracking.Any(Function(m) m.Slug.Equals(result) And Not m.Id.Equals(entityId)) Then
+			If db.Set(Of Category).AsNoTracking.Any(Function(m) m.Name.Equals(result) And Not m.Id.Equals(entityId)) Then
 				Return ValidateSlug(entityId, slug, suffix + 1)
 			End If
 			Return result

@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Threading.Tasks
 Imports System.Drawing
 Imports Soldata.Imaging
+Imports Soldata.Azox
 
 Public Class ImageService
 	Implements IDisposable

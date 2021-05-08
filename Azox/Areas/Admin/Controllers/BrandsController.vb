@@ -24,7 +24,7 @@ Namespace Areas.Admin.Controllers
 			End If
 
 			' Количество и пагинация.
-			Dim count = Await entities.AsNoTracking.CountAsync
+			Dim count = Await entities.AsNoTracking().CountAsync()
 			ViewBag.Count = count
 			ViewBag.PageIndex = pageIndex
 			ViewBag.PageSize = pageSize
@@ -33,7 +33,7 @@ Namespace Areas.Admin.Controllers
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Title)
 
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking().ToListAsync())
 		End Function
 
 		<HttpPost>

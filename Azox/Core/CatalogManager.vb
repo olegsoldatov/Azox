@@ -158,7 +158,7 @@ Public Class CatalogManager
 			.Select(Function(x) New CategoryListItem With {
 				.Id = x.Id,
 				.Title = x.Title,
-				.Name = x.Slug,
+				.Name = x.Name,
 				.Path = x.Path,
 				.ParentId = x.ParentId,
 				.ImageId = x.ImageId,
@@ -182,7 +182,7 @@ Public Class CatalogManager
 		If String.IsNullOrEmpty(name) Then
 			Return False
 		End If
-		Return Await Context.Categories.AsNoTracking.AnyAsync(Function(x) x.Slug = name And Not x.Id = id)
+		Return Await Context.Categories.AsNoTracking.AnyAsync(Function(x) x.Name = name And Not x.Id = id)
 	End Function
 
 	Public Async Function FindCategoryByIdAsync(id As Guid) As Task(Of Category)

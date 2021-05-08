@@ -32,10 +32,10 @@ Public Class Category
 	Public Property Draft As Boolean
 
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<RegularExpression("\/[-\w/~%.]+", ErrorMessage:="Используется недопустимый формат.")>
-	<Remote("Exists", "Categories", "Admin", AdditionalFields:="Id", ErrorMessage:="Такой ярлык уже существует.")>
-	<Display(Name:="Ярлык")>
-	Public Property Slug As String
+	<RegularExpression("^[-\w]+$", ErrorMessage:="Используются недопустимые символы.")>
+	<Remote("Exists", "Categories", "Admin", AdditionalFields:="Id", ErrorMessage:="Такое имя уже существует.")>
+	<Display(Name:="Имя")>
+	Public Property Name As String
 
 	<Display(Name:="Тип / категория товара", Description:="Формирует название товара.")>
 	Public Property TypePrefix As String
@@ -71,11 +71,11 @@ Public Class Category
 	''' </summary>
 	''' <param name="divider">Разделитель. Если не указывать, то в качестве разделителя будет косая черта отбитая пробелами.</param>
 	Public Function GetPath(Optional divider As String = " / ") As String
-		Dim titles As New List(Of String) From {If(String.IsNullOrEmpty(Title), Slug, Title)}
+		Dim titles As New List(Of String) From {If(String.IsNullOrEmpty(Title), Name, Title)}
 		Dim parent = Me.Parent
 CategoryParent:
 		If Not IsNothing(parent) Then
-			titles.Insert(0, If(String.IsNullOrEmpty(parent.Title), parent.Slug, parent.Title))
+			titles.Insert(0, If(String.IsNullOrEmpty(parent.Title), parent.Name, parent.Title))
 			parent = parent.Parent
 			GoTo CategoryParent
 		End If

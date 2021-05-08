@@ -1,6 +1,6 @@
-﻿@ModelType IEnumerable(Of CategoryAdminItem)
+﻿@ModelType IEnumerable(Of Category)
 @Code
-	ViewBag.Title = "Все категории"
+	ViewBag.Title = "Управление категориями"
 End Code
 
 @Section Toolbar
@@ -8,17 +8,14 @@ End Code
 		<span class="fa fa-plus"></span>
 		<span>Добавить</span>
 	</a>
-	<a href="@Url.Action("uploadCache")" class="btn" title="@String.Format("Доступно памяти: {0} МБ ({1}%)", Cache.EffectivePrivateBytesLimit / 1048576, Cache.EffectivePercentagePhysicalMemoryLimit)">
-		<span class="fa fa-microchip"></span>
-		<span>Обновить кэш</span>
-	</a>
 	<div class="btn-group">
 		<button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<span class="fa fa-ellipsis-h"></span>
 			<span>Действия</span>
 		</button>
 		<div class="dropdown-menu">
-			<a href="#delete-modal" class="dropdown-item" data-toggle="modal">Удалить</a>
+			<button class="dropdown-item" data-toggle="modal" data-target="#changeModal">Изменить</button>
+			<button class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Удалить</button>
 		</div>
 	</div>
 End Section
@@ -31,20 +28,21 @@ End Section
 
 <article>
 	@If Model.Any Then
-		@Using Html.BeginForm(New With {.returnUrl = If(Request.QueryString("ReturnUrl"), Request.Url.PathAndQuery)})
+		@<form id="contentForm" method="post" action="@Url.Action("index")">
 			@Html.AntiForgeryToken
 			@Html.Partial("_Delete")
-			@<div class="table-responsive">
+			@Html.Partial("_Change", New CategoryChangeViewModel)
+			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th width="40">
-								<input type="checkbox" />
+								<input type="checkbox" data-toggle="check-all" aria-controls="id" />
 							</th>
 							<th>
 								@Html.DisplayNameFor(Function(model) model.Title)
 							</th>
-							<th class="text-right">
+							<th class="text-right" width="100">
 								@Html.DisplayNameFor(Function(model) model.Products)
 							</th>
 							<th class="text-right" width="100">
@@ -60,32 +58,31 @@ End Section
 									<input type="checkbox" name="id" value="@item.Id" />
 								</td>
 								<td>
-									@Html.ActionLink(item.Title, "edit", New With {.id = item.Id}, New With {.title = "Изменить"})
-									<small class="d-block text-muted">@Html.DisplayFor(Function(m) item.Name)</small>
+									@Html.ActionLink(item.Title, "edit", New With {item.Id}, New With {.title = "Изменить"})
+									<small class="d-block text-muted">@item.Name</small>
 									@If item.Draft Then
-										@<small class="d-block"><b>@Html.DisplayNameFor(Function(model) model.Draft)</b></small>
+										@<small class="d-block"><strong>@Html.DisplayNameFor(Function(model) model.Draft)</strong></small>
 									End If
 								</td>
 								<td class="text-right">
-									@Html.ActionLink(item.Products, "index", "products", New With {.categoryId = item.Id}, Nothing)
+									@Html.ActionLink(item.Products.Count, "index", "products", New With {.categoryId = item.Id}, Nothing)
 								</td>
 								<td class="text-right">
-									@Html.DisplayFor(Function(model) item.Order)
+									@item.Order
 								</td>
 								<td class="text-right">
-									<a href="@Url.Action("details", New With {.id = item.Id})" title="Посмотреть" target="_blank"><span class="fa fa-external-link"></span></a>
-									<a href="@Url.Action("delete", New With {.id = item.Id})" title="Удалить"><span class="fa fa-remove"></span></a>
+									<a href="@Url.Action("details", "categories", New With {.area = "", item.Id})" title="Посмотреть" target="_blank"><span class="fa fa-external-link"></span></a>
+									<a href="@Url.Action("delete", New With {item.Id})" title="Удалить"><span class="fa fa-remove"></span></a>
 								</td>
 							</tr>
 						Next
 					</tbody>
 				</table>
 			</div>
-		End Using
+		</form>
 	Else
 		@<p class="lead text-center">Список пуст.</p>
 	End If
 
 	@Html.Pagination(New With {.class = "pagination"})
 </article>
-
