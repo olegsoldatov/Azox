@@ -55,6 +55,16 @@ Public Class BrandManager
 		Await db.SaveChangesAsync
 	End Function
 
+	Public Async Function NameExistsAsync(entity As Brand) As Task(Of Boolean)
+		If IsNothing(entity) Then
+			Throw New ArgumentNullException(NameOf(entity))
+		End If
+		If String.IsNullOrEmpty(entity.Name) Then
+			Return False
+		End If
+		Return Await db.Brands.AsNoTracking().AnyAsync(Function(x) x.Name = entity.Name And Not x.Id = entity.Id)
+	End Function
+
 #Region "IDisposable"
 
 	Private disposedValue As Boolean

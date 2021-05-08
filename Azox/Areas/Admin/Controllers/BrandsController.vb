@@ -61,6 +61,9 @@ Namespace Areas.Admin.Controllers
 		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Async Function Create(model As Brand, imageFile As HttpPostedFileWrapper) As Task(Of ActionResult)
+			If Await manager.NameExistsAsync(model) Then
+				ModelState.AddModelError("Name", "Такое имя уже существует.")
+			End If
 			If Not IsNothing(imageFile) AndAlso Not imageFile.ContentType.Contains("image") Then
 				ModelState.AddModelError("ImageId", "Файл не является изображением.")
 			End If
@@ -89,6 +92,9 @@ Namespace Areas.Admin.Controllers
 		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Brand, imageFile As HttpPostedFileWrapper, returnUrl As String) As Task(Of ActionResult)
+			If Await manager.NameExistsAsync(model) Then
+				ModelState.AddModelError("Name", "Такое имя уже существует.")
+			End If
 			If Not IsNothing(imageFile) AndAlso Not imageFile.ContentType.Contains("image") Then
 				ModelState.AddModelError("ImageId", "Файл не является изображением.")
 			End If
@@ -129,6 +135,14 @@ Namespace Areas.Admin.Controllers
 			Await manager.DeleteAsync(entity)
 			TempData("Message") = "Бренд удален."
 			Return RedirectToAction("index")
+		End Function
+
+		<HttpGet>
+		Public Function Exists(id As Guid?, name As String) As ActionResult
+			If manager.Brands.AsNoTracking().Any(Function(x) Not x.Id = id And x.Name = name) Then
+				Return Json(False, JsonRequestBehavior.AllowGet)
+			End If
+			Return Json(True, JsonRequestBehavior.AllowGet)
 		End Function
 
 		Protected Overrides Sub Dispose(disposing As Boolean)

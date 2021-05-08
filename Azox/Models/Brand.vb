@@ -33,6 +33,7 @@ Public Class Brand
 
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
 	<RegularExpression("^[-\w]+$", ErrorMessage:="Используются недопустимые символы.")>
+	<Remote("Exists", "Brands", "Admin", AdditionalFields:="Id", ErrorMessage:="Такое имя уже существует.")>
 	<Display(Name:="Имя")>
 	Public Property Name As String
 
