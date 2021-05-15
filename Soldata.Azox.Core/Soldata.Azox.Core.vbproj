@@ -69,6 +69,7 @@
     <Compile Include="IEntity.vb" />
     <Compile Include="IImageable.vb" />
     <Compile Include="IPage.vb" />
+    <Compile Include="IPathable.vb" />
     <Compile Include="ManagerResult.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
