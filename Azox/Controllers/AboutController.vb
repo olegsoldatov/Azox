@@ -1,26 +1,20 @@
-﻿Imports System.Data.Entity
-Imports System.Threading.Tasks
+﻿Imports System.Threading.Tasks
 
 Namespace Controllers
 	Public Class AboutController
-		Inherits Controller
+		Inherits ManagerController(Of PathableEntityManager(Of Page), Page)
 
-		Private ReadOnly db As New ApplicationDbContext
+		Public Sub New()
+			MyBase.New(New PathableEntityManager(Of Page))
+		End Sub
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim model = Await db.Pages.FirstOrDefaultAsync(Function(x) x.Slug = Request.Url.AbsolutePath)
+			Dim model = Await Manager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
 			Return View(model)
 		End Function
-
-		Protected Overrides Sub Dispose(disposing As Boolean)
-			If disposing Then
-				db.Dispose()
-			End If
-			MyBase.Dispose(disposing)
-		End Sub
 	End Class
 End Namespace

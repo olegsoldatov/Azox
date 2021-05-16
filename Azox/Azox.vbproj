@@ -221,6 +221,8 @@
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
     <Compile Include="Areas\Admin\Models\CategoryChangeViewModel.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
+    <Compile Include="Controllers\ManagerController.vb" />
+    <Compile Include="Controllers\PagesController.vb" />
     <Compile Include="Core\BrandManager.vb" />
     <Compile Include="Core\CatalogManager.vb" />
     <Compile Include="App_Start\FormatConfig.vb" />
@@ -241,6 +243,7 @@
     <Compile Include="Core\CategoryAdminItem.vb" />
     <Compile Include="Core\CategoryListItem.vb" />
     <Compile Include="Core\CategoryManager.vb" />
+    <Compile Include="Core\EntityManagers.vb" />
     <Compile Include="Core\ImageService.vb" />
     <Compile Include="Core\Popular.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
@@ -1219,6 +1222,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Cart\" />
+    <Folder Include="Views\Pages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

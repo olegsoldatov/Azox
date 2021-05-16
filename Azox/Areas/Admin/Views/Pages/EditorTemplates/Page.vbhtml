@@ -23,9 +23,9 @@
 					@Html.EditorFor(Function(model) model.Content, New With {.htmlAttributes = New With {.class = "form-control"}})
 				</div>
 				<div class="form-group">
-					@Html.LabelFor(Function(model) model.Slug, htmlAttributes:=New With {.class = "control-label"})
-					@Html.ValidationMessageFor(Function(model) model.Slug, "", New With {.class = "text-danger"})
-					@Html.EditorFor(Function(model) model.Slug, New With {.htmlAttributes = New With {.class = "form-control", .placeholder = "/example"}})
+					@Html.LabelFor(Function(model) model.AbsolutePath, htmlAttributes:=New With {.class = "control-label"})
+					@Html.ValidationMessageFor(Function(model) model.AbsolutePath, "", New With {.class = "text-danger"})
+					@Html.EditorFor(Function(model) model.AbsolutePath, New With {.htmlAttributes = New With {.class = "form-control", .placeholder = "/example"}})
 				</div>
 			</div>
 		</div>

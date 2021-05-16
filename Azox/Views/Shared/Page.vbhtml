@@ -1,4 +1,5 @@
-﻿@ModelType IPage
+﻿@Imports Soldata.Azox
+@ModelType IPage
 @Code
 	ViewBag.Title = Model.Title
 	ViewBag.Description = Model.Description

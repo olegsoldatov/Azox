@@ -3,7 +3,7 @@ Imports System.Data.Entity
 Imports Soldata.Azox
 
 Public Class Page
-	Implements IPage
+	Implements IPathable, IPage
 
 	<Key>
 	Public Property Id As Guid Implements IPage.Id
@@ -19,11 +19,10 @@ Public Class Page
 	<UIHint("Content")>
 	Public Property Content As String Implements IPage.Content
 
-	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<RegularExpression("\/[-\w/~%.]+", ErrorMessage:="Используется недопустимый формат.")>
-	<Remote("Exists", "Pages", "Admin", AdditionalFields:="Id", ErrorMessage:="Такой ярлык уже существует.")>
-	<Display(Name:="Ярлык")>
-	Public Property Slug As String
+	<RegularExpression("^\/[-\w/]+$", ErrorMessage:="Используется недопустимый формат.")>
+	<Remote("Exists", "Pages", "Admin", AdditionalFields:="Id", ErrorMessage:="Такой путь уже существует.")>
+	<Display(Name:="Абсолютный путь")>
+	Public Property AbsolutePath As String Implements IPathable.AbsolutePath
 
 	<ScaffoldColumn(False)>
 	Public Property LastUpdateDate As Date

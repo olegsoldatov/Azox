@@ -1,17 +1,18 @@
-﻿Imports System.Data.Entity
-Imports System.Net
+﻿Imports System.Net
 Imports System.Threading.Tasks
 Imports Microsoft.AspNet.Identity
 
 Namespace Controllers
 	Public Class ContactsController
-		Inherits Controller
+		Inherits ManagerController(Of PathableEntityManager(Of Page), Page)
 
-		Private ReadOnly Db As New ApplicationDbContext
+		Public Sub New()
+			MyBase.New(New PathableEntityManager(Of Page))
+		End Sub
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim model = Await Db.Pages.FirstOrDefaultAsync(Function(x) x.Slug = Request.Url.AbsolutePath)
+			Dim model = Await Manager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -40,12 +41,5 @@ Namespace Controllers
 
 			Return body.ToString
 		End Function
-
-		Protected Overrides Sub Dispose(disposing As Boolean)
-			If disposing Then
-				Db.Dispose()
-			End If
-			MyBase.Dispose(disposing)
-		End Sub
 	End Class
 End Namespace

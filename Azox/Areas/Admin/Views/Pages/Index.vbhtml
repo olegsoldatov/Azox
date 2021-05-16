@@ -41,7 +41,7 @@ End Section
 								@Html.DisplayNameFor(Function(model) model.Title)
 							</th>
 							<th>
-								@Html.DisplayNameFor(Function(model) model.Slug)
+								@Html.DisplayNameFor(Function(model) model.AbsolutePath)
 							</th>
 							<th width="100"></th>
 						</tr>
@@ -56,7 +56,7 @@ End Section
 									@Html.ActionLink(item.Title, "edit", New With {.id = item.Id}, New With {.title = item.Title})
 								</td>
 								<td>
-									@item.Slug
+									@item.AbsolutePath
 								</td>
 								<td class="text-right">
 									<a href="@Url.Action("details", New With {.area = "", .id = item.Id})" title="Посмотреть" target="_blank"><span class="fa fa-external-link"></span></a>
