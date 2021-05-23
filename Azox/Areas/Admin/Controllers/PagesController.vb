@@ -2,19 +2,16 @@
 Imports System.Net
 Imports System.Threading.Tasks
 Imports Soldata.Web.Extensions
-Imports Azox.Controllers
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class PagesController
-		Inherits ManagerController(Of EntityManager(Of Page), Page)
+		Inherits Controller
 
-		Public Sub New()
-			MyBase.New(New EntityManager(Of Page))
-		End Sub
+		Private ReadOnly pageManager As New EntityManager(Of Page)
 
 		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = Manager.Entities
+			Dim entities = pageManager.Items
 
 			' Фильтр.
 			ViewBag.Filter = filter
@@ -41,10 +38,10 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = Await manager.Entities.Where(Function(x) id.Contains(x.Id)).ToListAsync()
+				Dim entities = Await pageManager.Items.Where(Function(x) id.Contains(x.Id)).ToListAsync()
 
 				If delete Then
-					Await manager.DeleteAsync(entities)
+					Await pageManager.DeleteAsync(entities)
 					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("страница", "страницы", "страниц"))
 				End If
 			End If
@@ -63,7 +60,7 @@ Namespace Areas.Admin.Controllers
 			If ModelState.IsValid Then
 				model.Id = Guid.NewGuid
 				model.LastUpdateDate = Now
-				Await manager.CreateAsync(model)
+				Await pageManager.CreateAsync(model)
 				TempData("Message") = "Страница добавлена."
 				Return RedirectToAction("index")
 			End If
@@ -74,7 +71,7 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await manager.FindByIdAsync(id)
+			Dim model = Await pageManager.FindByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -85,7 +82,7 @@ Namespace Areas.Admin.Controllers
 		Public Async Function Edit(model As Page, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				model.LastUpdateDate = Now
-				Await manager.UpdateAsync(model)
+				Await pageManager.UpdateAsync(model)
 				TempData("Message") = "Страница изменена."
 				If String.IsNullOrEmpty(returnUrl) Then
 					Return RedirectToAction("index")
@@ -100,7 +97,7 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await manager.FindByIdAsync(id)
+			Dim model = Await pageManager.FindByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -111,17 +108,24 @@ Namespace Areas.Admin.Controllers
 		<ActionName("Delete")>
 		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
-			Await manager.DeleteAsync(Await manager.FindByIdAsync(id))
+			Await pageManager.DeleteAsync(Await pageManager.FindByIdAsync(id))
 			TempData("Message") = "Страница удалена."
 			Return RedirectToAction("index")
 		End Function
 
 		<HttpGet>
 		Public Function Exists(id As Guid?, absolutePath As String) As ActionResult
-			If Manager.Entities.AsNoTracking().Any(Function(x) Not x.Id = id And x.AbsolutePath = absolutePath) Then
+			If pageManager.Items.AsNoTracking().Any(Function(x) Not x.Id = id And x.AbsolutePath = absolutePath) Then
 				Return Json(False, JsonRequestBehavior.AllowGet)
 			End If
 			Return Json(True, JsonRequestBehavior.AllowGet)
 		End Function
+
+		Protected Overrides Sub Dispose(disposing As Boolean)
+			If disposing Then
+				pageManager.Dispose()
+			End If
+			MyBase.Dispose(disposing)
+		End Sub
 	End Class
 End Namespace

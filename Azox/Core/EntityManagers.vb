@@ -74,7 +74,7 @@ Public Class EntityManager(Of TEntity As {Class, IEntity})
 	''' <summary>
 	''' Возвращает перечисление сущностей с возможностью запросов.
 	''' </summary>
-	Public ReadOnly Property Entities As IQueryable(Of TEntity)
+	Public ReadOnly Property Items As IQueryable(Of TEntity)
 		Get
 			Return Context.Set(Of TEntity)
 		End Get

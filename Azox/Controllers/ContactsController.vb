@@ -4,15 +4,13 @@ Imports Microsoft.AspNet.Identity
 
 Namespace Controllers
 	Public Class ContactsController
-		Inherits ManagerController(Of PathableEntityManager(Of Page), Page)
+		Inherits Controller
 
-		Public Sub New()
-			MyBase.New(New PathableEntityManager(Of Page))
-		End Sub
+		Private ReadOnly pageManager As New PathableEntityManager(Of Page)
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim model = Await Manager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
+			Dim model = Await pageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -41,5 +39,12 @@ Namespace Controllers
 
 			Return body.ToString
 		End Function
+
+		Protected Overrides Sub Dispose(disposing As Boolean)
+			If disposing Then
+				pageManager.Dispose()
+			End If
+			MyBase.Dispose(disposing)
+		End Sub
 	End Class
 End Namespace
