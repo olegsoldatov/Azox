@@ -18,7 +18,7 @@ Public Class ManagerResult
 	''' <param name="errors"></param>
 	Public Sub New(errors As IEnumerable(Of String))
 		If IsNothing(errors) Then
-			errors = {"Ошибка диспетчера сущности."}
+			errors = {My.Resources.DefaultError}
 		End If
 		Succeeded = False
 		Me.Errors = errors

@@ -59,5 +59,14 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Произошел неизвестный сбой..
+        '''</summary>
+        Friend ReadOnly Property DefaultError() As String
+            Get
+                Return ResourceManager.GetString("DefaultError", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace
