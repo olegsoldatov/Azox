@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IEntity.vb" />
+    <Compile Include="IEntityStore.vb" />
     <Compile Include="IImageable.vb" />
     <Compile Include="IPage.vb" />
     <Compile Include="IPathable.vb" />
