@@ -1,12 +1,13 @@
 ﻿Imports System.Net
 Imports System.Threading.Tasks
 Imports Microsoft.AspNet.Identity
+Imports Azox.Business
 
 Namespace Controllers
 	Public Class ContactsController
 		Inherits Controller
 
-		Private ReadOnly pageManager As New PathableEntityManager(Of Page)
+		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)

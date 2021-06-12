@@ -1,10 +1,11 @@
 ﻿Imports System.Threading.Tasks
+Imports Azox.Business
 
 Namespace Controllers
 	Public Class AboutController
 		Inherits Controller
 
-		Private ReadOnly pageManager As New PathableEntityManager(Of Page)
+		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)

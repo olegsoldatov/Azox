@@ -220,6 +220,7 @@
     <Compile Include="Areas\Admin\Controllers\CustomersController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
     <Compile Include="Areas\Admin\Models\CategoryChangeViewModel.vb" />
+    <Compile Include="Business\PageManager.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
     <Compile Include="Controllers\PagesController.vb" />
     <Compile Include="Core\BrandManager.vb" />
@@ -242,7 +243,7 @@
     <Compile Include="Core\CategoryAdminItem.vb" />
     <Compile Include="Core\CategoryListItem.vb" />
     <Compile Include="Core\CategoryManager.vb" />
-    <Compile Include="Core\EntityManagers.vb" />
+    <Compile Include="Core\EntityManager.vb" />
     <Compile Include="Core\ImageService.vb" />
     <Compile Include="Core\Popular.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
@@ -281,6 +282,7 @@
     <Compile Include="Models\ProductViewModels.vb" />
     <Compile Include="Models\Product.vb" />
     <Compile Include="Models\Warehouse.vb" />
+    <Compile Include="Mvc\BaseController.vb" />
     <Compile Include="Utilities\SlugUtility.vb" />
     <Compile Include="Models\ContactFormViewModel.vb" />
     <Compile Include="Models\IdentityModels.vb" />
@@ -1220,6 +1222,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Pages\" />
   </ItemGroup>

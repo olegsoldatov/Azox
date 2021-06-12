@@ -1,12 +1,13 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class CustomersController
-		Inherits Controller
+		Inherits BaseController
 
 		Private ReadOnly db As New ApplicationDbContext
 
@@ -25,12 +26,7 @@ Namespace Areas.Admin.Controllers
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Name)
 
-			' Пагинация.
-			Dim count = Await entities.AsNoTracking.CountAsync
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageSize = pageSize
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
+			Pagination(Await entities.CountAsync)
 
 			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
 		End Function

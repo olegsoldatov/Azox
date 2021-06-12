@@ -2,12 +2,13 @@
 Imports System.Net
 Imports System.Threading.Tasks
 Imports System.Web.Configuration
+Imports Azox.Mvc
 Imports Soldata.Imaging
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class ProductsController
-		Inherits Controller
+		Inherits BaseController
 
 		Private ReadOnly db As New ApplicationDbContext
 		Private ReadOnly manager As New CatalogManager
@@ -37,14 +38,10 @@ Namespace Areas.Admin.Controllers
 			ViewBag.CategoryId = New SelectList(parameters.Select(Function(x) x.Category).Where(Function(x) Not IsNothing(x)).GroupBy(Function(x) x).Select(Function(x) New With {x.Key.Id, .Name = x.Key.GetPath}).OrderBy(Function(x) x.Name), "Id", "Name")
 			ViewBag.Filter = filter
 
-			' Количество и пагинация.
-			Dim count = Await entities.CountAsync
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
-
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
+
+			Pagination(Await entities.CountAsync)
 
 			Return View((Await entities _
 				.Select(Function(x) New With {

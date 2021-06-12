@@ -1,17 +1,19 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 Imports Soldata.Web.Extensions
+Imports Azox.Business
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class PagesController
-		Inherits Controller
+		Inherits BaseController
 
-		Private ReadOnly pageManager As New EntityManager(Of Page)
+		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
 
 		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = pageManager.Items
+			Dim entities = pageManager.Pages
 
 			' Фильтр.
 			ViewBag.Filter = filter
@@ -22,14 +24,10 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
-			' Количество и пагинация.
-			Dim count = Await entities.AsNoTracking().CountAsync()
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
-
 			' Сортировка (по умолчанию по дате изменения).
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
+
+			Pagination(Await entities.CountAsync)
 
 			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking().ToListAsync())
 		End Function
@@ -38,10 +36,10 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = Await pageManager.Items.Where(Function(x) id.Contains(x.Id)).ToListAsync()
+				Dim entities = Await pageManager.Pages.Where(Function(x) id.Contains(x.Id)).ToListAsync()
 
 				If delete Then
-					Await pageManager.DeleteAsync(entities)
+					Await pageManager.DeleteRangeAsync(entities)
 					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("страница", "страницы", "страниц"))
 				End If
 			End If
@@ -115,7 +113,7 @@ Namespace Areas.Admin.Controllers
 
 		<HttpGet>
 		Public Function Exists(id As Guid?, absolutePath As String) As ActionResult
-			If pageManager.Items.AsNoTracking().Any(Function(x) Not x.Id = id And x.AbsolutePath = absolutePath) Then
+			If pageManager.Pages.AsNoTracking().Any(Function(x) Not x.Id = id And x.AbsolutePath = absolutePath) Then
 				Return Json(False, JsonRequestBehavior.AllowGet)
 			End If
 			Return Json(True, JsonRequestBehavior.AllowGet)

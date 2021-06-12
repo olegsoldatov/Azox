@@ -3,11 +3,12 @@ Imports System.Threading.Tasks
 Imports System.Net
 Imports Soldata.Web.Extensions
 Imports System.Drawing
+Imports Azox.Mvc
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class BrandsController
-		Inherits Controller
+		Inherits BaseController
 
 		Private ReadOnly manager As New BrandManager
 		Private ReadOnly imageService As New ImageService With {.SmallConfiguration = New ImageConfiguration With {.Width = 320, .Height = 320, .Background = Color.White}}
@@ -23,15 +24,10 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s) Or x.Name.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
-			' Количество и пагинация.
-			Dim count = Await entities.AsNoTracking().CountAsync()
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageSize = pageSize
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
-
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Title)
+
+			Pagination(Await entities.CountAsync)
 
 			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking().ToListAsync())
 		End Function

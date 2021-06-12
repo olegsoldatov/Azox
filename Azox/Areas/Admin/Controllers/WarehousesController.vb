@@ -1,12 +1,13 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class WarehousesController
-		Inherits Controller
+		Inherits BaseController
 
 		Private ReadOnly db As New ApplicationDbContext
 
@@ -32,13 +33,6 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.MarginGroupId = filter.MarginGroupId)
 			End If
 
-			' Количество и пагинация.
-			Dim count As Integer = Await entities.CountAsync
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageSize = pageSize
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
-
 			' Сортировка.
 			entities = entities.OrderBy(Function(x) x.Title) _
 				.ThenBy(Function(x) x.Name) _
@@ -48,6 +42,8 @@ Namespace Areas.Admin.Controllers
 			ViewBag.Company = New SelectList(db.Warehouses.AsNoTracking.Select(Function(x) x.Company).GroupBy(Function(x) x).Select(Function(x) x.Key).OrderBy(Function(x) x))
 			ViewBag.MarginGroupId = New SelectList(db.MarginGroups.OrderBy(Function(x) x.Title).AsNoTracking, "Id", "Title", filter.MarginGroupId)
 			ViewBag.Filter = filter
+
+			Pagination(Await entities.CountAsync)
 
 			Dim model = Await entities _
 				.Skip(pageIndex * pageSize) _

@@ -1,13 +1,14 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 Imports Soldata.Imaging
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
 	Public Class CategoriesController
-		Inherits Controller
+		Inherits BaseController
 
 		Private ReadOnly manager As New CategoryManager
 		Private ReadOnly imageService As New ImageService With {
@@ -27,15 +28,10 @@ Namespace Areas.Admin.Controllers
 				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s) Or x.Name.ToLower.Replace("ё", "е").Contains(s))
 			End If
 
-			' Количество и пагинация.
-			Dim count = Await entities.AsNoTracking().CountAsync()
-			ViewBag.Count = count
-			ViewBag.PageIndex = pageIndex
-			ViewBag.PageSize = pageSize
-			ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
-
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Title)
+
+			Pagination(Await entities.CountAsync)
 
 			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking().ToListAsync())
 		End Function
