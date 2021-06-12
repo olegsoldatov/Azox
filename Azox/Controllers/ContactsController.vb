@@ -1,7 +1,6 @@
 ﻿Imports System.Net
 Imports System.Threading.Tasks
 Imports Microsoft.AspNet.Identity
-Imports Azox.Business
 
 Namespace Controllers
 	Public Class ContactsController

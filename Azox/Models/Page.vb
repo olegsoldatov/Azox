@@ -3,10 +3,8 @@ Imports System.Data.Entity
 Imports Soldata.Azox
 
 Public Class Page
-	Implements IPathable, IPage
-
-	<Key>
-	Public Property Id As Guid Implements IPage.Id
+	Inherits Entity
+	Implements IPage
 
 	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
@@ -22,7 +20,7 @@ Public Class Page
 	<RegularExpression("^\/[-\w/]+$", ErrorMessage:="Используется недопустимый формат.")>
 	<Remote("Exists", "Pages", "Admin", AdditionalFields:="Id", ErrorMessage:="Такой путь уже существует.")>
 	<Display(Name:="Абсолютный путь")>
-	Public Property AbsolutePath As String Implements IPathable.AbsolutePath
+	Public Property AbsolutePath As String
 
 	<ScaffoldColumn(False)>
 	Public Property LastUpdateDate As Date

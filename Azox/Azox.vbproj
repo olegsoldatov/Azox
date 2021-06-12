@@ -272,6 +272,7 @@
     <Compile Include="Models\CatalogViewModels.vb" />
     <Compile Include="Models\Category.vb" />
     <Compile Include="Models\Customers.vb" />
+    <Compile Include="Models\Entity.vb" />
     <Compile Include="Models\Image.vb" />
     <Compile Include="Models\MarginModels.vb" />
     <Compile Include="Models\Offer.vb" />
@@ -1224,6 +1225,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Cart\" />
+    <Folder Include="Views\Cat\" />
     <Folder Include="Views\Pages\" />
   </ItemGroup>
   <ItemGroup>
