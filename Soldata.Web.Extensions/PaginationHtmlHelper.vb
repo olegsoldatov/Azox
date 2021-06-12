@@ -3,18 +3,14 @@ Imports System.Web.Routing
 Imports System.Runtime.CompilerServices
 
 ''' <summary>
-''' Предоставляет методы расширения для визуализации элементов постраничной навигации.
+''' Предоставляет методы расширения для постраничной навигации.
 ''' </summary>
 Public Module PaginationHtmlHelper
-	Private _PageIndex As Integer
-	Private _PageCount As Integer
-	Private _ViewContext As ViewContext
-
 	''' <summary>
-	''' Отображает немаркированный список постраничной навигации.
+	''' Отображает постраничную навигацию.
 	''' </summary>
 	''' <param name="helper">Экземпляр вспомогательного метода HTML, который расширяется данным методом.</param>
-	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку элементов постраничной навигации.</returns>
+	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку постраничной навигации.</returns>
 	''' <remarks></remarks>
 	<Extension()>
 	Public Function Pagination(helper As HtmlHelper) As MvcHtmlString
@@ -22,11 +18,11 @@ Public Module PaginationHtmlHelper
 	End Function
 
 	''' <summary>
-	''' Отображает немаркированный список постраничной навигации.
+	''' Отображает постраничную навигацию.
 	''' </summary>
 	''' <param name="helper">Экземпляр вспомогательного метода HTML, который расширяется данным методом.</param>
 	''' <param name="htmlAttributes">Объект, который содержит HTML-аттрибуты для элемента.</param>
-	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку элементов постраничной навигации.</returns>
+	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку постраничной навигации.</returns>
 	''' <remarks></remarks>
 	<Extension()>
 	Public Function Pagination(helper As HtmlHelper, htmlAttributes As Object) As MvcHtmlString
@@ -34,88 +30,113 @@ Public Module PaginationHtmlHelper
 	End Function
 
 	''' <summary>
-	''' Отображает немаркированный список постраничной навигации.
+	''' Отображает постраничную навигацию.
 	''' </summary>
 	''' <param name="helper">Экземпляр вспомогательного метода HTML, который расширяется данным методом.</param>
 	''' <param name="paginationOptions">Объект, предоставляющий параметры визуализации.</param>
 	''' <param name="htmlAttributes">Объект, который содержит HTML-аттрибуты для элемента.</param>
-	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку элементов постраничной навигации.</returns>
+	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку постраничной навигации.</returns>
 	''' <remarks></remarks>
 	<Extension()>
 	Public Function Pagination(helper As HtmlHelper, paginationOptions As PaginationOptions, htmlAttributes As Object) As MvcHtmlString
-		Return Pagination(helper, helper.ViewBag.PageIndex, helper.ViewBag.PageCount, paginationOptions, htmlAttributes)
+		Return Pagination(helper, helper.ViewBag.TotalCount, helper.ViewBag.PageIndex, helper.ViewBag.PageSize, paginationOptions, htmlAttributes)
 	End Function
 
 	''' <summary>
-	''' Отображает немаркированный список постраничной навигации.
+	''' Отображает постраничную навигацию.
 	''' </summary>
 	''' <param name="helper">Экземпляр вспомогательного метода HTML, который расширяется данным методом.</param>
 	''' <param name="pageIndex">Индекс страницы.</param>
 	''' <param name="pageCount">Количество страниц.</param>
 	''' <param name="paginationOptions">Объект, предоставляющий параметры визуализации.</param>
 	''' <param name="htmlAttributes">Объект, который содержит HTML-аттрибуты для элемента.</param>
-	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку элементов постраничной навигации.</returns>
+	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку постраничной навигации.</returns>
+	<Obsolete>
 	<Extension()>
 	Public Function Pagination(helper As HtmlHelper, pageIndex As Integer, pageCount As Integer, paginationOptions As PaginationOptions, htmlAttributes As Object) As MvcHtmlString
-		If pageCount <= 1 Then Return MvcHtmlString.Empty
-
-		_PageIndex = pageIndex
-		_PageCount = pageCount
-		_ViewContext = If(helper.ViewContext.IsChildAction, helper.ViewContext.ParentActionViewContext, helper.ViewContext)
-
-		Return MvcHtmlString.Create(BuildUl(paginationOptions, htmlAttributes))
+		Return Pagination(helper, helper.ViewBag.TotalCount, pageIndex, helper.ViewBag.PageSize, paginationOptions, htmlAttributes)
 	End Function
 
-	Private Function BuildUl(options As PaginationOptions, htmlAttributes As Object) As String
-		Dim ul As New TagBuilder("ul")
+	''' <summary>
+	''' Отображает постраничную навигацию.
+	''' </summary>
+	''' <param name="helper">Экземпляр вспомогательного метода HTML, который расширяется данным методом.</param>
+	''' <param name="totalCount">Общее количество элементов в списке.</param>
+	''' <param name="pageIndex">Индекс страницы.</param>
+	''' <param name="pageSize">Размер списка на странице.</param>
+	''' <param name="paginationOptions">Объект, предоставляющий параметры визуализации.</param>
+	''' <param name="htmlAttributes">Объект, который содержит HTML-аттрибуты для элемента.</param>
+	''' <returns>Объект <see cref="MvcHtmlString" />, содержащий HTML-разметку постраничной навигации.</returns>
+	<Extension()>
+	Public Function Pagination(helper As HtmlHelper, totalCount As Integer, pageIndex As Integer, pageSize As Integer, paginationOptions As PaginationOptions, htmlAttributes As Object) As MvcHtmlString
+		If totalCount < 0 Then
+			Return MvcHtmlString.Empty
+		End If
 
+		If pageIndex < 0 Then
+			Return MvcHtmlString.Empty
+		End If
+
+		If pageSize < 1 Then
+			Return MvcHtmlString.Empty
+		End If
+
+		Return MvcHtmlString.Create(BuildUl(If(helper.ViewContext.IsChildAction, helper.ViewContext.ParentActionViewContext, helper.ViewContext), totalCount, pageIndex, pageSize, paginationOptions, htmlAttributes))
+	End Function
+
+	Private Function BuildUl(viewContext As ViewContext, totalCount As Integer, pageIndex As Integer, pageSize As Integer, options As PaginationOptions, htmlAttributes As Object) As String
+		Dim pageCount = CInt(Math.Ceiling(totalCount / pageSize))
+		If pageCount <= 1 Then
+			Return String.Empty
+		End If
+
+		Dim ul As New TagBuilder("ul")
 		With ul
 			.MergeAttributes(New RouteValueDictionary(htmlAttributes))
 
 			' Ссылка на предыдущую страницу.
 			If Not options.HidePreviousNext Then
-				If _PageIndex > 0 And Not String.IsNullOrEmpty(options.PreviousText) Then
-					.InnerHtml += BuildPageItem(_PageIndex - 1, options.PreviousText, PageItemState.Normal, options)
+				If pageIndex > 0 And Not String.IsNullOrEmpty(options.PreviousText) Then
+					.InnerHtml += BuildPageItem(viewContext, pageIndex - 1, options.PreviousText, PageItemState.Normal, options)
 				End If
 			End If
 
 			' Начальная страница.
-			.InnerHtml += BuildPageItem(0, "1", If(_PageIndex = 0, PageItemState.Active, PageItemState.Normal), options)
+			.InnerHtml += BuildPageItem(viewContext, 0, "1", If(pageIndex = 0, PageItemState.Active, PageItemState.Normal), options)
 
-			Dim startIndex = If(_PageIndex - 4 < 1, 1, _PageIndex - 4)
-			Dim count = If(_PageIndex + 4 >= _PageCount - 2, _PageCount - 2, _PageIndex + 4)
+			Dim startIndex = If(pageIndex - 4 < 1, 1, pageIndex - 4)
+			Dim count = If(pageIndex + 4 >= pageCount - 2, pageCount - 2, pageIndex + 4)
 
 			' Разделитель в начале.
 			If startIndex > 1 Then
-				.InnerHtml += BuildPageItem(0, "…", PageItemState.Disabled, options)
+				.InnerHtml += BuildPageItem(viewContext, 0, "…", PageItemState.Disabled, options)
 			End If
 
 			For i = startIndex To count
-				.InnerHtml += BuildPageItem(i, (i + 1).ToString, If(_PageIndex = i, PageItemState.Active, PageItemState.Normal), options)
+				.InnerHtml += BuildPageItem(viewContext, i, (i + 1).ToString, If(pageIndex = i, PageItemState.Active, PageItemState.Normal), options)
 			Next
 
 			' Разделитель в конце.
-			If _PageCount - count > 2 Then
-				.InnerHtml += BuildPageItem(0, "…", PageItemState.Disabled, options)
+			If pageCount - count > 2 Then
+				.InnerHtml += BuildPageItem(viewContext, 0, "…", PageItemState.Disabled, options)
 			End If
 
 			' Последняя страница.
-			.InnerHtml += BuildPageItem(_PageCount - 1, _PageCount.ToString, If(_PageIndex = _PageCount - 1, PageItemState.Active, PageItemState.Normal), options)
+			.InnerHtml += BuildPageItem(viewContext, pageCount - 1, pageCount.ToString, If(pageIndex = pageCount - 1, PageItemState.Active, PageItemState.Normal), options)
 
 			' Ссылка на следующую страницу.
 			If Not options.HidePreviousNext Then
-				If _PageIndex < (_PageCount - 1) And Not String.IsNullOrEmpty(options.NextText) Then
-					.InnerHtml += BuildPageItem(_PageIndex + 1, options.NextText, PageItemState.Normal, options)
+				If pageIndex < (pageCount - 1) And Not String.IsNullOrEmpty(options.NextText) Then
+					.InnerHtml += BuildPageItem(viewContext, pageIndex + 1, options.NextText, PageItemState.Normal, options)
 				End If
 			End If
 		End With
-
 		Return ul.ToString(TagRenderMode.Normal)
 	End Function
 
-	Private Function BuildPageItem(pageIndex As Integer, innerText As String, state As PageItemState, options As PaginationOptions) As String
-		Dim routeValues As New RouteValueDictionary(_ViewContext.RouteData.Values)
-		Dim queryString = _ViewContext.HttpContext.Request.QueryString
+	Private Function BuildPageItem(viewContext As ViewContext, pageIndex As Integer, innerText As String, state As PageItemState, options As PaginationOptions) As String
+		Dim routeValues As New RouteValueDictionary(viewContext.RouteData.Values)
+		Dim queryString = viewContext.HttpContext.Request.QueryString
 
 		For Each key In queryString.AllKeys
 			If Not key = options.PageIndexName Then
@@ -126,7 +147,7 @@ Public Module PaginationHtmlHelper
 			routeValues.Add(options.PageIndexName, pageIndex)
 		End If
 
-		Dim result As New TagBuilder("li") With {.InnerHtml = BuildPageLink(innerText, state, New UrlHelper(_ViewContext.RequestContext).RouteUrl(routeValues), options)}
+		Dim result As New TagBuilder("li") With {.InnerHtml = BuildPageLink(innerText, state, New UrlHelper(viewContext.RequestContext).RouteUrl(routeValues), options)}
 
 		Select Case state
 			Case PageItemState.Disabled

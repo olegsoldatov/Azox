@@ -25,7 +25,7 @@ Namespace Areas.Admin.Controllers
 			' Сортировка.
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Name)
 
-			Pagination(Await entities.CountAsync)
+			Pagination(Await entities.CountAsync, pageIndex, pageSize)
 
 			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
 		End Function

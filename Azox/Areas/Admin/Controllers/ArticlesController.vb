@@ -24,7 +24,7 @@ Namespace Areas.Admin.Controllers
 			' Фильтр.
 			ViewBag.Filter = filter
 
-			Pagination(Await entities.CountAsync)
+			Pagination(Await entities.CountAsync, pageIndex, pageSize)
 
 			Dim result = Await entities _
 				.Skip(pageIndex * pageSize) _

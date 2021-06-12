@@ -25,7 +25,7 @@ End Code
 End Section
 
 <header>
-	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.Count).ToString("товар", "товара", "товаров")</sup></h1>
+	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("товар", "товара", "товаров")</sup></h1>
 	@Html.Partial("_Filter", ViewBag.Filter)
 	@Html.Pagination(New With {.class = "pagination"})
 </header>

@@ -25,16 +25,16 @@ Namespace Areas.Admin.Controllers
 			' Сортировка (по умолчанию по дате изменения).
 			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
 
-			Pagination(Await entities.CountAsync)
+			Pagination(Await entities.CountAsync, pageIndex, pageSize)
 
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking().ToListAsync())
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
 		End Function
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = Await pageManager.Pages.Where(Function(x) id.Contains(x.Id)).ToListAsync()
+				Dim entities = Await pageManager.Pages.Where(Function(x) id.Contains(x.Id)).ToListAsync
 
 				If delete Then
 					Await pageManager.DeleteRangeAsync(entities)

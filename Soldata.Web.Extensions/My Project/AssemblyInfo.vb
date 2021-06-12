@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("Soldata.Web.Extensions")>
-<Assembly: AssemblyDescription("Вспомогательные методы расширения.")>
-<Assembly: AssemblyCompany("Soldata")>
+<Assembly: AssemblyDescription("Методы расширения для веб-приложений на ASP.NET 4.x")>
+<Assembly: AssemblyCompany("Софт Бизнес")>
 <Assembly: AssemblyProduct("Soldata.Web")>
-<Assembly: AssemblyCopyright("© Soldata, 2019")>
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyCopyright("© Софт Бизнес, 2021")>
+<Assembly: AssemblyTrademark("Azox")>
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.6.9.*")>
-<Assembly: AssemblyFileVersion("1.6.9")>
+<Assembly: AssemblyVersion("1.7.0")>
+<Assembly: AssemblyFileVersion("1.7.0")>

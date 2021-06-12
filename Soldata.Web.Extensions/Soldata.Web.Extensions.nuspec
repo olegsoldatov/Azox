@@ -5,11 +5,11 @@
     <version>$version$</version>
     <title>$title$</title>
     <authors>Oleg Soldatov</authors>
-    <owners>Oleg Soldatov</owners>
+    <owners>Софт Бизнес</owners>
     <language>ru-ru</language>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Soldata, 2019</copyright>
+    <copyright>Soldata, 2021</copyright>
     <tags>ASP.NET MVC</tags>
   </metadata>
   <files>

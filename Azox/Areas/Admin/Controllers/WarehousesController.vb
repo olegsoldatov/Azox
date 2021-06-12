@@ -42,7 +42,7 @@ Namespace Areas.Admin.Controllers
 			ViewBag.MarginGroupId = New SelectList(db.MarginGroups.OrderBy(Function(x) x.Title).AsNoTracking, "Id", "Title", filter.MarginGroupId)
 			ViewBag.Filter = filter
 
-			Pagination(Await entities.CountAsync)
+			Pagination(Await entities.CountAsync, pageIndex, pageSize)
 
 			Dim model = Await entities _
 				.Skip(pageIndex * pageSize) _

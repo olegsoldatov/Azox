@@ -4,14 +4,13 @@
     ''' <summary>
     ''' Передает в представление данные для элемента пагинации.
     ''' </summary>
-    ''' <param name="count">Количество элементов в списке.</param>
-    ''' <param name="pageIndex">Текущий индекс страницы.</param>
-    ''' <param name="pageSize">Количество элементов списка на странице.</param>
-    Protected Friend Sub Pagination(count As Integer, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50)
-        ViewBag.Count = count
+    ''' <param name="totalCount">Количество элементов в списке.</param>
+    ''' <param name="pageIndex">Индекс страницы.</param>
+    ''' <param name="pageSize">Размер списка на странице.</param>
+    Protected Friend Sub Pagination(totalCount As Integer, pageIndex As Integer, pageSize As Integer)
+        ViewBag.TotalCount = totalCount
         ViewBag.PageIndex = pageIndex
         ViewBag.PageSize = pageSize
-        ViewBag.PageCount = CInt(Math.Ceiling(count / pageSize))
     End Sub
 
 

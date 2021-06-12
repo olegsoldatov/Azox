@@ -20,7 +20,7 @@ End Code
 End Section
 
 <header>
-	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.Count).ToString("страница", "страницы", "страниц")</sup></h1>
+	<h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("страница", "страницы", "страниц")</sup></h1>
 	@Html.Partial("_Filter", ViewBag.Filter)
 	@Html.Pagination(New With {.class = "pagination"})
 </header>
