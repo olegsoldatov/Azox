@@ -2,7 +2,6 @@
 Imports System.Net
 Imports System.Threading.Tasks
 Imports System.Web.Configuration
-Imports Azox.Mvc
 Imports Soldata.Imaging
 
 Namespace Areas.Admin.Controllers
