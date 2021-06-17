@@ -2,6 +2,7 @@
 Imports System.Net
 Imports System.Threading.Tasks
 Imports Soldata.Web.Extensions
+Imports Azox.Mvc
 
 Namespace Areas.Admin.Controllers
 	<Authorize>
@@ -11,7 +12,7 @@ Namespace Areas.Admin.Controllers
 		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
 
 		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = pageManager.Pages
+			Dim entities = pageManager.Pages.AsNoTracking
 
 			' Фильтр.
 			ViewBag.Filter = filter
@@ -27,7 +28,7 @@ Namespace Areas.Admin.Controllers
 
 			Pagination(Await entities.CountAsync, pageIndex, pageSize)
 
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).AsNoTracking.ToListAsync)
+			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
 		End Function
 
 		<HttpPost>

@@ -3,6 +3,7 @@ Imports System.Net
 Imports System.Threading.Tasks
 Imports System.Web.Configuration
 Imports Soldata.Imaging
+Imports Azox.Mvc
 
 Namespace Areas.Admin.Controllers
 	<Authorize>

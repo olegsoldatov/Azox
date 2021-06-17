@@ -2,8 +2,7 @@
 Imports System.Data.Entity
 
 Public Class Customer
-	<Key>
-	Public Property Id As Guid
+	Inherits Entity
 
 	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>

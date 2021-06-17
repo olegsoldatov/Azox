@@ -1,6 +1,7 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 
 Namespace Areas.Admin.Controllers
 	<Authorize>

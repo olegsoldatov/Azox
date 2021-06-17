@@ -1,6 +1,7 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
+Imports Azox.Mvc
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
@@ -8,10 +9,10 @@ Namespace Areas.Admin.Controllers
 	Public Class CustomersController
 		Inherits BaseController
 
-		Private ReadOnly db As New ApplicationDbContext
+		Private ReadOnly Property CustomerManager As New CustomerManager(New ApplicationDbContext)
 
 		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = db.Customers.AsQueryable
+			Dim entities = CustomerManager.Customers.AsNoTracking
 
 			' Фильтр.
 			ViewBag.Filter = filter
@@ -34,12 +35,11 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = db.Customers.Where(Function(x) id.Contains(x.Id))
+				Dim entities = CustomerManager.Customers.Where(Function(x) id.Contains(x.Id))
 
 				If delete Then
-					db.Customers.RemoveRange(Await entities.ToListAsync)
-					Await db.SaveChangesAsync
-					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("клиент", "клиента", "клиентов"))
+					Await CustomerManager.DeleteRangeAsync(Await entities.ToListAsync)
+					Toast(String.Format("Удалено: {0}.", id.Length.ToString("клиент", "клиента", "клиентов")))
 				End If
 			End If
 
@@ -55,11 +55,8 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Create(model As Customer) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				model.Id = Guid.NewGuid
-				model.LastUpdateDate = Now
-				db.Customers.Add(model)
-				Await db.SaveChangesAsync
-				TempData("Message") = "Клиент добавлен."
+				Await CustomerManager.CreateAsync(model)
+				Toast("Клиент добавлен.")
 				Return RedirectToAction("index")
 			End If
 			Return View(model)
@@ -69,7 +66,7 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await db.Customers.FindAsync(id)
+			Dim model = Await CustomerManager.FindByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -80,10 +77,8 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Customer, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
-				model.LastUpdateDate = Now
-				db.Entry(model).State = EntityState.Modified
-				Await db.SaveChangesAsync
-				TempData("Message") = "Клиент изменен."
+				Await CustomerManager.UpdateAsync(model)
+				Toast("Клиент изменен.")
 				If String.IsNullOrEmpty(returnUrl) Then
 					Return RedirectToAction("index")
 				Else
@@ -97,7 +92,7 @@ Namespace Areas.Admin.Controllers
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await db.Customers.FindAsync(id)
+			Dim model = Await CustomerManager.FindByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			End If
@@ -108,17 +103,17 @@ Namespace Areas.Admin.Controllers
 		<ActionName("Delete")>
 		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
-			Dim entity = Await db.Customers.FindAsync(id)
-			db.Customers.Remove(entity)
-			Await db.SaveChangesAsync()
-			TempData("Message") = "Клиент удален."
+			Dim entity = Await CustomerManager.FindByIdAsync(id)
+			Await CustomerManager.DeleteAsync(entity)
+			Toast("Клиент удален.")
 			Return RedirectToAction("index")
 		End Function
 
 		Protected Overrides Sub Dispose(disposing As Boolean)
-			If disposing Then
-				db.Dispose()
+			If disposing And CustomerManager IsNot Nothing Then
+				_CustomerManager.Dispose()
 			End If
+			_CustomerManager = Nothing
 			MyBase.Dispose(disposing)
 		End Sub
 	End Class

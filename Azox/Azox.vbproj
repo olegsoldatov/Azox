@@ -220,6 +220,7 @@
     <Compile Include="Areas\Admin\Controllers\CustomersController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
     <Compile Include="Areas\Admin\Models\CategoryChangeViewModel.vb" />
+    <Compile Include="Business\CustomerManager.vb" />
     <Compile Include="Business\PageManager.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
     <Compile Include="Controllers\PagesController.vb" />
