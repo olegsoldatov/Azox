@@ -39,7 +39,7 @@ Namespace Areas.Admin.Controllers
 
 				If delete Then
 					Await pageManager.DeleteRangeAsync(entities)
-					TempData("Message") = String.Format("Удалено: {0}.", id.Length.ToString("страница", "страницы", "страниц"))
+					Toast(String.Format("Удалено: {0}.", id.Length.ToString("страница", "страницы", "страниц")))
 				End If
 			End If
 
@@ -58,7 +58,7 @@ Namespace Areas.Admin.Controllers
 				model.Id = Guid.NewGuid
 				model.LastUpdateDate = Now
 				Await pageManager.CreateAsync(model)
-				TempData("Message") = "Страница добавлена."
+				Toast("Страница добавлена.")
 				Return RedirectToAction("index")
 			End If
 			Return View(model)
@@ -80,7 +80,7 @@ Namespace Areas.Admin.Controllers
 			If ModelState.IsValid Then
 				model.LastUpdateDate = Now
 				Await pageManager.UpdateAsync(model)
-				TempData("Message") = "Страница изменена."
+				Toast("Страница изменена.")
 				If String.IsNullOrEmpty(returnUrl) Then
 					Return RedirectToAction("index")
 				Else
@@ -106,7 +106,7 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
 			Await pageManager.DeleteAsync(Await pageManager.FindByIdAsync(id))
-			TempData("Message") = "Страница удалена."
+			Toast("Страница удалена.")
 			Return RedirectToAction("index")
 		End Function
 
