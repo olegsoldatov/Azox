@@ -223,6 +223,7 @@
     <Compile Include="Business\CustomerManager.vb" />
     <Compile Include="Business\PageManager.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
+    <Compile Include="Controllers\DeliveriesController.vb" />
     <Compile Include="Controllers\PagesController.vb" />
     <Compile Include="Business\BrandManager.vb" />
     <Compile Include="Core\CatalogManager.vb" />
@@ -273,6 +274,7 @@
     <Compile Include="Models\CatalogViewModels.vb" />
     <Compile Include="Models\Category.vb" />
     <Compile Include="Models\Customers.vb" />
+    <Compile Include="Models\DeliveryViewModel.vb" />
     <Compile Include="Models\Entity.vb" />
     <Compile Include="Models\Image.vb" />
     <Compile Include="Models\MarginModels.vb" />
@@ -1203,6 +1205,7 @@
     <Content Include="Views\Catalog\Brand.vbhtml" />
     <Content Include="Views\Shared\Page.vbhtml" />
     <Content Include="Views\Brands\Details.vbhtml" />
+    <Content Include="Views\Deliveries\Create.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
