@@ -216,6 +216,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\CatalogConfig.vb" />
+    <Compile Include="App_Start\DeliveryConfig.vb" />
     <Compile Include="Areas\Admin\Controllers\BrandsController.vb" />
     <Compile Include="Areas\Admin\Controllers\CustomersController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
@@ -1206,6 +1207,7 @@
     <Content Include="Views\Shared\Page.vbhtml" />
     <Content Include="Views\Brands\Details.vbhtml" />
     <Content Include="Views\Deliveries\Create.vbhtml" />
+    <Content Include="Views\Deliveries\Result.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -1239,6 +1241,10 @@
     <ProjectReference Include="..\Soldata.Azox.Core\Soldata.Azox.Core.vbproj">
       <Project>{a0c2377d-1be4-4d09-8017-724b04ee1936}</Project>
       <Name>Soldata.Azox.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Soldata.Azox.Deliveries\Soldata.Azox.Deliveries.vbproj">
+      <Project>{1595664b-a374-4220-8f7b-654e1f218693}</Project>
+      <Name>Soldata.Azox.Deliveries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Soldata.Imaging\Soldata.Imaging.vbproj">
       <Project>{fd2427e5-9b95-4f05-8c8a-d561f298831f}</Project>

@@ -1,19 +1,33 @@
-﻿Namespace Controllers
-    Public Class DeliveriesController
-        Inherits Controller
+﻿Imports Soldata.Azox
 
-        <HttpGet>
-        Public Function Create() As ActionResult
-            Return View()
-        End Function
+Namespace Controllers
+	Public Class DeliveriesController
+		Inherits Controller
 
-        <HttpPost>
-        <ValidateAntiForgeryToken>
-        Public Function Create(model As DeliveryViewModel) As ActionResult
+		Private ReadOnly _deliveryService As IDeliveryService
 
-            'TODO: Реализовать расчет стоимости доставки.
+		Public Sub New()
+			_deliveryService = New ApplicationDeliveryService
+		End Sub
 
-            Return View(model)
-        End Function
-    End Class
+		<HttpGet>
+		Public Function Create() As ActionResult
+			Return View()
+		End Function
+
+		<HttpPost>
+		<ValidateAntiForgeryToken>
+		Public Function Create(model As DeliveryViewModel) As ActionResult
+
+			Dim parameters As New DeliveryParameters With {
+				.PostalCode = model.PostalCode,
+				.Region = model.Region,
+				.City = model.City
+			}
+
+			Dim delivery = _deliveryService.Create(parameters)
+
+			Return View("Result", delivery)
+		End Function
+	End Class
 End Namespace
