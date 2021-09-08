@@ -75,7 +75,8 @@ Namespace Areas.Admin.Controllers
 			Return View(model)
 		End Function
 
-		<HttpPost, ValidateAntiForgeryToken>
+		<HttpPost>
+		<ValidateAntiForgeryToken>
 		Public Async Function Edit(model As Page, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				model.LastUpdateDate = Now

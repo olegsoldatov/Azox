@@ -115,6 +115,7 @@
     <Compile Include="PaginationOptions.vb" />
     <Compile Include="PlainHtmlHelper.vb" />
     <Compile Include="SlugUrlHelper.vb" />
+    <Compile Include="TitleHtmlHelper.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
