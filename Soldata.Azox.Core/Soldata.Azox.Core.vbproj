@@ -66,6 +66,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeliveryParameters.vb" />
+    <Compile Include="IDelivery.vb" />
+    <Compile Include="IDeliveryService.vb" />
     <Compile Include="IEntity.vb" />
     <Compile Include="IEntityStore.vb" />
     <Compile Include="IImageable.vb" />
