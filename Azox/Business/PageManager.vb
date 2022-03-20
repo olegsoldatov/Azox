@@ -15,7 +15,7 @@ Public Class PageManager
     End Property
 
     Public Async Function GetListAsync() As Task(Of IList(Of Page))
-        Dim entities = Context.Set(Of Page)
+        Dim entities = Context.Set(Of Page).AsQueryable
 
         ' Сортировка.
         entities = entities.OrderByDescending(Function(x) x.LastUpdateDate)
