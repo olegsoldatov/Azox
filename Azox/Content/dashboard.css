@@ -16,7 +16,7 @@ body {
 }
 
 /*#region Layout*/
-body {
+.layout {
 	display: grid;
 	grid-template-columns: 44px 1fr;
 	grid-template-areas: "sidebar main";
@@ -44,7 +44,7 @@ body {
 }
 
 @media all and (min-width: 992px) {
-	body {
+	.layout {
 		grid-template-columns: 276px 1fr;
 	}
 }

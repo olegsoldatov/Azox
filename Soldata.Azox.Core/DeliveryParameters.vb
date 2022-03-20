@@ -3,6 +3,11 @@
 ''' </summary>
 Public Class DeliveryParameters
 	''' <summary>
+	''' Страна.
+	''' </summary>
+	Public Property Country As String
+
+	''' <summary>
 	''' Почтовый индекс.
 	''' </summary>
 	Public Property PostalCode As String

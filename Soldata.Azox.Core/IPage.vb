@@ -1,6 +1,9 @@
-﻿''' <summary>
+﻿' © Софт Бизнес, ООО. Все права защищены.
+
+''' <summary>
 ''' Предоставляет интерфейс страницы.
 ''' </summary>
+<Obsolete("Лишний интерфейс. Лучше использовать реализацию базового класса Document.")>
 Public Interface IPage
 	Inherits IEntity
 	''' <summary>

@@ -3,7 +3,7 @@ Imports System.Threading.Tasks
 Imports Soldata.Azox
 
 ''' <summary>
-''' Предоставляет управление для указанного типа сущности.
+''' Базовый менеджер указанного типа сущности.
 ''' </summary>
 ''' <typeparam name="TEntity">Тип сущности.</typeparam>
 Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
@@ -12,7 +12,7 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	Private disposedValue As Boolean
 
 	Protected Sub New(context As DbContext)
-		_Context = context
+		Me.Context = context
 	End Sub
 
 	''' <summary>
@@ -25,10 +25,11 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	''' </summary>
 	''' <param name="entity">Сущность.</param>
 	Public Overridable Async Function CreateAsync(entity As TEntity) As Task(Of ManagerResult)
-		If IsNothing(entity) Then
+		If entity Is Nothing Then
 			Throw New ArgumentNullException(NameOf(entity))
 		End If
 		entity.Id = Guid.NewGuid
+		entity.LastUpdateDate = Now
 		Context.Set(Of TEntity).Add(entity)
 		Await Context.SaveChangesAsync
 		Return ManagerResult.Success
@@ -43,10 +44,11 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 	End Function
 
 	''' <summary>
-	''' Изменяет сущность.
+	''' Обновляет сущность.
 	''' </summary>
 	''' <param name="entity">Сущность.</param>
 	Public Overridable Async Function UpdateAsync(entity As TEntity) As Task(Of ManagerResult)
+		entity.LastUpdateDate = Now
 		Context.Entry(entity).State = EntityState.Modified
 		Await Context.SaveChangesAsync
 		Return ManagerResult.Success
@@ -76,10 +78,9 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
 
 	Protected Overridable Sub Dispose(disposing As Boolean)
 		If Not disposedValue Then
-			If disposing And _Context IsNot Nothing Then
-				_Context.Dispose()
+			If disposing Then
+				Context.Dispose()
 			End If
-			_Context = Nothing
 			disposedValue = True
 		End If
 	End Sub

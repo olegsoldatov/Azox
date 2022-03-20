@@ -5,13 +5,17 @@ Namespace Controllers
 	Public Class PagesController
 		Inherits Controller
 
-		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
+		Private ReadOnly _pageManager As PageManager
+
+		Public Sub New()
+			_pageManager = New PageManager(New ApplicationDbContext)
+		End Sub
 
 		Public Async Function Details(id As Guid?) As Task(Of ActionResult)
 			If IsNothing(id) Then
 				Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
 			End If
-			Dim model = Await pageManager.FindByIdAsync(id)
+			Dim model = Await _pageManager.FindByIdAsync(id)
 			If IsNothing(model) Then
 				Return HttpNotFound()
 			ElseIf Not String.IsNullOrEmpty(model.AbsolutePath) Then
@@ -22,7 +26,7 @@ Namespace Controllers
 
 		Protected Overrides Sub Dispose(disposing As Boolean)
 			If disposing Then
-				pageManager.Dispose()
+				_pageManager.Dispose()
 			End If
 			MyBase.Dispose(disposing)
 		End Sub

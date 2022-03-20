@@ -10,7 +10,7 @@
     <AssemblyName>Soldata.Azox.Core</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeliveryParameters.vb" />
+    <Compile Include="EntityManager.vb" />
     <Compile Include="IDelivery.vb" />
     <Compile Include="IDeliveryService.vb" />
     <Compile Include="IEntity.vb" />

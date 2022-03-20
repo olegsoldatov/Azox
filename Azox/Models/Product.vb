@@ -3,10 +3,8 @@ Imports System.Data.Entity
 Imports Soldata.Azox
 
 Public Class Product
+	Inherits Entity
 	Implements IImageable
-
-	<Key>
-	Public Property Id As Guid
 
 	<Required(ErrorMessage:="Укажите название.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
@@ -64,9 +62,6 @@ Public Class Product
 
 	<Display(Name:="Бренд")>
 	Public Overridable Property BrandId As Guid?
-
-	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date
 
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>

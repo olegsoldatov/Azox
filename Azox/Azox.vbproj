@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Azox</RootNamespace>
     <AssemblyName>Azox</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -67,6 +67,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.5.0.0\lib\net461\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.5.0.0\lib\net461\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.Owin.5.0.0\lib\net461\Autofac.Integration.Mvc.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=5.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.5.0.1\lib\net461\Autofac.Integration.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="CKFinder, Version=2.3.0.2394, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
       <HintPath>..\packages\Soldata.Web.FileManager.1.2.5546.25225\lib\net451\CKFinder.dll</HintPath>
       <Private>True</Private>
@@ -85,6 +97,9 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
@@ -130,6 +145,7 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
@@ -143,6 +159,9 @@
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -217,6 +236,7 @@
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\CatalogConfig.vb" />
     <Compile Include="App_Start\DeliveryConfig.vb" />
+    <Compile Include="App_Start\Startup.Services.vb" />
     <Compile Include="Areas\Admin\Controllers\BrandsController.vb" />
     <Compile Include="Areas\Admin\Controllers\CustomersController.vb" />
     <Compile Include="Areas\Admin\Controllers\PagesController.vb" />
@@ -250,6 +270,7 @@
     <Compile Include="Core\ImageService.vb" />
     <Compile Include="Core\Popular.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
+    <Compile Include="Managers\ProductManager.vb" />
     <Compile Include="Models\ApplicationDbContext.vb" />
     <Compile Include="Models\Attribute.vb" />
     <Compile Include="Models\Brand.vb" />
@@ -976,12 +997,9 @@
     <Content Include="Areas\Admin\Views\Products\_Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ImageFile.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Pages\Edit.vbhtml" />
     <Content Include="Areas\Admin\Views\Pages\EditorTemplates\Page.vbhtml" />
     <Content Include="Areas\Admin\Views\Pages\Index.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\_Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\_Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Delete.vbhtml" />
@@ -1233,6 +1251,7 @@
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Cat\" />
     <Folder Include="Views\Pages\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

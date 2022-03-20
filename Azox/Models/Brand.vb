@@ -41,7 +41,7 @@ Public Class Brand
 	Public Overridable Property Products As ICollection(Of Product)
 
 	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date
+	Public Property LastUpdateDate As Date Implements IEntity.LastUpdateDate
 
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>

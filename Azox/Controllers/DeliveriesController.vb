@@ -6,8 +6,8 @@ Namespace Controllers
 
 		Private ReadOnly _deliveryService As IDeliveryService
 
-		Public Sub New()
-			_deliveryService = New ApplicationDeliveryService
+		Public Sub New(deliveryService As IDeliveryService)
+			_deliveryService = deliveryService
 		End Sub
 
 		<HttpGet>
@@ -20,6 +20,7 @@ Namespace Controllers
 		Public Function Create(model As DeliveryViewModel) As ActionResult
 
 			Dim parameters As New DeliveryParameters With {
+				.Country = model.Country,
 				.PostalCode = model.PostalCode,
 				.Region = model.Region,
 				.City = model.City

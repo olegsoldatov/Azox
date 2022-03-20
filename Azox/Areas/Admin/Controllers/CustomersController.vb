@@ -39,7 +39,7 @@ Namespace Areas.Admin.Controllers
 
 				If delete Then
 					Await CustomerManager.DeleteRangeAsync(Await entities.ToListAsync)
-					Toast(String.Format("Удалено: {0}.", id.Length.ToString("клиент", "клиента", "клиентов")))
+					Alert(String.Format("Удалено: {0}.", id.Length.ToString("клиент", "клиента", "клиентов")))
 				End If
 			End If
 
@@ -56,7 +56,7 @@ Namespace Areas.Admin.Controllers
 		Public Async Function Create(model As Customer) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				Await CustomerManager.CreateAsync(model)
-				Toast("Клиент добавлен.")
+				Alert("Клиент добавлен.")
 				Return RedirectToAction("index")
 			End If
 			Return View(model)
@@ -78,7 +78,7 @@ Namespace Areas.Admin.Controllers
 		Public Async Function Edit(model As Customer, returnUrl As String) As Task(Of ActionResult)
 			If ModelState.IsValid Then
 				Await CustomerManager.UpdateAsync(model)
-				Toast("Клиент изменен.")
+				Alert("Клиент изменен.")
 				If String.IsNullOrEmpty(returnUrl) Then
 					Return RedirectToAction("index")
 				Else
@@ -105,7 +105,7 @@ Namespace Areas.Admin.Controllers
 		Public Async Function DeleteConfirmed(id As Guid) As Task(Of ActionResult)
 			Dim entity = Await CustomerManager.FindByIdAsync(id)
 			Await CustomerManager.DeleteAsync(entity)
-			Toast("Клиент удален.")
+			Alert("Клиент удален.")
 			Return RedirectToAction("index")
 		End Function
 

@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Базовые определения для создания веб-приложений ASP.NET 4.x с использованием моделей данных.")>
 <Assembly: AssemblyCompany("Софт Бизнес")>
 <Assembly: AssemblyProduct("Azox")>
-<Assembly: AssemblyCopyright("© Софт Бизнес, 2021")>
+<Assembly: AssemblyCopyright("© Софт Бизнес, 2022")>
 <Assembly: AssemblyTrademark("Azox")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("4.4.0")>
-<Assembly: AssemblyFileVersion("4.4.0")>
+<Assembly: AssemblyVersion("5.0.5")>
+<Assembly: AssemblyFileVersion("5.0.5")>

@@ -1,6 +1,9 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 
 Public Class DeliveryViewModel
+	<Display(Name:="Страна")>
+	Public Property Country As String
+
 	<Display(Name:="Почтовый индекс")>
 	Public Property PostalCode As String
 

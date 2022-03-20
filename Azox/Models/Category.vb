@@ -57,7 +57,7 @@ Public Class Category
 	Public Property Path As String
 
 	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date
+	Public Property LastUpdateDate As Date Implements IEntity.LastUpdateDate
 
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>
