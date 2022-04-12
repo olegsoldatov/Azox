@@ -28,9 +28,6 @@ Public Class PageManager
     ''' </summary>
     ''' <param name="absolutePath">Абсолютный путь.</param>
     Public Async Function FindByAbsolutePathAsync(absolutePath As String) As Task(Of Page)
-        If String.IsNullOrEmpty(absolutePath) Then
-            Return Nothing
-        End If
-        Return Await Context.Set(Of Page).SingleAsync(Function(x) x.AbsolutePath = absolutePath)
+        Return Await Context.Set(Of Page).SingleOrDefaultAsync(Function(x) x.AbsolutePath = absolutePath)
     End Function
 End Class

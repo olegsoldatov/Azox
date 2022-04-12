@@ -12,11 +12,11 @@ Namespace Controllers
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim model = Await PageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
-			If IsNothing(model) Then
+			Dim page = Await PageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
+			If IsNothing(page) Then
 				Return HttpNotFound()
 			End If
-			Return View(model)
+			Return View(page)
 		End Function
 	End Class
 End Namespace

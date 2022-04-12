@@ -15,10 +15,11 @@ Public Class Page
 	<UIHint("Content")>
 	Public Property Content As String
 
-	<HiddenInput(DisplayValue:=False)>
+	<Required(ErrorMessage:="Укажите абсолютный путь.")>
+	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+	<Display(Name:="Абсолютный путь")>
 	Public Property AbsolutePath As String
 
-	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>
 	Public Property Description As String
 
