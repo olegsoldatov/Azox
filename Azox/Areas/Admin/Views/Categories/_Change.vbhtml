@@ -16,9 +16,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" name="change" value="True">Изменить</button>
-			</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="change" value="True">Изменить</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отменить</button>
+            </div>
 		</div>
 	</div>
 </div>

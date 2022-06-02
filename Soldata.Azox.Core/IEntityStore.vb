@@ -13,11 +13,23 @@ Public Interface IEntityStore(Of TEntity As {Class, IEntity})
 	''' <returns></returns>
 	ReadOnly Property Entities As IQueryable(Of TEntity)
 
+    ''' <summary>
+    ''' Находит сущность.
+    ''' </summary>
+    ''' <param name="entityId">Идентификатор сущности.</param>
+    Function FindByIdAsync(entityId As Guid?) As Task(Of TEntity)
+
+    ''' <summary>
+    ''' Добавляет новую сущность.
+    ''' </summary>
+    ''' <param name="entity">Сущность.</param>
+    Function CreateAsync(entity As TEntity) As Task
+
 	''' <summary>
-	''' Добавляет новую сущность.
+	''' Добавляет перечисление сущностей.
 	''' </summary>
-	''' <param name="entity">Сущность.</param>
-	Function CreateAsync(entity As TEntity) As Task
+	''' <param name="entities">Перечисление сущностей.</param>
+	Function CreateRangeAsync(entities As IEnumerable(Of TEntity)) As Task
 
 	''' <summary>
 	''' Обновляет сущность.
@@ -42,10 +54,4 @@ Public Interface IEntityStore(Of TEntity As {Class, IEntity})
 	''' </summary>
 	''' <param name="entities">Перечисление сущностей.</param>
 	Function DeleteRangeAsync(entities As IEnumerable(Of TEntity)) As Task
-
-	''' <summary>
-	''' Находит сущность.
-	''' </summary>
-	''' <param name="entityId">Идентификатор сущности.</param>
-	Function FindByIdAsync(entityId As Guid) As Task(Of TEntity)
 End Interface

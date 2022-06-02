@@ -1,13 +1,11 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
-Imports Azox.Mvc
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
-	<Authorize>
 	Public Class CustomersController
-		Inherits BaseController
+		Inherits AdminController
 
 		Private ReadOnly Property CustomerManager As New CustomerManager(New ApplicationDbContext)
 

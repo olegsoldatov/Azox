@@ -26,7 +26,7 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' Находит сущность по уникальному идентификатору.
     ''' </summary>
     ''' <param name="id">Уникальный идентификатор.</param>
-    Public Overridable Async Function FindByIdAsync(id As Guid) As Task(Of TEntity)
+    Public Overridable Async Function FindByIdAsync(id As Guid?) As Task(Of TEntity)
         Return Await Store.FindByIdAsync(id)
     End Function
 
@@ -39,10 +39,35 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
-        entity.Id = Guid.NewGuid()
+        entity.Id = Guid.NewGuid
         entity.LastUpdateDate = Now
-        Await Store.CreateAsync(entity)
-        Return ManagerResult.Success
+        Try
+            Await Store.CreateAsync(entity)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Добавляет перечисление сущностей в источник данных.
+    ''' </summary>
+    ''' <param name="entities">Перечисление сущностей, добавляемых в источник данных.</param>
+    ''' <exception cref="ArgumentNullException"></exception>
+    Public Overridable Async Function CreateRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of ManagerResult)
+        If IsNothing(entities) Then
+            Throw New ArgumentNullException(NameOf(entities))
+        End If
+        For Each item In entities
+            item.Id = Guid.NewGuid
+            item.LastUpdateDate = Now
+        Next
+        Try
+            Await Store.CreateRangeAsync(entities)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
     End Function
 
     ''' <summary>
@@ -55,8 +80,12 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
             Throw New ArgumentNullException(NameOf(entity))
         End If
         entity.LastUpdateDate = Now
-        Await Store.UpdateAsync(entity)
-        Return ManagerResult.Success
+        Try
+            Await Store.UpdateAsync(entity)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
     End Function
 
     ''' <summary>
@@ -71,8 +100,12 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
         For Each item In entities
             item.LastUpdateDate = Now
         Next
-        Await Store.UpdateRangeAsync(entities)
-        Return ManagerResult.Success
+        Try
+            Await Store.UpdateRangeAsync(entities)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
     End Function
 
     ''' <summary>
@@ -84,8 +117,12 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
-        Await Store.DeleteAsync(entity)
-        Return ManagerResult.Success
+        Try
+            Await Store.DeleteAsync(entity)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
     End Function
 
     ''' <summary>
@@ -97,10 +134,15 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
         If IsNothing(entities) Then
             Throw New ArgumentNullException(NameOf(entities))
         End If
-        Await Store.DeleteRangeAsync(entities)
-        Return ManagerResult.Success
+        Try
+            Await Store.DeleteRangeAsync(entities)
+            Return ManagerResult.Success
+        Catch ex As Exception
+            Return New ManagerResult(ex.Message)
+        End Try
     End Function
 
+#Region "IDisposable"
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
@@ -114,4 +156,5 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
         Dispose(disposing:=True)
         GC.SuppressFinalize(Me)
     End Sub
+#End Region
 End Class

@@ -1,6 +1,6 @@
 ﻿@ModelType Product
 @Code
-	ViewBag.Title = "Добавление товара"
+    ViewBag.Title = "Добавление товара"
 End Code
 
 @Section Toolbar
@@ -15,10 +15,10 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, New With {.returnUrl = If(Request.QueryString("ReturnUrl"), Request.UrlReferrer.PathAndQuery)}, FormMethod.Post, New With {.id = "model-form"})
+	@Using Html.BeginForm(Nothing, Nothing, Nothing, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
 		@Html.AntiForgeryToken
 		@Html.EditorForModel
-	End Using
+    End Using
 </article>
 
 @Section Scripts

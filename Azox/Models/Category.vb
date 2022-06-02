@@ -1,43 +1,31 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Data.Entity
-Imports Soldata.Azox
 
 ''' <summary>
-''' Предоставляет модель данных категории.
+''' Модель данных категории.
 ''' </summary>
 Public Class Category
-	Implements IPage, IImageable
+    Inherits PictorialEntity
 
-	<Key>
-	Public Property Id As Guid Implements IPage.Id
-
-	<Required(ErrorMessage:="Укажите имя.")>
+    <Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<Display(Name:="Название")>
-	Public Property Title As String Implements IPage.Title
+    <Display(Name:="Название")>
+    Public Property Title As String
 
-	<AllowHtml>
+    <AllowHtml>
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Содержание")>
-	<UIHint("Content")>
-	Public Property Content As String Implements IPage.Content
+    <UIHint("Content")>
+    Public Property Content As String
 
-	<Display(Name:="Изображение")>
-	Public Property ImageId As Guid? Implements IImageable.ImageId
+    <Display(Name:="Порядок")>
+    Public Property Order As Integer?
 
-	<Display(Name:="Порядок")>
-	Public Property Order As Integer?
+    <Display(Name:="Черновик")>
+    <UIHint("Draft")>
+    Public Property Draft As Boolean
 
-	<Display(Name:="Черновик")>
-	Public Property Draft As Boolean
-
-	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<RegularExpression("^[-\w]+$", ErrorMessage:="Используются недопустимые символы.")>
-	<Remote("Exists", "Categories", "Admin", AdditionalFields:="Id", ErrorMessage:="Такое имя уже существует.")>
-	<Display(Name:="Имя")>
-	Public Property Name As String
-
-	<Display(Name:="Тип / категория товара", Description:="Формирует название товара.")>
+    <Display(Name:="Тип / категория товара", Description:="Формирует название товара.")>
 	Public Property TypePrefix As String
 
 	<Display(Name:="Родительская категория")>
@@ -56,26 +44,22 @@ Public Class Category
 	<HiddenInput(DisplayValue:=False)>
 	Public Property Path As String
 
-	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date Implements IEntity.LastUpdateDate
-
-	<DataType(DataType.MultilineText)>
 	<Display(Name:="Описание")>
-	Public Property Description As String Implements IPage.Description
+	Public Property Description As String
 
 	<Display(Name:="Ключевые слова")>
-	Public Property Keywords As String Implements IPage.Keywords
+	Public Property Keywords As String
 
 	''' <summary>
 	''' Возвращает путь категории.
 	''' </summary>
 	''' <param name="divider">Разделитель. Если не указывать, то в качестве разделителя будет косая черта отбитая пробелами.</param>
 	Public Function GetPath(Optional divider As String = " / ") As String
-		Dim titles As New List(Of String) From {If(String.IsNullOrEmpty(Title), Name, Title)}
+		Dim titles As New List(Of String) From {Title}
 		Dim parent = Me.Parent
 CategoryParent:
 		If Not IsNothing(parent) Then
-			titles.Insert(0, If(String.IsNullOrEmpty(parent.Title), parent.Name, parent.Title))
+			titles.Insert(0, parent.Title)
 			parent = parent.Parent
 			GoTo CategoryParent
 		End If

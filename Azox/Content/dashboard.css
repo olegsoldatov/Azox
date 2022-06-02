@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Dashboard v1.7.12.0
  * Copyright 2020 Soldata
  */
@@ -435,15 +435,14 @@ h3, .h3 {
 		text-overflow: ellipsis;
 	}
 
-		.table > tbody > tr > td:last-child a {
+		.table > tbody > tr > td a.action-link {
 			color: #0009;
 			margin-left: .25em;
-			visibility: hidden;
 		}
 
-	.table > tbody > tr:hover > td:last-child a {
-		visibility: visible;
-	}
+		.table > tbody > tr:hover > td  a.action-link{
+			color: #000c;
+		}
 
 	.table.table-checkable > thead > tr > th:first-child {
 		width: 40px;
@@ -555,11 +554,13 @@ label {
 
 	.btn:focus {
 		border-style: dashed;
+		outline: none;
 	}
 
-	.btn:active {
+	.btn:active,
+	.btn:active:focus {
 		box-shadow: none;
-		border-style: dashed;
+		outline: none;
 	}
 
 	.btn.btn-sm, .btn-group-sm > .btn {
@@ -652,7 +653,7 @@ label {
 
 /*#region Checkbox*/
 .checkbox label {
-	font-size: 15px;
+	/* font-size: 15px; */
 }
 
 label + .checkbox {
@@ -695,6 +696,12 @@ label + .checkbox {
 
 .thumbnails {
 	padding-top: 24px;
+}
+
+.draft {
+	display: block;
+	font-size: .85rem;
+	font-weight: 600;
 }
 /*#endregion*/
 

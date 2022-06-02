@@ -29,25 +29,31 @@ End Code
                         <span>Панель управления</span>
                     </a>
                 </li>
-                <li @If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then @<text> class="active" </text> End If>
-                    <button aria-controls="productsMenu" aria-expanded="@If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then@<text>true</text>Else@<text>false</text>End if">
+                <li @If controllerName.Equals("products") Or controllerName.Equals("categories") Then @<text> class="active" </text> End If>
+                    <button aria-controls="productsMenu" aria-expanded="@If controllerName.Equals("products") Or controllerName.Equals("categories") Then@<text>true</text>Else@<text>false</text>End if">
                         <span class="fa fa-folder-o"></span>
                         <span>Каталог</span>
                     </button>
-                    <ul id="productsMenu" aria-hidden="@If controllerName.Equals("products") Or controllerName.Equals("categories") Or controllerName.Equals("brands") Or controllerName.Equals("warehouses") Then@<text>false</text>Else@<text>true</text>End if">
+                    <ul id="productsMenu" aria-hidden="@If controllerName.Equals("products") Or controllerName.Equals("categories") Then@<text>false</text>Else@<text>true</text>End if">
                         <li @If controllerName.Equals("products") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("index", "products")">Товары</a>
                         </li>
                         <li @If controllerName.Equals("categories") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("index", "categories")">Категории</a>
                         </li>
-                        <li @If controllerName.Equals("brands") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("index", "brands")">Бренды</a>
-                        </li>
-                        <li @If controllerName.Equals("warehouses") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("index", "warehouses")">Магазины / Склады</a>
-                        </li>
                     </ul>
+                </li>
+                <li @If controllerName.Equals("brands") Then @<text> class="active" </text> End If>
+                    <a href="@Url.Action("index", "brands")">
+                        <span class="fa fa-folder-o"></span>
+                        <span>Бренды</span>
+                    </a>
+                </li>
+                <li @If controllerName.Equals("warehouses") Then @<text> class="active" </text> End If>
+                    <a href="@Url.Action("index", "warehouses")">
+                        <span class="fa fa-folder-o"></span>
+                        <span>Магазины / Склады</span>
+                    </a>
                 </li>
                 <li @If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then @<text> class="active" </text> End If>
                     <button aria-controls="contentMenu" aria-expanded="@If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then@<text>true</text>Else@<text>false</text>End if">
@@ -68,6 +74,20 @@ End Code
                         <span class="fa fa-folder-o"></span>
                         <span>Клиенты <sup>&beta;</sup></span>
                     </a>
+                </li>
+                <li @If controllerName.Equals("settings") Then @<text> class="active" </text> End If>
+                    <button aria-controls="settingMenu" aria-expanded="@If controllerName.Equals("settings") Then@<text>true</text>Else@<text>false</text>End if">
+                        <span class="fa fa-gear"></span>
+                        <span>Параметры</span>
+                    </button>
+                    <ul id="settingMenu" aria-hidden="@If controllerName.Equals("settings") Then@<text>false</text>Else@<text>true</text>End if">
+                        <li @If actionName.Equals("general") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("general", "settings")">Общие</a>
+                        </li>
+                        <li @If actionName.Equals("index") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("index", "settings")">Список</a>
+                        </li>
+                    </ul>
                 </li>
                 <li title="@String.Format("Доступно памяти: {0} МБ ({1}%)", Cache.EffectivePrivateBytesLimit / 1048576, Cache.EffectivePercentagePhysicalMemoryLimit)">
                     <a href="@Url.Action("uploadCache", "dashboard")">

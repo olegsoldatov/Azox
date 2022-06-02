@@ -1,7 +1,6 @@
 ﻿Namespace Areas.Admin.Controllers
-	<Authorize>
 	Public Class DashboardController
-		Inherits Controller
+		Inherits AdminController
 
 		<HttpGet>
 		Public Function Index() As ActionResult

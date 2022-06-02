@@ -1,18 +1,19 @@
 ﻿@ModelType Category
 @Code
-	ViewBag.Title = "Изменение категории"
+    ViewBag.Title = "Изменение категории"
+    Dim returnUrl = Request.QueryString("ReturnUrl")
 End Code
 
 @Section Toolbar
-	<button class="btn" form="modelForm">
+	<button class="btn" form="model-form">
 		<span class="fa fa-save"></span>
 		<span>Сохранить</span>
 	</button>
-	<a class="btn" href="@Url.Action("details", "categories", New With {.area = "", Model.Id})" target="_blank">
-		<span class="fa fa-external-link"></span>
+	<a class="btn" href="@Url.Action("details", New With {.area = "", Model.Id})" target="_blank">
+		<span class="fa fa-eye"></span>
 		<span>Посмотреть</span>
 	</a>
-	<a class="btn" href="@Url.Action("delete", New With {Model.Id})">
+	<a class="btn" href="@Url.Action("delete", New With {Model.Id, returnUrl})">
 		<span class="fa fa-remove"></span>
 		<span>Удалить</span>
 	</a>
@@ -23,12 +24,12 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, New With {.returnUrl = Request.QueryString("ReturnUrl")}, FormMethod.Post, New With {.id = "modelForm", .enctype = "multipart/form-data"})
+	@Using Html.BeginForm(Nothing, Nothing, New With {returnUrl}, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
 		@Html.AntiForgeryToken
 		@Html.HiddenFor(Function(model) model.Id)
 		@Html.HiddenFor(Function(model) model.Path)
 		@Html.EditorForModel
-	End Using
+    End Using
 </article>
 
 @Section Scripts

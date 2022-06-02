@@ -11,11 +11,10 @@ End Code
     </a>
     <div class="btn-group">
         <button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="fa fa-ellipsis-h"></span>
             <span>Действия</span>
         </button>
         <div class="dropdown-menu">
-            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Удалить</a>
+            <a href="#deleteModal" class="dropdown-item" data-toggle="modal">Удалить</a>
         </div>
     </div>
 End Section

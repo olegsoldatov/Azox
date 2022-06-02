@@ -1,13 +1,13 @@
 ﻿Imports System.Data.Entity
 Imports System.Net
 Imports System.Threading.Tasks
-Imports Azox.Mvc
 Imports Soldata.Web.Extensions
 
 Namespace Areas.Admin.Controllers
-	<Authorize>
 	Public Class PagesController
-		Inherits BaseController
+		Inherits AdminController
+
+		Private Const existsMessage = "Такой путь уже существует."
 
 		Public ReadOnly Property PageManager As PageManager
 
@@ -24,10 +24,8 @@ Namespace Areas.Admin.Controllers
 		<ValidateAntiForgeryToken>
 		Public Async Function Index(id As Guid(), Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim entities = Await PageManager.Pages.Where(Function(x) id.Contains(x.Id)).ToListAsync
-
 				If delete Then
-					Await PageManager.DeleteRangeAsync(entities)
+					Await PageManager.DeleteRangeAsync(id)
 					Alert(String.Format("Удалено: {0}.", id.Length.ToString("страница", "страницы", "страниц")))
 				End If
 			End If
@@ -42,13 +40,16 @@ Namespace Areas.Admin.Controllers
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
-		Public Async Function Create(model As Page) As Task(Of ActionResult)
+		Public Async Function Create(page As Page) As Task(Of ActionResult)
+			If Await PageManager.ExistsAsync(page) Then
+				ModelState.AddModelError(NameOf(page.AbsolutePath), existsMessage)
+			End If
 			If ModelState.IsValid Then
-				Await PageManager.CreateAsync(model)
-				Alert("Бренд добавлен.")
+				Await PageManager.CreateAsync(page)
+				Alert("Страница добавлена.")
 				Return RedirectToAction("index")
 			End If
-			Return View(model)
+			Return View(page)
 		End Function
 
 		Public Async Function Edit(id As Guid?) As Task(Of ActionResult)
@@ -64,13 +65,16 @@ Namespace Areas.Admin.Controllers
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
-		Public Async Function Edit(model As Page, returnUrl As String) As Task(Of ActionResult)
+		Public Async Function Edit(page As Page, returnUrl As String) As Task(Of ActionResult)
+			If Await PageManager.ExistsAsync(page) Then
+				ModelState.AddModelError(NameOf(page.AbsolutePath), existsMessage)
+			End If
 			If ModelState.IsValid Then
-				Await PageManager.UpdateAsync(model)
+				Await PageManager.UpdateAsync(page)
 				Alert("Страница изменена.")
 				Return RedirectToReturnUrl(returnUrl)
 			End If
-			Return View(model)
+			Return View(page)
 		End Function
 
 		Public Async Function Delete(id As Guid?) As Task(Of ActionResult)
@@ -88,14 +92,16 @@ Namespace Areas.Admin.Controllers
 		<ActionName("Delete")>
 		<ValidateAntiForgeryToken>
 		Public Async Function DeleteConfirmed(id As Guid, returnUrl As String) As Task(Of ActionResult)
-			Dim entity = Await PageManager.FindByIdAsync(id)
-			Await PageManager.DeleteAsync(entity)
+			Dim page = Await PageManager.FindByIdAsync(id)
+			Await PageManager.DeleteAsync(page)
 			Alert("Страница удалена.")
 			Return RedirectToReturnUrl(returnUrl)
 		End Function
 
 		<HttpGet>
 		Public Function Exists(id As Guid?, absolutePath As String) As ActionResult
+			'Dim b = PageManager.ExistsAsync(New Page With {.Id = id, .AbsolutePath = absolutePath})
+
 			If PageManager.Pages.AsNoTracking().Any(Function(x) Not x.Id = id And x.AbsolutePath = absolutePath) Then
 				Return Json(False, JsonRequestBehavior.AllowGet)
 			End If

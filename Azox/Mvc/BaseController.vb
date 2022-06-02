@@ -12,6 +12,7 @@
             ViewBag.TotalCount = totalCount
             ViewBag.PageIndex = pageIndex
             ViewBag.PageSize = pageSize
+            ViewBag.PageCount = CInt(Math.Ceiling(totalCount / pageSize))
         End Sub
 
 

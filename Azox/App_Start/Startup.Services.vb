@@ -1,5 +1,4 @@
-﻿Imports System.Data.Entity
-Imports Autofac
+﻿Imports Autofac
 Imports Autofac.Integration.Mvc
 Imports Owin
 Imports Soldata.Azox
@@ -10,13 +9,25 @@ Partial Public Class Startup
         builder.RegisterControllers(GetType(MvcApplication).Assembly)
 
         ' Контексты.
-        builder.RegisterType(Of ApplicationDbContext).As(Of DbContext).InstancePerRequest()
+        builder.RegisterType(Of ApplicationDbContext).InstancePerRequest()
+
+        ' Хранилища.
+        builder.RegisterType(Of EntityStore(Of Image)).As(Of IEntityStore(Of Image)).InstancePerRequest()
+        builder.RegisterType(Of EntityStore(Of Brand)).As(Of IEntityStore(Of Brand)).InstancePerRequest()
+        builder.RegisterType(Of EntityStore(Of Category)).As(Of IEntityStore(Of Category)).InstancePerRequest()
+        builder.RegisterType(Of EntityStore(Of Product)).As(Of IEntityStore(Of Product)).InstancePerRequest()
 
         ' Менеджеры.
         builder.RegisterType(Of PageManager).InstancePerRequest()
+        builder.RegisterType(Of ImageManager).InstancePerRequest()
+        builder.RegisterType(Of BrandManager).InstancePerRequest()
+        builder.RegisterType(Of CategoryManager).InstancePerRequest()
+        builder.RegisterType(Of ProductManager(Of Product)).InstancePerRequest()
 
-        ' Служба доставки.
-        builder.RegisterType(Of ApplicationDeliveryService).As(Of IDeliveryService)()
+        ' Сервисы изображений.
+        builder.RegisterType(Of BrandImageService).InstancePerRequest()
+        builder.RegisterType(Of CategoryImageService).InstancePerRequest()
+        builder.RegisterType(Of ProductImageService).InstancePerRequest()
 
         Dim container = builder.Build()
         DependencyResolver.SetResolver(New AutofacDependencyResolver(container))

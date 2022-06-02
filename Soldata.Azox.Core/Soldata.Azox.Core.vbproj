@@ -66,14 +66,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeliveryParameters.vb" />
     <Compile Include="EntityManager.vb" />
-    <Compile Include="IDelivery.vb" />
-    <Compile Include="IDeliveryService.vb" />
     <Compile Include="IEntity.vb" />
     <Compile Include="IEntityStore.vb" />
-    <Compile Include="IImageable.vb" />
-    <Compile Include="IPage.vb" />
+    <Compile Include="IPictorial.vb" />
     <Compile Include="ManagerResult.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

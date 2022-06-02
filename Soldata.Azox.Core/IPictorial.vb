@@ -1,7 +1,7 @@
 ﻿''' <summary>
 ''' Связывает сущность с изображением.
 ''' </summary>
-Public Interface IImageable
+Public Interface IPictorial
 	''' <summary>
 	''' Устанавливает или возвращает идентификатор изображения.
 	''' </summary>
