@@ -78,7 +78,7 @@ Public Class CatalogManager
 	End Function
 
 	Public Async Function GetBrandAsync(name As String) As Task(Of Brand)
-		Return Await Context.Brands.AsNoTracking.FirstOrDefaultAsync(Function(x) x.Name = name)
+		Return Await Context.Brands.AsNoTracking.FirstOrDefaultAsync(Function(x) x.Title = name)
 	End Function
 
 	Public Async Function CreateBrandAsync(brand As Brand) As Task(Of Brand)
@@ -122,10 +122,9 @@ Public Class CatalogManager
 
 	Public Async Function GetBrandListAsync() As Task(Of IReadOnlyList(Of BrandListItem))
 		Return Await Context.Brands.AsNoTracking _
-			.Where(Function(x) Not x.Draft) _
+			.Where(Function(x) Not x.IsPublished) _
 			.Select(Function(x) New BrandListItem With {
 				.Id = x.Id,
-				.Name = x.Name,
 				.Title = x.Title,
 				.ImageId = x.ImageId}) _
 			.ToListAsync
@@ -139,7 +138,7 @@ Public Class CatalogManager
 		If IsNothing(brand) Then
 			Throw New ArgumentNullException(NameOf(brand))
 		End If
-		Return Await Context.Brands.AsNoTracking.AnyAsync(Function(x) x.Name = brand.Name And Not x.Id = id)
+		Return Await Context.Brands.AsNoTracking.AnyAsync(Function(x) x.Title = brand.Title And Not x.Id = id)
 	End Function
 
 #End Region
@@ -158,7 +157,6 @@ Public Class CatalogManager
 			.Select(Function(x) New CategoryListItem With {
 				.Id = x.Id,
 				.Title = x.Title,
-				.Name = x.Name,
 				.Path = x.Path,
 				.ParentId = x.ParentId,
 				.ImageId = x.ImageId,
@@ -176,13 +174,6 @@ Public Class CatalogManager
 		Return String.Join(separator, Context.Categories.AsNoTracking _
 			.Join(paths, Function(x) x.Id, Function(y) y, Function(x, y) x.Title) _
 			.ToList)
-	End Function
-
-	Public Async Function CategoryNameExistsAsync(name As String, Optional id As Guid? = Nothing) As Task(Of Boolean)
-		If String.IsNullOrEmpty(name) Then
-			Return False
-		End If
-		Return Await Context.Categories.AsNoTracking.AnyAsync(Function(x) x.Name = name And Not x.Id = id)
 	End Function
 
 	Public Async Function FindCategoryByIdAsync(id As Guid) As Task(Of Category)

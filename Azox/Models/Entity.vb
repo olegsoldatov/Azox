@@ -5,11 +5,18 @@ Imports Soldata.Azox
 ''' Базовая сущность.
 ''' </summary>
 Public MustInherit Class Entity
-	Implements IEntity
+    Implements IEntity
 
-	''' <summary>
-	''' Идентификатор.
-	''' </summary>
-	<Key>
-	Public Property Id As Guid Implements IEntity.Id
+    ''' <summary>
+    ''' Устанавливает или возвращает идентификатор.
+    ''' </summary>
+    <Key>
+    Public Property Id As Guid Implements IEntity.Id
+
+    ''' <summary>
+    ''' Устанавливает или возвращает дату последнего изменения.
+    ''' </summary>
+    <ScaffoldColumn(False)>
+    <Display(Name:="Дата изменения")>
+    Public Property LastUpdateDate As Date Implements IEntity.LastUpdateDate
 End Class

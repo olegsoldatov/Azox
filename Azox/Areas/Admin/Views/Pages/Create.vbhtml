@@ -1,10 +1,10 @@
 ﻿@ModelType Azox.Page
 @Code
-	ViewBag.Title = "Добавление страницы"
+    ViewBag.Title = "Добавление страницы"
 End Code
 
 @Section Toolbar
-	<button class="btn" form="modelForm">
+	<button class="btn" form="model-form">
 		<span class="fa fa-save"></span>
 		<span>Сохранить</span>
 	</button>
@@ -15,10 +15,10 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, FormMethod.Post, New With {.id = "modelForm", .enctype = "multipart/form-data"})
-		@Html.AntiForgeryToken
-		@Html.EditorForModel
-	End Using
+    @Using Html.BeginForm(Nothing, Nothing, Nothing, FormMethod.Post, New With {.id = "model-form"})
+        @Html.AntiForgeryToken
+        @Html.EditorForModel
+    End Using
 </article>
 
 @Section Scripts

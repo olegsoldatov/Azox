@@ -10,10 +10,10 @@
 			<div class="modal-body">
 				<p>Вы действительно хотите удалить выбранные бренды?</p>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
-				<button type="submit" class="btn btn-danger" name="delete" value="True">Удалить</button>
-			</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger" name="delete" value="True">Удалить</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+            </div>
 		</div>
 	</div>
 </div>

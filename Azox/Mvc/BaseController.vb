@@ -12,6 +12,7 @@
             ViewBag.TotalCount = totalCount
             ViewBag.PageIndex = pageIndex
             ViewBag.PageSize = pageSize
+            ViewBag.PageCount = CInt(Math.Ceiling(totalCount / pageSize))
         End Sub
 
 
@@ -19,8 +20,20 @@
         ''' Передает в представление содержание для краткого всплывающего сообщения.
         ''' </summary>
         ''' <param name="message">Текст сообщения.</param>
-        Protected Friend Sub Toast(message As String)
+        Protected Friend Sub Alert(message As String)
             TempData("Message") = message
         End Sub
+
+        ''' <summary>
+        ''' Перенаправляет по ссылке возврата или по имени метода действия по умолчанию.
+        ''' </summary>
+        ''' <param name="returnUrl">Строка, содержащая ссылку возврата.</param>
+        ''' <param name="defaultActionName">Имя метода действия, по которому будет перенаправлен запрос, если ссылка возврата будет пустой.</param>
+        Protected Friend Function RedirectToReturnUrl(returnUrl As String, Optional defaultActionName As String = "index") As ActionResult
+            If String.IsNullOrWhiteSpace(returnUrl) Then
+                Return RedirectToAction(defaultActionName)
+            End If
+            Return Redirect(returnUrl)
+        End Function
     End Class
 End Namespace

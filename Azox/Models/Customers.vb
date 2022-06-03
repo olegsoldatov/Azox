@@ -23,9 +23,6 @@ Public Class Customer
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="О клиенте")>
 	Public Property Comment As String
-
-	<ScaffoldColumn(False)>
-	Public Property LastUpdateDate As Date
 End Class
 
 Partial Public Class ApplicationDbContext

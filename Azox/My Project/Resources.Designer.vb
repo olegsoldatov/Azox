@@ -26,7 +26,7 @@ Namespace My.Resources
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
-    Friend Module Resources
+    Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
         
@@ -36,7 +36,7 @@ Namespace My.Resources
         '''  Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Azox.Resources", GetType(Resources).Assembly)
@@ -51,13 +51,40 @@ Namespace My.Resources
         '''  обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Property Culture() As Global.System.Globalization.CultureInfo
+        Public Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
             Set
                 resourceCulture = value
             End Set
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Такой бренд уже существует..
+        '''</summary>
+        Public ReadOnly Property BrandExists() As String
+            Get
+                Return ResourceManager.GetString("BrandExists", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Произошел неизвестный сбой..
+        '''</summary>
+        Public ReadOnly Property DefaultError() As String
+            Get
+                Return ResourceManager.GetString("DefaultError", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на Файл не является изображением..
+        '''</summary>
+        Public ReadOnly Property FileIsNotImage() As String
+            Get
+                Return ResourceManager.GetString("FileIsNotImage", resourceCulture)
+            End Get
         End Property
     End Module
 End Namespace

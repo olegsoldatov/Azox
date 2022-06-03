@@ -4,22 +4,19 @@ Namespace Controllers
 	Public Class AboutController
 		Inherits Controller
 
-		Private ReadOnly pageManager As New PageManager(New ApplicationDbContext)
+		Public ReadOnly Property PageManager As PageManager
+
+		Public Sub New(pageManager As PageManager)
+			Me.PageManager = pageManager
+		End Sub
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim model = Await pageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
-			If IsNothing(model) Then
+			Dim page = Await PageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
+			If IsNothing(page) Then
 				Return HttpNotFound()
 			End If
-			Return View(model)
+			Return View(page)
 		End Function
-
-		Protected Overrides Sub Dispose(disposing As Boolean)
-			If disposing Then
-				pageManager.Dispose()
-			End If
-			MyBase.Dispose(disposing)
-		End Sub
 	End Class
 End Namespace

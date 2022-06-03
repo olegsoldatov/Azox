@@ -1,18 +1,15 @@
 ﻿@ModelType Brand
 @Code
-	ViewBag.Title = "Изменение бренда"
+    ViewBag.Title = "Изменение бренда"
+    Dim returnUrl = Request.QueryString("ReturnUrl")
 End Code
 
 @Section Toolbar
-	<button class="btn" form="modelForm">
+	<button class="btn" form="model-form">
 		<span class="fa fa-save"></span>
 		<span>Сохранить</span>
 	</button>
-	<a class="btn" href="@Url.Action("details", "brands", New With {.area = "", Model.Id})" target="_blank">
-		<span class="fa fa-external-link"></span>
-		<span>Посмотреть</span>
-	</a>
-	<a class="btn" href="@Url.Action("delete", New With {Model.Id})">
+	<a class="btn" href="@Url.Action("delete", New With {Model.Id, returnUrl})">
 		<span class="fa fa-remove"></span>
 		<span>Удалить</span>
 	</a>
@@ -23,11 +20,11 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, New With {.returnUrl = Request.QueryString("ReturnUrl")}, FormMethod.Post, New With {.id = "modelForm", .enctype = "multipart/form-data"})
+	@Using Html.BeginForm(Nothing, Nothing, New With {returnUrl}, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
 		@Html.AntiForgeryToken
 		@Html.HiddenFor(Function(model) model.Id)
 		@Html.EditorForModel
-	End Using
+    End Using
 </article>
 
 @Section Scripts
