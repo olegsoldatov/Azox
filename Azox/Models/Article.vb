@@ -2,26 +2,32 @@
 Imports System.Data.Entity
 
 Public Class Article
-	<Key>
-	Public Property Id As Guid
+    Inherits Entity
 
-	<Required>
-	<MaxLength(128)>
-	Public Property Name As String
+    <Required(ErrorMessage:="Укажите заголовок.")>
+    <Display(Name:="Заголовок")>
+    Public Property Heading As String
 
-	Public Property Content As String
+    <DataType(DataType.MultilineText)>
+    <AllowHtml>
+    <Display(Name:="Содержание")>
+    <UIHint("Content")>
+    Public Property Content As String
 
-	<DataType(DataType.Date)>
-	Public Property LastUpdateDate As Date
+    '<MaxLength(200, ErrorMessage:="Не более {1} символов.")>
+    '<Display(Name:="Название")>
+    'Public Property Title As String
 
-	<MaxLength(128)>
-	Public Property Title As String
+    '<MaxLength(250, ErrorMessage:="Не более {1} символов.")>
+    '<DataType(DataType.MultilineText)>
+    '<Display(Name:="Описание")>
+    'Public Property Description As String
 
-	Public Property Description As String
-
-	Public Property Keywords As String
-
-	Public Property Slug As String
+    ''<Remote("SlugValid", "Articles", AdditionalFields:="Id", ErrorMessage:="Такой путь уже существует.")>
+    '<RegularExpression("^(\/[a-z0-9_-]+)+$", ErrorMessage:="Неверный путь.")>
+    '<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
+    '<Display(Name:="Абсолютный путь")>
+    'Public Property AbsolutePath As String
 End Class
 
 Partial Public Class ApplicationDbContext
