@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Просмотр значений атрибутов сборки
 <Assembly: AssemblyTitle("Azox")>
-<Assembly: AssemblyDescription("Веб-приложение.")>
-<Assembly: AssemblyCompany("Soldata")> 
+<Assembly: AssemblyDescription("Система управления содержимым сайта.")>
+<Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("Azox")>
-<Assembly: AssemblyCopyright("© Soldata, 2019")>
+<Assembly: AssemblyCopyright("© Софт Бизнес, 2022")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -30,5 +30,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("2.0.2.*")>
-<Assembly: AssemblyFileVersion("2.0.2")>
+<Assembly: AssemblyVersion("3.0.0.*")>
+<Assembly: AssemblyFileVersion("3.0.0")>
