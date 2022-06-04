@@ -4,19 +4,16 @@ Namespace Controllers
 	Public Class AboutController
 		Inherits Controller
 
-		Public ReadOnly Property PageManager As PageManager
+        Private ReadOnly SettingManager As SettingManager
 
-		Public Sub New(pageManager As PageManager)
-			Me.PageManager = pageManager
-		End Sub
+        Public Sub New(pageManager As PageManager, settingManager As SettingManager)
+            Me.SettingManager = settingManager
+        End Sub
 
-		<HttpGet>
+        <HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim page = Await PageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
-			If IsNothing(page) Then
-				Return HttpNotFound()
-			End If
-			Return View(page)
-		End Function
+            ViewBag.Title = My.Settings.About
+            Return View(Await SettingManager.GetAboutAsync())
+        End Function
 	End Class
 End Namespace

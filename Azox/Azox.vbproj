@@ -270,6 +270,7 @@
     <Compile Include="Business\BrandImageService.vb" />
     <Compile Include="Business\CustomerManager.vb" />
     <Compile Include="Business\ProductImageService.vb" />
+    <Compile Include="Business\SettingManager.vb" />
     <Compile Include="Controllers\ErrorController.vb" />
     <Compile Include="Core\ImageConfiguration.vb" />
     <Compile Include="Business\ImageManager.vb" />
@@ -1019,6 +1020,7 @@
     <Content Include="Areas\Admin\Views\Settings\Index.vbhtml" />
     <Content Include="Areas\Admin\Views\Settings\General.vbhtml" />
     <Content Include="Areas\Admin\Views\Categories\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Settings\About.vbhtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.es6.js" />
@@ -1150,7 +1152,7 @@
     <Content Include="CodeTemplates\MvcView\List.vb.t4" />
     <Content Include="CodeTemplates\MvcView\ModelMetadataFunctions.vb.include.t4" />
     <Content Include="Views\Shared\EditorTemplates\Currency.vbhtml" />
-    <Content Include="Views\Shared\EditorTemplates\Content.vbhtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Content.vbhtml" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />

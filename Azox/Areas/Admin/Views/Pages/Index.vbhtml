@@ -20,7 +20,7 @@ End Code
 End Section
 
 <header>
-    @Html.Title("страница", "страницы", "страниц", New With {.class = "heading"})
+    <h1 class="heading">@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("страница", "страницы", "страниц")</sup></h1>
     @Html.Pagination(New With {.class = "pagination"})
 </header>
 
@@ -58,8 +58,8 @@ End Section
                                     @Html.DisplayFor(Function(model) item.LastUpdateDate)
                                 </td>
                                 <td class="text-right">
-                                    <a href="@item.AbsolutePath" title="Посмотреть" target="_blank"><span class="fa fa-external-link"></span></a>
-                                    <a href="@Url.Action("delete", New With {item.Id, returnUrl})" title="Удалить"><span class="fa fa-remove"></span></a>
+                                    <a class="action-link" href="@item.AbsolutePath" title="Посмотреть" target="_blank"><span class="fa fa-eye"></span></a>
+                                    <a class="action-link" href="@Url.Action("delete", New With {item.Id, returnUrl})" title="Удалить"><span class="fa fa-remove"></span></a>
                                 </td>
                             </tr>
                         Next

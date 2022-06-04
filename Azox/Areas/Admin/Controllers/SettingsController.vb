@@ -6,14 +6,34 @@ Namespace Areas.Admin.Controllers
         Inherits AdminController
 
         Public ReadOnly Property Db As ApplicationDbContext
+        Private ReadOnly SettingManager As SettingManager
 
-        Public Sub New(context As ApplicationDbContext)
+        Public Sub New(settingManager As SettingManager, context As ApplicationDbContext)
+            Me.SettingManager = settingManager
             Db = context
         End Sub
 
         Public Async Function Index() As Task(Of ActionResult)
             Dim settings = Await Db.Settings.OrderBy(Function(x) x.Name).ToListAsync
             Return View(settings)
+        End Function
+
+        <HttpGet>
+        Public Async Function About() As Task(Of ActionResult)
+            ViewBag.Title = My.Settings.About
+            Return View(Await SettingManager.GetAboutAsync())
+        End Function
+
+        <HttpPost>
+        <ValidateAntiForgeryToken>
+        Public Async Function About(setting As AboutSetting) As Task(Of ActionResult)
+            If ModelState.IsValid Then
+                Await SettingManager.SaveAboutAsync(setting)
+                Alert("Сохранено.")
+                Return RedirectToAction("about")
+            End If
+            ViewBag.Title = My.Settings.About
+            Return View(setting)
         End Function
 
         <HttpGet>

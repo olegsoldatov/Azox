@@ -1,9 +1,6 @@
-﻿@ModelType Azox.Page
+﻿@ModelType AboutSetting
 @Code
-	ViewBag.Title = Model.Title
-	ViewBag.Description = Model.Description
-	ViewBag.Keywords = Model.Keywords
-	ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id, .returnUrl = Request.Url.PathAndQuery})
+    ViewBag.Description = Model.Description
 End Code
 
 <div class="container">

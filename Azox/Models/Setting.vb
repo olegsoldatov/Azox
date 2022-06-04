@@ -13,6 +13,10 @@ Public Class Setting
     <AllowHtml>
     <Display(Name:="Значение")>
     Public Property Value As String
+
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="Описание")>
+    Public Property Description As String
 End Class
 
 Partial Public Class ApplicationDbContext
@@ -26,6 +30,18 @@ Public Class GeneralSetting
 
     <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <DataType(DataType.MultilineText)>
+    <Display(Name:="Описание")>
+    Public Property Description As String
+End Class
+
+Public Class AboutSetting
+    <AllowHtml>
+    <DataType(DataType.MultilineText)>
+    <Display(Name:="Содержание")>
+    <UIHint("Content")>
+    Public Property Content As String
+
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Описание")>
     Public Property Description As String
 End Class

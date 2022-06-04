@@ -18,6 +18,7 @@ Partial Public Class Startup
         builder.RegisterType(Of EntityStore(Of Product)).As(Of IEntityStore(Of Product)).InstancePerRequest()
 
         ' Менеджеры.
+        builder.RegisterType(Of SettingManager).InstancePerRequest()
         builder.RegisterType(Of PageManager).InstancePerRequest()
         builder.RegisterType(Of ImageManager).InstancePerRequest()
         builder.RegisterType(Of BrandManager).InstancePerRequest()
