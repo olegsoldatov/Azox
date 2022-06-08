@@ -62,6 +62,24 @@ Namespace My
                 Return CType(Me("About"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Общее")>  _
+        Public ReadOnly Property General() As String
+            Get
+                Return CType(Me("General"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("О компании")>  _
+        Public ReadOnly Property AboutPageHeading() As String
+            Get
+                Return CType(Me("AboutPageHeading"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

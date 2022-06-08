@@ -61,8 +61,8 @@ End Code
                         <span>Содержание</span>
                     </button>
                     <ul id="contentMenu" aria-hidden="@If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then@<text>false</text>Else@<text>true</text>End if">
-                        <li @If controllerName.Equals("pages") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("index", "pages")">Страницы</a>
+                        <li @If actionName.Equals("about") And controllerName.Equals("pages") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("about", "pages")">О компании</a>
                         </li>
                         <li @If actionName.Equals("files") And controllerName.Equals("dashboard") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("files", "dashboard")">Файлы</a>
@@ -78,7 +78,7 @@ End Code
                 <li @If controllerName.Equals("settings") Then @<text> class="active" </text> End If>
                     <button aria-controls="settingMenu" aria-expanded="@If controllerName.Equals("settings") Then@<text>true</text>Else@<text>false</text>End if">
                         <span class="fa fa-gear"></span>
-                        <span>Параметры</span>
+                        <span>Настройки</span>
                     </button>
                     <ul id="settingMenu" aria-hidden="@If controllerName.Equals("settings") Then@<text>false</text>Else@<text>true</text>End if">
                         <li @If actionName.Equals("general") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
@@ -86,6 +86,9 @@ End Code
                         </li>
                         <li @If actionName.Equals("about") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("about", "settings")">О компании</a>
+                        </li>
+                        <li @If actionName.Equals("phones") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("phones", "settings")">Телефоны</a>
                         </li>
                         <li @If actionName.Equals("index") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("index", "settings")">Список</a>

@@ -14,12 +14,8 @@ Namespace Controllers
 
 		<HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-			Dim page = Await PageManager.FindByAbsolutePathAsync(Request.Url.AbsolutePath)
-			If IsNothing(page) Then
-				Return HttpNotFound()
-			End If
-			Return View(page)
-		End Function
+            Return View()
+        End Function
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>

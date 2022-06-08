@@ -24,12 +24,11 @@ Partial Public Class ApplicationDbContext
 End Class
 
 Public Class GeneralSetting
-    <Required(ErrorMessage:="Укажите название.")>
     <Display(Name:="Название")>
     Public Property Title As String
 
-    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <DataType(DataType.MultilineText)>
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Описание")>
     Public Property Description As String
 End Class
@@ -41,7 +40,15 @@ Public Class AboutSetting
     <UIHint("Content")>
     Public Property Content As String
 
+    <DataType(DataType.MultilineText)>
     <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Описание")>
     Public Property Description As String
+End Class
+
+Public Class ContactSetting
+    <AllowHtml>
+    <DataType(DataType.MultilineText)>
+    <Display(Name:="Адрес")>
+    Public Property Address As String
 End Class

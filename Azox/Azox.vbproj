@@ -277,7 +277,6 @@
     <Compile Include="Business\PageManager.vb" />
     <Compile Include="Business\ProductManager.vb" />
     <Compile Include="Controllers\BrandsController.vb" />
-    <Compile Include="Controllers\PagesController.vb" />
     <Compile Include="Business\BrandManager.vb" />
     <Compile Include="Core\CatalogManager.vb" />
     <Compile Include="App_Start\FormatConfig.vb" />
@@ -1021,6 +1020,8 @@
     <Content Include="Areas\Admin\Views\Settings\General.vbhtml" />
     <Content Include="Areas\Admin\Views\Categories\_Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Settings\About.vbhtml" />
+    <Content Include="Areas\Admin\Views\Settings\Phones.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\About.vbhtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.es6.js" />
@@ -1045,9 +1046,7 @@
     <Content Include="Areas\Admin\Views\Products\_Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ImageFile.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Edit.vbhtml" />
     <Content Include="Areas\Admin\Views\Pages\EditorTemplates\Page.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Index.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\_Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Delete.vbhtml" />
@@ -1056,9 +1055,6 @@
     <Content Include="Areas\Admin\Views\Customers\Index.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\_Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Categories\_Change.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\_Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Create.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\Delete.vbhtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -1282,10 +1278,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\Phones\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Cat\" />
-    <Folder Include="Views\Pages\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

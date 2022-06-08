@@ -4,16 +4,19 @@ Namespace Controllers
 	Public Class AboutController
 		Inherits Controller
 
-        Private ReadOnly SettingManager As SettingManager
+        Private ReadOnly PageManager As PageManager
 
-        Public Sub New(pageManager As PageManager, settingManager As SettingManager)
-            Me.SettingManager = settingManager
+        Public Sub New(pageManager As PageManager)
+            Me.PageManager = pageManager
         End Sub
 
         <HttpGet>
-		Public Async Function Index() As Task(Of ActionResult)
-            ViewBag.Title = My.Settings.About
-            Return View(Await SettingManager.GetAboutAsync())
+        Public Async Function Index() As Task(Of ActionResult)
+            Dim aboutPage = Await PageManager.GetAboutPageAsync
+            If IsNothing(aboutPage) Then
+                aboutPage = New AboutPage With {.Heading = My.Settings.AboutPageHeading}
+            End If
+            Return View(aboutPage)
         End Function
-	End Class
+    End Class
 End Namespace

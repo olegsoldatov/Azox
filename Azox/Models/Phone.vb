@@ -11,3 +11,9 @@ End Class
 Partial Public Class ApplicationDbContext
     Public Property Phones As DbSet(Of Phone)
 End Class
+
+Public Class PhoneEditViewModel
+    Public Property Phone As String
+    Public Property Ext As String
+    Public Property Description As String
+End Class

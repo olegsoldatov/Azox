@@ -30,7 +30,7 @@ Namespace Areas.Admin.Controllers
             If ModelState.IsValid Then
                 Await SettingManager.SaveAboutAsync(setting)
                 Alert("Сохранено.")
-                Return RedirectToAction("about")
+                Return Redirect(Request.Url.PathAndQuery)
             End If
             ViewBag.Title = My.Settings.About
             Return View(setting)
@@ -38,36 +38,36 @@ Namespace Areas.Admin.Controllers
 
         <HttpGet>
         Public Async Function General() As Task(Of ActionResult)
-            Dim model = New GeneralSetting
-
-            Dim settings = Await Db.Settings.Where(Function(x) x.Name = NameOf(model.Title) Or x.Name = NameOf(model.Description)).ToListAsync
-
-            model.Title = settings.SingleOrDefault(Function(x) x.Name = NameOf(model.Title))?.Value
-            model.Description = settings.SingleOrDefault(Function(x) x.Name = NameOf(model.Description))?.Value
-            Return View(model)
+            ViewBag.Title = My.Settings.General
+            Return View(Await SettingManager.GetGeneralAsync())
         End Function
 
         <HttpPost>
         <ValidateAntiForgeryToken>
-        Public Async Function General(model As GeneralSetting) As Task(Of ActionResult)
+        Public Async Function General(setting As GeneralSetting) As Task(Of ActionResult)
             If ModelState.IsValid Then
-                Dim title = Await Db.Settings.SingleOrDefaultAsync(Function(x) x.Name = NameOf(model.Title))
-                If IsNothing(title) Then
-                    title = Db.Settings.Add(New Setting With {.Name = NameOf(model.Title)})
+                If ModelState.IsValid Then
+                    Await SettingManager.SaveGeneralAsync(setting)
+                    Alert("Сохранено.")
+                    Return Redirect(Request.Url.PathAndQuery)
                 End If
-                title.Value = model.Title
-
-                Dim description = Await Db.Settings.SingleOrDefaultAsync(Function(x) x.Name = NameOf(model.Description))
-                If IsNothing(description) Then
-                    description = Db.Settings.Add(New Setting With {.Name = NameOf(model.Description)})
-                End If
-                description.Value = model.Description
-
-                Await Db.SaveChangesAsync
-                Alert("Параметры сохранены.")
+                ViewBag.Title = My.Settings.General
                 Return Redirect(Request.Url.PathAndQuery)
             End If
-            Return View(model)
+            Return View(setting)
+        End Function
+
+        <HttpGet>
+        Public Async Function Phones() As Task(Of ActionResult)
+            ViewBag.Title = "Телефоны"
+            Return View(Await Db.Phones.Select(Function(x) New PhoneEditViewModel With {.Phone = x.Value, .Ext = "", .Description = x.Description}).ToListAsync)
+        End Function
+
+        <HttpPost>
+        <ValidateAntiForgeryToken>
+        Public Function Phones(form As FormCollection, phone As IEnumerable(Of String), ext As IEnumerable(Of String), description As IEnumerable(Of String)) As ActionResult
+
+            Return Redirect(Request.Url.PathAndQuery)
         End Function
     End Class
 End Namespace

@@ -1,6 +1,6 @@
 ﻿@Modeltype IEnumerable(Of Setting)
 @Code
-    ViewBag.Title = "Параметры"
+    ViewBag.Title = "Настройки"
 End Code
 
 <header>
@@ -14,6 +14,7 @@ End Code
                 <tr>
                     <th>@Html.DisplayNameFor(Function(model) model.Name)</th>
                     <th>@Html.DisplayNameFor(Function(model) model.Value)</th>
+                    <th>@Html.DisplayNameFor(Function(model) model.Description)</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@ End Code
                     @<tr>
                         <td>@Html.DisplayFor(Function(model) item.Name)</td>
                         <td>@Html.DisplayFor(Function(model) item.Value)</td>
+                        <td>@Html.DisplayFor(Function(model) item.Description)</td>
                     </tr>
                 Next
             </tbody>

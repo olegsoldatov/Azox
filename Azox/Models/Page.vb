@@ -4,27 +4,29 @@ Imports System.Data.Entity
 Public Class Page
 	Inherits Entity
 
-	<Required(ErrorMessage:="Укажите имя.")>
-	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<Display(Name:="Название")>
-	Public Property Title As String
+    <Required(ErrorMessage:="Укажите заголовок.")>
+    <MaxLength(200, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="Заголовок")>
+    Public Property Heading As String
 
-	<AllowHtml>
+    <AllowHtml>
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Содержание")>
 	<UIHint("Content")>
 	Public Property Content As String
 
-	<Required(ErrorMessage:="Укажите абсолютный путь.")>
-	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-	<Display(Name:="Абсолютный путь")>
-	Public Property AbsolutePath As String
+    <MaxLength(200, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="Название")>
+    Public Property Title As String
 
-	<Display(Name:="Описание")>
-	Public Property Description As String
+    <DataType(DataType.MultilineText)>
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="Описание")>
+    Public Property Description As String
+End Class
 
-	<Display(Name:="Ключевые слова")>
-	Public Property Keywords As String
+Public Class AboutPage
+    Inherits Page
 End Class
 
 Partial Public Class ApplicationDbContext
