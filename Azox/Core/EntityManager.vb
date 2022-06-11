@@ -21,15 +21,6 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     End Sub
 
     ''' <summary>
-    ''' Возвращает перечисление сущностей с возможностью запроса.
-    ''' </summary>
-    Public Overridable ReadOnly Property Entities As IQueryable(Of TEntity)
-        Get
-            Return Context.Set(Of TEntity)
-        End Get
-    End Property
-
-    ''' <summary>
     ''' Добавляет сущность.
     ''' </summary>
     ''' <param name="entity">Сущность.</param>

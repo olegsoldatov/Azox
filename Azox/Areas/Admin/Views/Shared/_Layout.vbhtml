@@ -61,8 +61,8 @@ End Code
                         <span>Содержание</span>
                     </button>
                     <ul id="contentMenu" aria-hidden="@If controllerName.Equals("pages") Or (actionName.Equals("files") And controllerName.Equals("dashboard")) Then@<text>false</text>Else@<text>true</text>End if">
-                        <li @If actionName.Equals("about") And controllerName.Equals("pages") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("about", "pages")">О компании</a>
+                        <li @If controllerName.Equals("pages") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("index", "pages")">Страницы</a>
                         </li>
                         <li @If actionName.Equals("files") And controllerName.Equals("dashboard") Then @<text> class="active" </text> End If>
                             <a href="@Url.Action("files", "dashboard")">Файлы</a>

@@ -12,14 +12,15 @@ Partial Public Class Startup
         builder.RegisterType(Of ApplicationDbContext).InstancePerRequest()
 
         ' Хранилища.
+        builder.RegisterType(Of EntityStore(Of Page)).As(Of IEntityStore(Of Page)).InstancePerRequest()
         builder.RegisterType(Of EntityStore(Of Image)).As(Of IEntityStore(Of Image)).InstancePerRequest()
         builder.RegisterType(Of EntityStore(Of Brand)).As(Of IEntityStore(Of Brand)).InstancePerRequest()
         builder.RegisterType(Of EntityStore(Of Category)).As(Of IEntityStore(Of Category)).InstancePerRequest()
         builder.RegisterType(Of EntityStore(Of Product)).As(Of IEntityStore(Of Product)).InstancePerRequest()
 
         ' Менеджеры.
-        builder.RegisterType(Of SettingManager).InstancePerRequest()
         builder.RegisterType(Of PageManager).InstancePerRequest()
+        builder.RegisterType(Of SettingManager).InstancePerRequest()
         builder.RegisterType(Of ImageManager).InstancePerRequest()
         builder.RegisterType(Of BrandManager).InstancePerRequest()
         builder.RegisterType(Of CategoryManager).InstancePerRequest()

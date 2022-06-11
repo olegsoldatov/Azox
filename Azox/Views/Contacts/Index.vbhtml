@@ -1,15 +1,14 @@
-﻿@ModelType Azox.Page
+﻿@ModelType ContactsPage
 @Code
-	ViewBag.Title = Model.Title
-	ViewBag.Description = Model.Description
-	ViewBag.Keywords = Model.Keywords
-	ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id, .returnUrl = Request.Url.PathAndQuery})
+    ViewBag.Title = If(Model.Title, Model.Heading)
+    ViewBag.Description = Model.Description
+    ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id})
 End code
 
 <div class="container">
-	<header>
-		<h1 class="h1">@ViewBag.Title</h1>
-	</header>
+    <header>
+        <h1 class="h1">@Model.Heading</h1>
+    </header>
 
 	<div class="row">
 		<div class="col-lg-6">

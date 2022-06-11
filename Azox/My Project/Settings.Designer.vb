@@ -80,6 +80,42 @@ Namespace My
                 Return CType(Me("AboutPageHeading"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Контакты")>  _
+        Public ReadOnly Property ContactsPageHeading() As String
+            Get
+                Return CType(Me("ContactsPageHeading"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Политика конфиденциальности")>  _
+        Public ReadOnly Property PolicyPageHeading() As String
+            Get
+                Return CType(Me("PolicyPageHeading"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Доставка")>  _
+        Public ReadOnly Property DeliveryPageHeading() As String
+            Get
+                Return CType(Me("DeliveryPageHeading"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Условия использования")>  _
+        Public ReadOnly Property TermsPageHeading() As String
+            Get
+                Return CType(Me("TermsPageHeading"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

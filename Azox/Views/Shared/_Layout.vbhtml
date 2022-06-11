@@ -65,9 +65,12 @@ End Code
 
 	<footer>
 		<hr />
-		<div class="container">
-			&copy; @Now.Year, Софт Бизнес
-		</div>
+        <div class="container">
+            &copy; @Now.Year, Софт Бизнес |
+            @Html.ActionLink("Доставка", "index", "delivery") |
+            @Html.ActionLink("Условия использования", "index", "terms") |
+            @Html.ActionLink("Политика конфиденциальности", "index", "policy")
+        </div>
 	</footer>
 
 	<a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">

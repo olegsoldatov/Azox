@@ -271,7 +271,10 @@
     <Compile Include="Business\CustomerManager.vb" />
     <Compile Include="Business\ProductImageService.vb" />
     <Compile Include="Business\SettingManager.vb" />
+    <Compile Include="Controllers\DeliveryController.vb" />
     <Compile Include="Controllers\ErrorController.vb" />
+    <Compile Include="Controllers\PolicyController.vb" />
+    <Compile Include="Controllers\TermsController.vb" />
     <Compile Include="Core\ImageConfiguration.vb" />
     <Compile Include="Business\ImageManager.vb" />
     <Compile Include="Business\PageManager.vb" />
@@ -306,11 +309,11 @@
     <Compile Include="Core\ManagerResult.vb" />
     <Compile Include="Core\Popular.vb" />
     <Compile Include="Core\Settings.vb" />
-    <Compile Include="EntityFramework\EntityStore.vb" />
+    <Compile Include="Data\EntityStore.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
     <Compile Include="Managers\ProductManager.vb" />
     <Compile Include="Migrations\Configuration.vb" />
-    <Compile Include="EntityFramework\ApplicationDbContext.vb" />
+    <Compile Include="Data\ApplicationDbContext.vb" />
     <Compile Include="Models\Attribute.vb" />
     <Compile Include="Models\Brand.vb" />
     <Compile Include="Core\CatalogDocument.vb" />
@@ -377,7 +380,6 @@
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1021,7 +1023,13 @@
     <Content Include="Areas\Admin\Views\Categories\_Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Settings\About.vbhtml" />
     <Content Include="Areas\Admin\Views\Settings\Phones.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\About.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\AboutPage.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\Edit.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\ContactsPage.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\PolicyPage.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\DeliveryPage.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\Index.vbhtml" />
+    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\TermsPage.vbhtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.es6.js" />
@@ -1046,7 +1054,6 @@
     <Content Include="Areas\Admin\Views\Products\_Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Products\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ImageFile.vbhtml" />
-    <Content Include="Areas\Admin\Views\Pages\EditorTemplates\Page.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\_Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Customers\Delete.vbhtml" />
@@ -1257,6 +1264,9 @@
     <Content Include="Views\Shared\Page.vbhtml" />
     <Content Include="Views\Brands\Details.vbhtml" />
     <Content Include="Views\Brands\Index.vbhtml" />
+    <Content Include="Views\Policy\Index.vbhtml" />
+    <Content Include="Views\Delivery\Index.vbhtml" />
+    <Content Include="Views\Terms\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -1282,7 +1292,6 @@
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Cat\" />
-    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

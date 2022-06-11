@@ -29,6 +29,22 @@ Public Class AboutPage
     Inherits Page
 End Class
 
+Public Class ContactsPage
+    Inherits Page
+End Class
+
+Public Class PolicyPage
+    Inherits Page
+End Class
+
+Public Class DeliveryPage
+    Inherits Page
+End Class
+
+Public Class TermsPage
+    Inherits Page
+End Class
+
 Partial Public Class ApplicationDbContext
 	Public Property Pages As DbSet(Of Page)
 End Class

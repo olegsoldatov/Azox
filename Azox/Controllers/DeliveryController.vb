@@ -1,8 +1,8 @@
 ﻿Imports System.Threading.Tasks
 
 Namespace Controllers
-	Public Class AboutController
-		Inherits Controller
+    Public Class DeliveryController
+        Inherits Controller
 
         Private ReadOnly PageManager As PageManager
 
@@ -12,7 +12,7 @@ Namespace Controllers
 
         <HttpGet>
         Public Async Function Index() As Task(Of ActionResult)
-            Return View(Await PageManager.GetPageAsync(Of AboutPage))
+            Return View(Await PageManager.GetPageAsync(Of DeliveryPage))
         End Function
     End Class
 End Namespace

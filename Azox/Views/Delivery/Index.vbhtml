@@ -1,4 +1,4 @@
-﻿@ModelType AboutPage
+﻿@ModelType DeliveryPage
 @Code
     ViewBag.Title = If(Model.Title, Model.Heading)
     ViewBag.Description = Model.Description

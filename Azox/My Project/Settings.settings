@@ -11,5 +11,17 @@
     <Setting Name="AboutPageHeading" Type="System.String" Scope="Application">
       <Value Profile="(Default)">О компании</Value>
     </Setting>
+    <Setting Name="ContactsPageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Контакты</Value>
+    </Setting>
+    <Setting Name="PolicyPageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Политика конфиденциальности</Value>
+    </Setting>
+    <Setting Name="DeliveryPageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Доставка</Value>
+    </Setting>
+    <Setting Name="TermsPageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Условия использования</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

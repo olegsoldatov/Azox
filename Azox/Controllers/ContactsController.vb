@@ -6,18 +6,18 @@ Namespace Controllers
 	Public Class ContactsController
 		Inherits Controller
 
-		Public ReadOnly Property PageManager As PageManager
+        Private ReadOnly PageManager As PageManager
 
-		Public Sub New(pageManager As PageManager)
-			Me.PageManager = pageManager
-		End Sub
+        Public Sub New(pageManager As PageManager)
+            Me.PageManager = pageManager
+        End Sub
 
-		<HttpGet>
+        <HttpGet>
 		Public Async Function Index() As Task(Of ActionResult)
-            Return View()
+            Return View(Await PageManager.GetPageAsync(Of ContactsPage))
         End Function
 
-		<HttpPost>
+        <HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Function ContactForm(model As ContactFormViewModel) As ActionResult
 			If ModelState.IsValid Then
