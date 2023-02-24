@@ -267,6 +267,10 @@
     <Compile Include="Areas\Admin\Models\CategoryChangeViewModel.vb" />
     <Compile Include="Areas\Admin\Models\ChangeModel.vb" />
     <Compile Include="Areas\Admin\Models\ProductChange.vb" />
+    <Compile Include="Migrations\202302241228449_ghfghfgg.designer.vb">
+      <DependentUpon>202302241228449_ghfghfgg.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202302241228449_ghfghfgg.vb" />
     <Compile Include="Services\BrandImageService.vb" />
     <Compile Include="Managers\CustomerManager.vb" />
     <Compile Include="Services\ProductImageService.vb" />
@@ -382,10 +386,14 @@
     </Compile>
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Startup.vb" />
+    <Compile Include="Validators\BrandValidator.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202211291539352_dgfdfghfh.resx">
       <DependentUpon>202211291539352_dgfdfghfh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302241228449_ghfghfgg.resx">
+      <DependentUpon>202302241228449_ghfghfgg.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
@@ -1007,6 +1015,7 @@
     <Content Include="Areas\Admin\Views\Categories\Create.vbhtml" />
     <Content Include="Areas\Admin\Views\Categories\Delete.vbhtml" />
     <Content Include="Areas\Admin\Views\Categories\EditorTemplates\Category.vbhtml" />
+    <Content Include="Images\full-logo.svg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />

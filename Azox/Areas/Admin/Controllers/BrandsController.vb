@@ -1,5 +1,4 @@
-﻿Imports System.Data.Entity
-Imports System.Threading.Tasks
+﻿Imports System.Threading.Tasks
 Imports System.Net
 Imports Soldata.Web.Extensions
 
@@ -13,45 +12,29 @@ Namespace Areas.Admin.Controllers
 			Me.BrandManager = brandManager
 		End Sub
 
-		Public Async Function Index(filter As FilterViewModel, Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-			Dim entities = BrandManager.Brands
+		Public Async Function Index(query As BrandQuery, Optional pageSize As Integer = 50, Optional pageIndex As Integer = 0) As Task(Of ActionResult)
+			Dim result = Await BrandManager.GetListAsync(query, pageSize, pageIndex)
 
-			' Поиск.
-			If Not String.IsNullOrEmpty(filter.SearchText) Then
-				Dim s = filter.SearchText.ToLower.Replace("ё", "е")
-				entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s))
-			End If
+			ViewBag.TotalCount = result.TotalCount
+			ViewBag.PageCount = result.PageCount
+			ViewBag.PageIndex = pageIndex
+			ViewBag.PageSize = pageSize
 
-			' Сортировка.
-			entities = entities.OrderByDescending(Function(x) x.LastUpdateDate).ThenBy(Function(x) x.Title)
-
-			Pagination(Await entities.CountAsync, pageIndex, pageSize)
-
-			ViewBag.Filter = filter
-			Return View(Await entities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync)
+			Return View(result.Items)
 		End Function
 
 		<HttpPost>
 		<ValidateAntiForgeryToken>
-		Public Async Function Index(id As Guid(), returnUrl As String, changeModel As ChangeModel, Optional change As Boolean = False, Optional delete As Boolean = False) As Task(Of ActionResult)
+		Public Async Function Index(id As Guid(), returnUrl As String, Optional delete As Boolean = False) As Task(Of ActionResult)
 			If Not IsNothing(id) Then
-				Dim brands = Await BrandManager.Brands.Where(Function(x) id.Contains(x.Id)).ToListAsync
-
-				If change And Not IsNothing(changeModel.IsPublished) Then
-
-					If Not IsNothing(changeModel.IsPublished) Then
-						brands.ForEach(Sub(x) x.IsPublished = changeModel.IsPublished)
-					End If
-
-					Await BrandManager.UpdateRangeAsync(brands)
-					Alert(String.Format("Изменено: {0}.", id.Length.ToString("бренд", "бренда", "брендов")))
-				ElseIf delete Then
+				Dim brands = Await BrandManager.FindByIdRangeAsync(id)
+				If delete Then
 					Await BrandManager.DeleteRangeAsync(brands)
-					Alert(String.Format("Удалено: {0}.", id.Length.ToString("бренд", "бренда", "брендов")))
+					Alert($"Удалено: {id.Length.ToString("бренд", "бренда", "брендов")}.")
 				End If
 			End If
 
-			Return Redirect(returnUrl)
+			Return RedirectToReturnUrl(returnUrl)
 		End Function
 
 		<HttpGet>
@@ -69,10 +52,13 @@ Namespace Areas.Admin.Controllers
 				ModelState.AddModelError(NameOf(brand.ImageId), My.Resources.FileIsNotImage)
 			End If
 			If ModelState.IsValid Then
-                Await BrandManager.UploadImageAsync(brand, (imageFile?.InputStream, imageFile?.ContentType))
-                Await BrandManager.CreateAsync(brand)
-                Alert("Бренд добавлен.")
-				Return RedirectToAction("index")
+				Await BrandManager.UploadImageAsync(brand, (imageFile?.InputStream, imageFile?.ContentType))
+				Dim result = Await BrandManager.CreateAsync(brand)
+				If result.Succeeded Then
+					Alert("Бренд добавлен.")
+					Return RedirectToAction("index")
+				End If
+				AddErrors(result)
 			End If
 			Return View(brand)
 		End Function
@@ -98,10 +84,13 @@ Namespace Areas.Admin.Controllers
 				ModelState.AddModelError(NameOf(brand.ImageId), My.Resources.FileIsNotImage)
 			End If
 			If ModelState.IsValid Then
-                Await BrandManager.UploadImageAsync(brand, (imageFile?.InputStream, imageFile?.ContentType))
-                Await BrandManager.UpdateAsync(brand)
-                Alert("Бренд изменен.")
-                Return RedirectToReturnUrl(returnUrl)
+				Await BrandManager.UploadImageAsync(brand, (imageFile?.InputStream, imageFile?.ContentType))
+				Dim result = Await BrandManager.UpdateAsync(brand)
+				If result.Succeeded Then
+					Alert("Бренд изменен.")
+					Return RedirectToReturnUrl(returnUrl)
+				End If
+				AddErrors(result)
 			End If
 			Return View(brand)
 		End Function

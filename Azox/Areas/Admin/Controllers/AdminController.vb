@@ -1,4 +1,7 @@
-﻿Namespace Areas.Admin.Controllers
+﻿Imports Microsoft.AspNet.Identity
+Imports Soldata.Azox
+
+Namespace Areas.Admin.Controllers
     <Authorize>
     Public MustInherit Class AdminController
         Inherits Controller
@@ -36,5 +39,11 @@
             End If
             Return Redirect(returnUrl)
         End Function
+
+        Protected Friend Sub AddErrors(result As EntityResult)
+            For Each [error] In result.Errors
+                ModelState.AddModelError("", [error])
+            Next
+        End Sub
     End Class
 End Namespace

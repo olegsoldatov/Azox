@@ -86,7 +86,6 @@ Public Class CatalogManager
 			Throw New ArgumentNullException(NameOf(brand))
 		End If
 		brand.Id = Guid.NewGuid
-		brand.LastUpdateDate = Now
 		Context.Brands.Add(brand)
 		Await Context.SaveChangesAsync
 		Return brand
@@ -96,7 +95,6 @@ Public Class CatalogManager
 		If IsNothing(brand) Then
 			Throw New ArgumentNullException(NameOf(brand))
 		End If
-		brand.LastUpdateDate = Now
 		Context.Entry(brand).State = EntityState.Modified
 		Await Context.SaveChangesAsync
 		Return brand

@@ -69,6 +69,7 @@
     <Compile Include="EntityManager.vb" />
     <Compile Include="IEntity.vb" />
     <Compile Include="IEntityStore.vb" />
+    <Compile Include="IEntityValidator.vb" />
     <Compile Include="IPictorial.vb" />
     <Compile Include="EntityResult.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
