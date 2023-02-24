@@ -12,7 +12,7 @@ Namespace Controllers
 
         <HttpGet>
         Public Async Function Index() As Task(Of ActionResult)
-            Return View(Await PageManager.GetPageAsync(Of TermsPage))
+            Return View("Page", Await PageManager.GetPageAsync(Of TermsPage))
         End Function
     End Class
 End Namespace

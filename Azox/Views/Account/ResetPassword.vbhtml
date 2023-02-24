@@ -1,42 +1,29 @@
 ﻿@ModelType ResetPasswordViewModel
 @Code
+    Layout = "~/Views/Shared/_Account.vbhtml"
     ViewBag.Title = "Сброс пароля"
 End Code
 
-<h2>@ViewBag.Title.</h2>
 
-@Using Html.BeginForm("ResetPassword", "Account", FormMethod.Post, New With {.class = "form-horizontal", .role = "form"})
-
+@Using Html.BeginForm("resetPassword", "account", FormMethod.Post, New With {.role = "form"})
     @Html.AntiForgeryToken()
-
-    @<text>
-    <h4>Сброс пароля.</h4>
-    <hr />
-    @Html.ValidationSummary("", New With {.class = "text-danger"})
     @Html.HiddenFor(Function(m) m.Code)
-    <div class="form-group">
-        @Html.LabelFor(Function(m) m.Email, New With {.class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.TextBoxFor(Function(m) m.Email, New With {.class = "form-control"})
+    @<text>
+        <h1 class="h3 mb-3 fw-normal">@ViewBag.Title</h1>
+        @Html.ValidationSummary("", New With {.class = "text-danger"})
+        <div class="form-floating mb-3">
+            @Html.EditorFor(Function(m) m.Email, New With {.htmlAttributes = New With {.class = "form-control rounded", .placeholder = "name@example.com"}})
+            @Html.LabelFor(Function(m) m.Email, New With {.class = "form-label"})
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(Function(m) m.Password, New With {.class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.PasswordFor(Function(m) m.Password, New With {.class = "form-control"})
+        <div class="form-floating mb-3">
+            @Html.PasswordFor(Function(m) m.Password, New With {.class = "form-control rounded", .placeholder = "Новый пароль"})
+            @Html.LabelFor(Function(m) m.Password, New With {.class = "form-label"})
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(Function(m) m.ConfirmPassword, New With {.class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.PasswordFor(Function(m) m.ConfirmPassword, New With {.class = "form-control"})
+        <div class="form-floating mb-3">
+            @Html.PasswordFor(Function(m) m.ConfirmPassword, New With {.class = "form-control rounded", .placeholder = "Подтверждение пароля"})
+            @Html.LabelFor(Function(m) m.ConfirmPassword, New With {.class = "form-label"})
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Сброс" />
-        </div>
-    </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Сбросить</button>
     </text>
 End Using
 

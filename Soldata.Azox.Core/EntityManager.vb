@@ -1,33 +1,51 @@
-﻿' © Софт Бизнес, ООО. Все права защищены.
+﻿' © Софт Бизнес. Все права защищены.
 
 ''' <summary>
-''' Предоставляет базовый класс менеджера сущностей.
+''' Менеджер сущностей.
 ''' </summary>
 ''' <typeparam name="TEntity">Тип сущности.</typeparam>
 Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
+    Inherits EntityManager(Of TEntity, Guid)
+
+    Protected Sub New(store As IEntityStore(Of TEntity))
+        MyBase.New(store)
+    End Sub
+End Class
+
+''' <summary>
+''' Менеджер сущностей.
+''' </summary>
+''' <typeparam name="TEntity">Тип сущности.</typeparam>
+''' <typeparam name="TKey">Тип ключевого поля.</typeparam>
+Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity(Of TKey)}, TKey As IEquatable(Of TKey))
     Implements IDisposable
 
     Private disposedValue As Boolean
 
-    Protected Friend Property Store As IEntityStore(Of TEntity)
+    Protected Friend ReadOnly Property Store As IEntityStore(Of TEntity, TKey)
 
     ''' <summary>
-    ''' Инициализирует экземпляр класса <see cref="EntityManager(Of TEntity)"/>.
+    ''' Инициализирует экземпляр класса <see cref="EntityManager(Of TEntity, TKey)"/>.
     ''' </summary>
     ''' <param name="store">Хранилище.</param>
-    Public Sub New(store As IEntityStore(Of TEntity))
-        If IsNothing(store) Then
-            Throw New ArgumentNullException(NameOf(store))
-        End If
-        _Store = store
+    Public Sub New(store As IEntityStore(Of TEntity, TKey))
+        Me.Store = store
     End Sub
 
     ''' <summary>
     ''' Находит сущность по уникальному идентификатору.
     ''' </summary>
     ''' <param name="id">Уникальный идентификатор.</param>
-    Public Overridable Async Function FindByIdAsync(id As Guid?) As Task(Of TEntity)
-        Return Await Store.FindByIdAsync(id)
+    Public Overridable Function FindByIdAsync(id As TKey) As Task(Of TEntity)
+        Return Store.FindByIdAsync(id)
+    End Function
+
+    ''' <summary>
+    ''' Находит перечисление сущностей по перечислению идентификаторов.
+    ''' </summary>
+    ''' <param name="id">Перечисление идентификаторов.</param>
+    Public Overridable Function FindByIdRangeAsync(id As IEnumerable(Of TKey)) As Task(Of IEnumerable(Of TEntity))
+        Return Store.FindByIdRangeAsync(id)
     End Function
 
     ''' <summary>
@@ -35,18 +53,13 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entity">Экземпляр сущности, добавляемый в источник данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function CreateAsync(entity As TEntity) As Task(Of ManagerResult)
+    Public Overridable Async Function CreateAsync(entity As TEntity) As Task(Of EntityResult)
+        ThrowIfDisposed()
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
-        entity.Id = Guid.NewGuid
-        entity.LastUpdateDate = Now
-        Try
-            Await Store.CreateAsync(entity)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+        Await Store.CreateAsync(entity)
+        Return EntityResult.Success
     End Function
 
     ''' <summary>
@@ -54,20 +67,13 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entities">Перечисление сущностей, добавляемых в источник данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function CreateRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of ManagerResult)
+    Public Overridable Async Function CreateRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of EntityResult)
+        ThrowIfDisposed()
         If IsNothing(entities) Then
             Throw New ArgumentNullException(NameOf(entities))
         End If
-        For Each item In entities
-            item.Id = Guid.NewGuid
-            item.LastUpdateDate = Now
-        Next
-        Try
-            Await Store.CreateRangeAsync(entities)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+        Await Store.CreateRangeAsync(entities)
+        Return EntityResult.Success
     End Function
 
     ''' <summary>
@@ -75,17 +81,13 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entity">Экземпляр сущности, обновляемый в источнике данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function UpdateAsync(entity As TEntity) As Task(Of ManagerResult)
+    Public Overridable Async Function UpdateAsync(entity As TEntity) As Task(Of EntityResult)
+        ThrowIfDisposed()
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
-        entity.LastUpdateDate = Now
-        Try
-            Await Store.UpdateAsync(entity)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+        Await Store.UpdateAsync(entity)
+        Return EntityResult.Success
     End Function
 
     ''' <summary>
@@ -93,19 +95,13 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entities">Перечисление сущностей, обновляемые в источнике данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function UpdateRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of ManagerResult)
+    Public Overridable Async Function UpdateRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of EntityResult)
+        ThrowIfDisposed()
         If IsNothing(entities) Then
             Throw New ArgumentNullException(NameOf(entities))
         End If
-        For Each item In entities
-            item.LastUpdateDate = Now
-        Next
-        Try
-            Await Store.UpdateRangeAsync(entities)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+        Await Store.UpdateRangeAsync(entities)
+        Return EntityResult.Success
     End Function
 
     ''' <summary>
@@ -113,16 +109,10 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entity">Экземпляр сущности, удаляемый из источника данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function DeleteAsync(entity As TEntity) As Task(Of ManagerResult)
-        If IsNothing(entity) Then
-            Throw New ArgumentNullException(NameOf(entity))
-        End If
-        Try
-            Await Store.DeleteAsync(entity)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+    Public Overridable Async Function DeleteAsync(entity As TEntity) As Task(Of EntityResult)
+        ThrowIfDisposed()
+        Await Store.DeleteAsync(entity)
+        Return EntityResult.Success
     End Function
 
     ''' <summary>
@@ -130,17 +120,17 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity})
     ''' </summary>
     ''' <param name="entities">Перечисление сущностей, удаляемые из источника данных.</param>
     ''' <exception cref="ArgumentNullException"></exception>
-    Public Overridable Async Function DeleteRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of ManagerResult)
-        If IsNothing(entities) Then
-            Throw New ArgumentNullException(NameOf(entities))
-        End If
-        Try
-            Await Store.DeleteRangeAsync(entities)
-            Return ManagerResult.Success
-        Catch ex As Exception
-            Return New ManagerResult(ex.Message)
-        End Try
+    Public Overridable Async Function DeleteRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of EntityResult)
+        ThrowIfDisposed()
+        Await Store.DeleteRangeAsync(entities)
+        Return EntityResult.Success
     End Function
+
+    Private Sub ThrowIfDisposed()
+        If disposedValue Then
+            Throw New ObjectDisposedException([GetType].Name)
+        End If
+    End Sub
 
 #Region "IDisposable"
     Protected Overridable Sub Dispose(disposing As Boolean)

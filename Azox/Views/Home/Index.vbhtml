@@ -1,14 +1,17 @@
-﻿@Code
-	ViewBag.Title = "Azox"
-	ViewBag.Description = ""
-	ViewBag.Keywords = ""
+﻿@ModelType HomePage
+@Code
+    ViewBag.Title = If(Model.Seo.Title, Model.Heading)
+    ViewBag.Description = Model.Seo.Description
+    ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id})
 End Code
 
-<article>
-	<section>
-		<div class="container">
-			<h1>@ViewBag.Title</h1>
-			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
-		</div>
-	</section>
-</article>
+<div class="container">
+    <header>
+        <h1 class="h1">@Model.Heading</h1>
+    </header>
+
+    <article>
+        @Html.Raw(Model.Content)
+    </article>
+</div>
+

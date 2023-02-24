@@ -1,12 +1,12 @@
 ﻿@Code
-    ViewBag.Title = "Подтверждение сброса пароля"
+    Layout = "~/Views/Shared/_Account.vbhtml"
+    ViewBag.Title = "Сброс пароля"
 End Code
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-<div>
-    <p>
-        Ваш пароль сброшен. @Html.ActionLink("Щелкните здесь для входа", "Login", "Account", routeValues:=Nothing, htmlAttributes:=New With {Key .id = "loginLink"})
-    </p>
-</div>
+<h1 class="h3 mb-3 fw-normal">@ViewBag.Title</h1>
+<p>
+    Ваш пароль сброшен.
+</p>
+<p class="mt-5 mb-3">
+    <a href="@Url.Action("login", "account")"><span class="fa fa-lock">&nbsp;&nbsp;</span>Авторизация</a>
+</p>

@@ -1,6 +1,6 @@
 ﻿@ModelType Warehouse
 <div class="row">
-	<div class="col-md-6 col-lg-4">
+	<div class="col-lg-9">
 		<div class="form-group">
 			@Html.LabelFor(Function(model) model.Name, htmlAttributes:=New With {.class = "control-label required"})
 			@Html.ValidationMessageFor(Function(model) model.Name, "", New With {.class = "text-danger"})
@@ -30,15 +30,18 @@
 			@Html.ValidationMessageFor(Function(model) model.MarginGroupId, "", New With {.class = "text-danger"})
 			@Html.DropDownList("MarginGroupId", Nothing, "", New With {.class = "form-control"})
 		</div>
-		<div class="form-group">
-			@Html.LabelFor(Function(model) model.Order, htmlAttributes:=New With {.class = "control-label required"})
-			@Html.ValidationMessageFor(Function(model) model.Order, "", New With {.class = "text-danger"})
-			@Html.Editor("Order", New With {.htmlAttributes = New With {.class = "form-control text-right"}})
-		</div>
-		<div class="form-group form-check">
-			@Html.CheckBoxFor(Function(m) m.IsPublished, New With {.class = "form-check-input"})
-			@Html.LabelFor(Function(m) m.IsPublished, New With {.class = "form-check-label"})
-		</div>
 	</div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            @Html.LabelFor(Function(model) model.Order, htmlAttributes:=New With {.class = "control-label"})
+            @Html.ValidationMessageFor(Function(model) model.Order, "", New With {.class = "text-danger"})
+            @Html.EditorFor(Function(model) model.Order, New With {.htmlAttributes = New With {.class = "form-control text-right"}})
+        </div>
+
+        <div class="form-group form-check">
+            @Html.CheckBoxFor(Function(model) model.IsPublished, New With {.class = "form-check-input"})
+            @Html.LabelFor(Function(model) model.IsPublished, New With {.class = "form-check-label"})
+        </div>
+    </div>
 </div>
 

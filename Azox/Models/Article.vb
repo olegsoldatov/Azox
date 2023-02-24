@@ -2,9 +2,9 @@
 Imports System.Data.Entity
 
 Public Class Article
-    Inherits Entity
+	Inherits ApplicationEntity
 
-    <Required(ErrorMessage:="Укажите заголовок.")>
+	<Required(ErrorMessage:="Укажите заголовок.")>
     <Display(Name:="Заголовок")>
     Public Property Heading As String
 

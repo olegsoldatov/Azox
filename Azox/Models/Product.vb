@@ -6,7 +6,7 @@ Imports System.Data.Entity
 ''' </summary>
 Public Class Product
     Inherits PictorialEntity
-    Implements IProduct
+	Implements IProduct, IDatedEntity
 
 	<Required(ErrorMessage:="Укажите название.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
@@ -19,7 +19,7 @@ Public Class Product
 	<UIHint("Content")>
 	Public Property Content As String Implements IProduct.Content
 
-    <Display(Name:="Порядок")>
+	<Display(Name:="Порядок")>
 	Public Property Order As Integer?
 
 	<Display(Name:="Черновик")>
@@ -80,6 +80,10 @@ Public Class Product
 
 	<Display(Name:="Распродажа")>
 	Public Property IsSale As Boolean Implements IProduct.IsSale
+
+	<DataType(DataType.Date)>
+	<Display(Name:="Дата изменения")>
+	Public Property LastUpdateDate As Date = Date.Now Implements IDatedEntity.LastUpdateDate
 End Class
 
 Partial Public Class ApplicationDbContext

@@ -2,7 +2,7 @@
 Imports System.Data.Entity
 
 Public Class Customer
-	Inherits Entity
+	Inherits ApplicationEntity
 
 	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>

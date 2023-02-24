@@ -2,12 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="About" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">О компании</Value>
-    </Setting>
-    <Setting Name="General" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Общее</Value>
-    </Setting>
     <Setting Name="AboutPageHeading" Type="System.String" Scope="Application">
       <Value Profile="(Default)">О компании</Value>
     </Setting>
@@ -22,6 +16,12 @@
     </Setting>
     <Setting Name="TermsPageHeading" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Условия использования</Value>
+    </Setting>
+    <Setting Name="ReturnOfGoodsPageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Возврат товаров</Value>
+    </Setting>
+    <Setting Name="HomePageHeading" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Azox</Value>
     </Setting>
   </Settings>
 </SettingsFile>

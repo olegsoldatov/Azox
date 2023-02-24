@@ -1,23 +1,26 @@
 ﻿Imports System.Net
-Imports System.Threading.Tasks
 Imports Microsoft.AspNet.Identity
 
 Namespace Controllers
 	Public Class ContactsController
 		Inherits Controller
 
-        Private ReadOnly PageManager As PageManager
+		<OutputCache(CacheProfile:="Pages")>
+		Public Function V1() As ActionResult
+			Return View()
+		End Function
 
-        Public Sub New(pageManager As PageManager)
-            Me.PageManager = pageManager
-        End Sub
+		<OutputCache(CacheProfile:="Pages")>
+		Public Function V2() As ActionResult
+			Return View()
+		End Function
 
-        <HttpGet>
-		Public Async Function Index() As Task(Of ActionResult)
-            Return View(Await PageManager.GetPageAsync(Of ContactsPage))
-        End Function
+		<OutputCache(CacheProfile:="Pages")>
+		Public Function V3() As ActionResult
+			Return View()
+		End Function
 
-        <HttpPost>
+		<HttpPost>
 		<ValidateAntiForgeryToken>
 		Public Function ContactForm(model As ContactFormViewModel) As ActionResult
 			If ModelState.IsValid Then

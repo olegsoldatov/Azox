@@ -1,11 +1,15 @@
-﻿Imports System.Data.Entity
+﻿Imports Soldata.Azox
 
-Namespace Managers
-    Public Class ProductManager
-        Inherits EntityManager(Of Product)
+Public Class ProductManager(Of TProduct As {Class, IEntity, IPictorial, New})
+    Inherits PictorialEntityManager(Of TProduct)
 
-        Public Sub New(context As DbContext)
-            MyBase.New(context)
-        End Sub
-    End Class
-End Namespace
+    Public Sub New(store As IEntityStore(Of TProduct), imageService As ProductImageService)
+        MyBase.New(store, imageService)
+    End Sub
+
+    Public ReadOnly Property Products As IQueryable(Of TProduct)
+        Get
+            Return Store.Entities
+        End Get
+    End Property
+End Class

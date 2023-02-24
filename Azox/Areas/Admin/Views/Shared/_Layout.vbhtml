@@ -81,17 +81,8 @@ End Code
                         <span>Настройки</span>
                     </button>
                     <ul id="settingMenu" aria-hidden="@If controllerName.Equals("settings") Then@<text>false</text>Else@<text>true</text>End if">
-                        <li @If actionName.Equals("general") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("general", "settings")">Общие</a>
-                        </li>
-                        <li @If actionName.Equals("about") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("about", "settings")">О компании</a>
-                        </li>
-                        <li @If actionName.Equals("phones") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("phones", "settings")">Телефоны</a>
-                        </li>
-                        <li @If actionName.Equals("index") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
-                            <a href="@Url.Action("index", "settings")">Список</a>
+                        <li @If actionName.Equals("site") And controllerName.Equals("settings") Then @<text> class="active" </text> End If>
+                            <a href="@Url.Action("site", "settings")">Сайт</a>
                         </li>
                     </ul>
                 </li>

@@ -215,12 +215,12 @@ Public Class CatalogManager
 		Const key As String = "Warehouses"
 		Dim warehouses = TryCast(GetCacheItem(key), IReadOnlyCollection(Of Catalog.Models.Warehouse))
 		If warehouses Is Nothing Then
-			warehouses = Await Context.Warehouses _
-				.Where(Function(x) Not x.Draft) _
-				.Select(Function(x) New Catalog.Models.Warehouse With {.Id = x.Id, .Name = x.Name, .Title = x.Title}) _
-				.ToListAsync
+            warehouses = Await Context.Warehouses _
+                .Where(Function(x) x.IsPublished) _
+                .Select(Function(x) New Catalog.Models.Warehouse With {.Id = x.Id, .Name = x.Name, .Title = x.Title}) _
+                .ToListAsync
 
-			AddCacheItem(key, warehouses)
+            AddCacheItem(key, warehouses)
 		End If
 		Return warehouses
 	End Function
@@ -234,14 +234,14 @@ Public Class CatalogManager
 		Dim offers = TryCast(GetCacheItem(key), IReadOnlyCollection(Of Catalog.Models.Offer))
 
 		If offers Is Nothing Then
-			Dim entities = Await Context.Offers _
-				.AsNoTracking _
-				.Include(Function(x) x.Product) _
-				.Where(Function(x) Not x.Warehouse.Draft) _
-				.Select(Function(x) New With {x.Price, x.OldPrice, x.ProductId, x.LastUpdateDate, x.WarehouseId, x.Product.CategoryId}) _
-				.ToListAsync
+            Dim entities = Await Context.Offers _
+                .AsNoTracking _
+                .Include(Function(x) x.Product) _
+                .Where(Function(x) x.Warehouse.IsPublished) _
+                .Select(Function(x) New With {x.Price, x.OldPrice, x.ProductId, x.LastUpdateDate, x.WarehouseId, x.Product.CategoryId}) _
+                .ToListAsync
 
-			offers = entities _
+            offers = entities _
 				.Select(Function(x) New Catalog.Models.Offer With {
 					.Price = MarginService.MarginPrice(x.Price, New MarginOptions With {.WarehouseId = x.WarehouseId, .CategoryId = x.CategoryId}),
 					.OldPrice = MarginService.MarginPrice(x.OldPrice, New MarginOptions With {.WarehouseId = x.WarehouseId, .CategoryId = x.CategoryId}),

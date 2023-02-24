@@ -1,7 +1,7 @@
 ﻿@ModelType ContactsPage
 @Code
-    ViewBag.Title = If(Model.Title, Model.Heading)
-    ViewBag.Description = Model.Description
+    ViewBag.Title = If(Model.Seo.Title, Model.Heading)
+    ViewBag.Description = Model.Seo.Description
     ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id})
 End code
 

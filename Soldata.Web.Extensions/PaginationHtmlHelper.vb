@@ -135,19 +135,21 @@ Public Module PaginationHtmlHelper
 	End Function
 
 	Private Function BuildPageItem(viewContext As ViewContext, pageIndex As Integer, innerText As String, state As PageItemState, options As PaginationOptions) As String
-		Dim routeValues As New RouteValueDictionary(viewContext.RouteData.Values)
-		Dim queryString = viewContext.HttpContext.Request.QueryString
-
-		For Each key In queryString.AllKeys
-			If Not key = options.PageIndexName Then
-				routeValues.Add(key, queryString(key))
-			End If
-		Next
+		Dim list = viewContext.HttpContext.Request.QueryString.ToString.Split({"&"}, StringSplitOptions.RemoveEmptyEntries).ToList
+		Dim pageIndexListItem = list.SingleOrDefault(Function(x) x.Contains($"{options.PageIndexName}="))
+		If Not String.IsNullOrEmpty(pageIndexListItem) Then
+			list.Remove(pageIndexListItem)
+		End If
 		If pageIndex > 0 Then
-			routeValues.Add(options.PageIndexName, pageIndex)
+			list.Add($"{options.PageIndexName}={pageIndex}")
 		End If
 
-		Dim result As New TagBuilder("li") With {.InnerHtml = BuildPageLink(innerText, state, New UrlHelper(viewContext.RequestContext).RouteUrl(routeValues), options)}
+		Dim queryString = String.Join("&", list)
+		If queryString.Length > 0 Then
+			queryString = $"?{queryString}"
+		End If
+
+		Dim result As New TagBuilder("li") With {.InnerHtml = BuildPageLink(innerText, state, $"{New UrlHelper(viewContext.RequestContext).RouteUrl(viewContext.RouteData.Values)}{queryString}", options)}
 
 		Select Case state
 			Case PageItemState.Disabled

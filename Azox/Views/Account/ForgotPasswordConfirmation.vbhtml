@@ -1,12 +1,13 @@
 ﻿@Code
-    ViewBag.Title = "Подтверждение пароля (если он был забыт)"
+    Layout = "~/Views/Shared/_Account.vbhtml"
+    ViewBag.Title = "Восстановление пароля"
+    Dim loginUrl = If(ViewBag.LoginUrl, Url.Action("login"))
 End Code
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-<div>
-    <p>
-        Проверьте электронную почту, чтобы сбросить пароль.
-    </p>
-</div>
+<h1 class="h3 mb-3 fw-normal">@ViewBag.Title</h1>
+<p>
+    Проверьте электронную почту, чтобы сбросить пароль.
+</p>
+<p class="mt-5 mb-3">
+    <a href="@loginUrl"><span class="fa fa-lock">&nbsp;&nbsp;</span>Авторизация</a>
+</p>

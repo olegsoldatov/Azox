@@ -1,21 +1,33 @@
 ﻿Imports System.ComponentModel.DataAnnotations
-Imports System.Data.Entity
+Imports System.ComponentModel.DataAnnotations.Schema
 
+''' <summary>
+''' Модель данных веб-страницы.
+''' </summary>
 Public Class Page
-	Inherits Entity
+    Inherits ApplicationEntity
 
     <Required(ErrorMessage:="Укажите заголовок.")>
-    <MaxLength(200, ErrorMessage:="Не более {1} символов.")>
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Заголовок")>
     Public Property Heading As String
 
     <AllowHtml>
-	<DataType(DataType.MultilineText)>
-	<Display(Name:="Содержание")>
-	<UIHint("Content")>
-	Public Property Content As String
+    <DataType(DataType.MultilineText)>
+    <Display(Name:="Содержание")>
+    <UIHint("Content")>
+    Public Property Content As String
 
-    <MaxLength(200, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="SEO")>
+    Public Property Seo As PageSeo
+End Class
+
+''' <summary>
+''' Комплексная модель поисковой оптимизации веб-страницы.
+''' </summary>
+<ComplexType>
+Public Class PageSeo
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Название")>
     Public Property Title As String
 
@@ -23,28 +35,8 @@ Public Class Page
     <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
     <Display(Name:="Описание")>
     Public Property Description As String
-End Class
 
-Public Class AboutPage
-    Inherits Page
-End Class
-
-Public Class ContactsPage
-    Inherits Page
-End Class
-
-Public Class PolicyPage
-    Inherits Page
-End Class
-
-Public Class DeliveryPage
-    Inherits Page
-End Class
-
-Public Class TermsPage
-    Inherits Page
-End Class
-
-Partial Public Class ApplicationDbContext
-	Public Property Pages As DbSet(Of Page)
+    <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
+    <Display(Name:="Ключевые слова")>
+    Public Property Keywords As String
 End Class

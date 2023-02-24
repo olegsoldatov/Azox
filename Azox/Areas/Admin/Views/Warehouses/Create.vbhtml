@@ -1,6 +1,6 @@
 ﻿@ModelType Warehouse
 @Code
-	ViewBag.Title = "Добавление склада"
+    ViewBag.Title = "Добавление магазина / склада"
 End Code
 
 @Section Toolbar
@@ -15,11 +15,10 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm("create", Nothing, FormMethod.Post, New With {.enctype = "multipart/form-data", .id = "model-form"})
-		@Html.AntiForgeryToken
-		@Html.Hidden("ReturnUrl", Request.QueryString("ReturnUrl"))
-		@Html.EditorForModel
-	End Using
+    @Using Html.BeginForm(Nothing, Nothing, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
+        @Html.AntiForgeryToken
+        @Html.EditorForModel
+    End Using
 </article>
 
 @Section Scripts

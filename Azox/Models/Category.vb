@@ -5,27 +5,28 @@ Imports System.Data.Entity
 ''' Модель данных категории.
 ''' </summary>
 Public Class Category
-    Inherits PictorialEntity
+	Inherits PictorialEntity
+	Implements IDatedEntity
 
-    <Required(ErrorMessage:="Укажите имя.")>
+	<Required(ErrorMessage:="Укажите имя.")>
 	<MaxLength(128, ErrorMessage:="Не более {1} символов.")>
-    <Display(Name:="Название")>
-    Public Property Title As String
+	<Display(Name:="Название")>
+	Public Property Title As String
 
-    <AllowHtml>
+	<AllowHtml>
 	<DataType(DataType.MultilineText)>
 	<Display(Name:="Содержание")>
-    <UIHint("Content")>
-    Public Property Content As String
+	<UIHint("Content")>
+	Public Property Content As String
 
-    <Display(Name:="Порядок")>
-    Public Property Order As Integer?
+	<Display(Name:="Порядок")>
+	Public Property Order As Integer?
 
-    <Display(Name:="Черновик")>
-    <UIHint("Draft")>
-    Public Property Draft As Boolean
+	<Display(Name:="Черновик")>
+	<UIHint("Draft")>
+	Public Property Draft As Boolean
 
-    <Display(Name:="Тип / категория товара", Description:="Формирует название товара.")>
+	<Display(Name:="Тип / категория товара", Description:="Формирует название товара.")>
 	Public Property TypePrefix As String
 
 	<Display(Name:="Родительская категория")>
@@ -49,6 +50,10 @@ Public Class Category
 
 	<Display(Name:="Ключевые слова")>
 	Public Property Keywords As String
+
+	<DataType(DataType.Date)>
+	<Display(Name:="Дата изменения")>
+	Public Property LastUpdateDate As Date = Date.Now Implements IDatedEntity.LastUpdateDate
 
 	''' <summary>
 	''' Возвращает путь категории.

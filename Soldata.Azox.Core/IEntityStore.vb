@@ -1,23 +1,37 @@
-﻿' © Софт Бизнес, ООО. Все права защищены.
+﻿' © Софт Бизнес. Все права защищены.
 
 ''' <summary>
 ''' Представляет определение хранилища сущностей.
 ''' </summary>
 ''' <typeparam name="TEntity">Тип сущности.</typeparam>
 Public Interface IEntityStore(Of TEntity As {Class, IEntity})
+	Inherits IEntityStore(Of TEntity, Guid)
+End Interface
+
+''' <summary>
+''' Представляет определение хранилища сущностей.
+''' </summary>
+''' <typeparam name="TEntity">Тип сущности.</typeparam>
+''' <typeparam name="TKey">Тип ключевого поля.</typeparam>
+Public Interface IEntityStore(Of TEntity As {Class, IEntity(Of TKey)}, TKey)
 	Inherits IDisposable
 
 	''' <summary>
-	''' Предоставляет возможность создания запросов к источнику данных сущности.
+	''' Возвращает перечисление сущностей с возможностью запросов.
 	''' </summary>
-	''' <returns></returns>
 	ReadOnly Property Entities As IQueryable(Of TEntity)
 
 	''' <summary>
 	''' Находит сущность.
 	''' </summary>
-	''' <param name="entityId">Идентификатор сущности.</param>
-	Function FindByIdAsync(entityId As Guid?) As Task(Of TEntity)
+	''' <param name="id">Идентификатор сущности.</param>
+	Function FindByIdAsync(id As TKey) As Task(Of TEntity)
+
+	''' <summary>
+	''' Находит перечисление сущностей.
+	''' </summary>
+	''' <param name="id">Перечисление идентификаторов.</param>
+	Function FindByIdRangeAsync(id As IEnumerable(Of TKey)) As Task(Of IEnumerable(Of TEntity))
 
 	''' <summary>
 	''' Добавляет новую сущность.

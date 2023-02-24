@@ -34,15 +34,15 @@ Public Class VerifyCodeViewModel
 End Class
 
 Public Class ForgotViewModel
-	<Required>
-	<Display(Name:="Адрес электронной почты")>
+	<Required(ErrorMessage:="Укажите адрес электронной почты.")>
+	<Display(Name:="Электронная почта")>
 	Public Property Email As String
 End Class
 
 Public Class LoginViewModel
-	<Required>
-	<Display(Name:="Адрес электронной почты")>
-	<EmailAddress>
+	<Required(ErrorMessage:="Укажите адрес электронной почты.")>
+	<EmailAddress(ErrorMessage:="Некорректный адрес электронной почты.")>
+	<Display(Name:="Электронная почта")>
 	Public Property Email As String
 
 	<Required>
@@ -55,9 +55,9 @@ Public Class LoginViewModel
 End Class
 
 Public Class RegisterViewModel
-	<Required>
-	<EmailAddress>
-	<Display(Name:="Адрес электронной почты")>
+	<Required(ErrorMessage:="Укажите адрес электронной почты.")>
+	<EmailAddress(ErrorMessage:="Некорректный адрес электронной почты.")>
+	<Display(Name:="Электронная почта")>
 	Public Property Email As String
 
 	<Required>
@@ -73,28 +73,28 @@ Public Class RegisterViewModel
 End Class
 
 Public Class ResetPasswordViewModel
-	<Required>
-	<EmailAddress>
-	<Display(Name:="Адрес электронной почты")>
+	<Required(ErrorMessage:="Укажите адрес электронной почты.")>
+	<EmailAddress(ErrorMessage:="Некорректный адрес электронной почты.")>
+	<Display(Name:="Электронная почта")>
 	Public Property Email() As String
 
-	<Required>
+	<Required(ErrorMessage:="Укажите новый пароль.")>
 	<StringLength(100, ErrorMessage:="Значение {0} должно содержать не менее {2} символов.", MinimumLength:=6)>
 	<DataType(DataType.Password)>
-	<Display(Name:="Пароль")>
+	<Display(Name:="Новый пароль")>
 	Public Property Password() As String
 
 	<DataType(DataType.Password)>
 	<Display(Name:="Подтверждение пароля")>
-	<Compare("Password", ErrorMessage:="Пароль и его подтверждение не совпадают.")>
+	<Compare("Password", ErrorMessage:="Новый пароль и его подтверждение не совпадают.")>
 	Public Property ConfirmPassword() As String
 
 	Public Property Code() As String
 End Class
 
 Public Class ForgotPasswordViewModel
-	<Required>
-	<EmailAddress>
-	<Display(Name:="Почта")>
+	<Required(ErrorMessage:="Укажите адрес электронной почты.")>
+	<EmailAddress(ErrorMessage:="Некорректный адрес электронной почты.")>
+	<Display(Name:="Электронная почта")>
 	Public Property Email() As String
 End Class

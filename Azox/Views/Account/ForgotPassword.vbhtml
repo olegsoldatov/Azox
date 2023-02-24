@@ -1,27 +1,24 @@
 ﻿@ModelType ForgotPasswordViewModel
 @Code
+    Layout = "~/Views/Shared/_Account.vbhtml"
     ViewBag.Title = "Забыли пароль?"
+    Dim loginUrl = If(Request.QueryString("LoginUrl"), Url.Action("login"))
 End Code
 
-<h2>@ViewBag.Title.</h2>
-
-@Using Html.BeginForm("ForgotPassword", "Account", FormMethod.Post, New With {.class = "form-horizontal", .role = "form"})
-    @Html.AntiForgeryToken()
+@Using Html.BeginForm("forgotPassword", "account", New With {loginUrl}, FormMethod.Post, Nothing)
+    @Html.AntiForgeryToken
     @<text>
-    <h4>Введите адрес электронной почты.</h4>
-    <hr />
-    @Html.ValidationSummary("", New With {.class = "text-danger"})
-    <div class="form-group">
-        @Html.LabelFor(Function(m) m.Email, New With {.class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.TextBoxFor(Function(m) m.Email, New With {.class = "form-control"})
+        <h1 class="h3 mb-3 fw-normal">@ViewBag.Title</h1>
+        <p class="form-text">Укажите адрес электронной почты, на&nbsp;который будет отправлена ссылка для восстановления.</p>
+        @Html.ValidationSummary("", New With {.class = "text-danger"})
+        <div class="form-floating mb-3">
+            @Html.EditorFor(Function(m) m.Email, New With {.htmlAttributes = New With {.class = "form-control rounded", .placeholder = "name@example.com"}})
+            @Html.LabelFor(Function(m) m.Email, New With {.class = "form-label"})
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Отправка ссылки по электронной почте" />
-        </div>
-    </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Отправить ссылку</button>
+        <p class="mt-5 mb-3">
+            <a href="@loginUrl"><span class="fa fa-lock">&nbsp;&nbsp;</span>Авторизация</a>
+        </p>
     </text>
 End Using
 

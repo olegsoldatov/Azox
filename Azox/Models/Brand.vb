@@ -6,6 +6,7 @@ Imports System.Data.Entity
 ''' </summary>
 Public Class Brand
     Inherits PictorialEntity
+    Implements IDatedEntity
 
     <Required(ErrorMessage:="Укажите название.")>
     <MaxLength(128, ErrorMessage:="Не более {1} символов.")>
@@ -22,8 +23,8 @@ Public Class Brand
     <Display(Name:="Порядок")>
     Public Property Order As Integer?
 
-    <UIHint("IsPublished")>
     <Display(Name:="Опубликовано")>
+    <UIHint("IsPublished")>
     Public Property IsPublished As Boolean
 
     <Display(Name:="Продукция")>
@@ -34,6 +35,10 @@ Public Class Brand
 
     <Display(Name:="Ключевые слова")>
     Public Property Keywords As String
+
+    <DataType(DataType.Date)>
+    <Display(Name:="Дата изменения")>
+    Public Property LastUpdateDate As Date Implements IDatedEntity.LastUpdateDate
 End Class
 
 Partial Public Class ApplicationDbContext

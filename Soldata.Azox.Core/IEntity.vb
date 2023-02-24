@@ -1,19 +1,12 @@
-﻿' © Софт Бизнес, ООО. Все права защищены.
+﻿' © Софт Бизнес. Все права защищены.
 
 ''' <summary>
-''' Минимальный интерфейс сущности.
+''' Минимальный интерфейс для сущности с ключевым полем типа GUID.
 ''' </summary>
 Public Interface IEntity
-	''' <summary>
-	''' Устанавливает или возвращает идентификатор.
-	''' </summary>
-	''' <remarks>
-	''' При реализации в производном классе должно быть ключевым полем.
-	''' </remarks>
-	Property Id As Guid
+	Inherits IEntity(Of Guid)
+End Interface
 
-	''' <summary>
-	''' Устанавливает или возвращает дату последнего изменения.
-	''' </summary>
-	Property LastUpdateDate As Date
+Public Interface IEntity(Of Out TKey)
+	ReadOnly Property Id As TKey
 End Interface

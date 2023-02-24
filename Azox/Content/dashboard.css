@@ -731,6 +731,14 @@ label + .checkbox {
 	padding: .25rem .5rem;
 }
 
+.custom-select {
+	padding-right: 2.1rem;
+}
+
+.custom-select-sm {
+	padding-right: 1.5rem;
+}
+
 input[type=file] {
 	display: block;
 	width: 100%;

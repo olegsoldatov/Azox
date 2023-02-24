@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Методы расширения для веб-приложений на ASP.NET 4.x")>
 <Assembly: AssemblyCompany("Софт Бизнес")>
 <Assembly: AssemblyProduct("Soldata.Web")>
-<Assembly: AssemblyCopyright("© Софт Бизнес, 2021")>
+<Assembly: AssemblyCopyright("© Софт Бизнес, 2022")>
 <Assembly: AssemblyTrademark("Azox")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.8.0")>
-<Assembly: AssemblyFileVersion("1.8.0")>
+<Assembly: AssemblyVersion("1.9.0")>
+<Assembly: AssemblyFileVersion("1.9.0")>

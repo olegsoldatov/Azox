@@ -57,24 +57,6 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("О компании")>  _
-        Public ReadOnly Property About() As String
-            Get
-                Return CType(Me("About"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Общее")>  _
-        Public ReadOnly Property General() As String
-            Get
-                Return CType(Me("General"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("О компании")>  _
         Public ReadOnly Property AboutPageHeading() As String
             Get
                 Return CType(Me("AboutPageHeading"),String)
@@ -114,6 +96,24 @@ Namespace My
         Public ReadOnly Property TermsPageHeading() As String
             Get
                 Return CType(Me("TermsPageHeading"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Возврат товаров")>  _
+        Public ReadOnly Property ReturnOfGoodsPageHeading() As String
+            Get
+                Return CType(Me("ReturnOfGoodsPageHeading"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Azox")>  _
+        Public ReadOnly Property HomePageHeading() As String
+            Get
+                Return CType(Me("HomePageHeading"),String)
             End Get
         End Property
     End Class

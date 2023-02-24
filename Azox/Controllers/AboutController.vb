@@ -1,18 +1,15 @@
-﻿Imports System.Threading.Tasks
+﻿Namespace Controllers
+    Public Class AboutController
+        Inherits Controller
 
-Namespace Controllers
-	Public Class AboutController
-		Inherits Controller
+        <OutputCache(CacheProfile:="Pages")>
+        Public Function V1() As ActionResult
+            Return View()
+        End Function
 
-        Private ReadOnly PageManager As PageManager
-
-        Public Sub New(pageManager As PageManager)
-            Me.PageManager = pageManager
-        End Sub
-
-        <HttpGet>
-        Public Async Function Index() As Task(Of ActionResult)
-            Return View(Await PageManager.GetPageAsync(Of AboutPage))
+        <OutputCache(CacheProfile:="Pages")>
+        Public Function V2() As ActionResult
+            Return View()
         End Function
     End Class
 End Namespace

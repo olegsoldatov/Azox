@@ -20,12 +20,12 @@ Public MustInherit Class PictorialEntityManager(Of TEntity As {Class, IEntity, I
         Return ImageService.UploadAsync(entity, imageFile)
     End Function
 
-    Public Overrides Async Function DeleteAsync(entity As TEntity) As Task(Of Soldata.Azox.ManagerResult)
+    Public Overrides Async Function DeleteAsync(entity As TEntity) As Task(Of Soldata.Azox.EntityResult)
         Await ImageService.DeleteAsync(entity)
         Return Await MyBase.DeleteAsync(entity)
     End Function
 
-    Public Overrides Async Function DeleteRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of Soldata.Azox.ManagerResult)
+    Public Overrides Async Function DeleteRangeAsync(entities As IEnumerable(Of TEntity)) As Task(Of Soldata.Azox.EntityResult)
         Await ImageService.DeleteRangeAsync(entities.Where(Function(x) x.ImageId IsNot Nothing).Select(Function(x) x.ImageId))
         Return Await MyBase.DeleteRangeAsync(entities)
     End Function

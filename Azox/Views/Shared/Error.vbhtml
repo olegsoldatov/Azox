@@ -1,17 +1,8 @@
 ﻿@ModelType HandleErrorInfo
 @Code
-    ViewBag.Title = "500 — Внутренняя ошибка сервера"
+    Layout = "~/Views/Shared/_Account.vbhtml"
+    ViewBag.Title = "Ошибка"
 End Code
 
-<div class="container pt-5">
-    <div class="alert alert-danger" role="alert">
-        <h4 class="alert-heading">@ViewBag.Title</h4>
-        <p>Произошла ошибка при обработке запроса.</p>
-        <hr />
-        <p class="mb-0">
-            <small>
-                Попробуйте зайти на эту страницу позднее. Если ошибка повториться, то обратитесь к администратору сайта.
-            </small>
-        </p>
-    </div>
-</div>
+<h1 class="h3 mb-3 fw-normal text-danger">Ошибка.</h1>
+<p class="text-danger">При обработке запроса произошла ошибка.</p>
