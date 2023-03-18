@@ -23,8 +23,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Imaging", "Soldata.
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Utilities", "Soldata.Utilities\Soldata.Utilities.vbproj", "{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.Deliveries", "Soldata.Azox.Deliveries\Soldata.Azox.Deliveries.vbproj", "{1595664B-A374-4220-8F7B-654E1F218693}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,10 +69,6 @@ Global
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1595664B-A374-4220-8F7B-654E1F218693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1595664B-A374-4220-8F7B-654E1F218693}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1595664B-A374-4220-8F7B-654E1F218693}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1595664B-A374-4220-8F7B-654E1F218693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
