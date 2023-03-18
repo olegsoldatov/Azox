@@ -1,4 +1,4 @@
-﻿@ModelType FilterViewModel
+﻿@ModelType BrandQuery
 <form method="get">
 	<div class="form-group">
 		<div class="input-group">

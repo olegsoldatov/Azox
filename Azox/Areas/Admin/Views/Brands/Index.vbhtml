@@ -10,8 +10,8 @@ End Code
         <span>Добавить</span>
     </a>
     <div class="btn-group">
-        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span>Действия</span>
+        <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-ellipsis-h"></span>
         </button>
         <div class="dropdown-menu">
             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#changeModal">Изменить</button>
@@ -22,7 +22,7 @@ End Section
 
 <header>
     <h1>@ViewBag.Title <sup>@CInt(ViewBag.TotalCount).ToString("бренд", "бренда", "брендов")</sup></h1>
-    @Html.Partial("_Filter", ViewBag.Filter)
+    @Html.Action("Filter")
     @Html.Pagination(New With {.class = "pagination"})
 </header>
 
@@ -42,9 +42,6 @@ End Section
                             <th>
                                 @Html.DisplayNameFor(Function(model) model.Title)
                             </th>
-                            <th class="text-right" width="100">
-                                @Html.DisplayNameFor(Function(model) model.Order)
-                            </th>
                             <th width="100"></th>
                         </tr>
                     </thead>
@@ -55,13 +52,10 @@ End Section
                                     <input type="checkbox" name="id" value="@item.Id" />
                                 </td>
                                 <td>
-                                    @Html.ActionLink(item.Title, "edit", New With {.id = item.Id, returnUrl}, New With {.title = item.Title})
+                                    @Html.ActionLink(item.Title, "edit", New With {item.Id, returnUrl}, New With {.title = item.Title})
                                     @Html.DisplayFor(Function(model) item.IsPublished)
                                 </td>
-                                <td class="text-right">
-                                    @item.Order
-                                </td>
-                                <td class="text-right">
+                                <td class="text-end">
                                     <a href="@Url.Action("delete", New With {item.Id, returnUrl})" title="Удалить"><span class="fa fa-remove"></span></a>
                                 </td>
                             </tr>

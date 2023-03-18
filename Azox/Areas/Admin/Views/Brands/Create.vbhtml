@@ -15,10 +15,11 @@ End Section
 </header>
 
 <article>
-	@Using Html.BeginForm(Nothing, Nothing, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
-		@Html.AntiForgeryToken
-		@Html.EditorForModel
-    End Using
+    @Using Html.BeginForm(Nothing, Nothing, FormMethod.Post, New With {.id = "model-form", .enctype = "multipart/form-data"})
+        @Html.AntiForgeryToken
+        @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
+        @Html.EditorForModel
+	End Using
 </article>
 
 @Section Scripts

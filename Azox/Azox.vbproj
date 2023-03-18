@@ -267,10 +267,6 @@
     <Compile Include="Areas\Admin\Models\CategoryChangeViewModel.vb" />
     <Compile Include="Areas\Admin\Models\ChangeModel.vb" />
     <Compile Include="Areas\Admin\Models\ProductChange.vb" />
-    <Compile Include="Migrations\202302241228449_ghfghfgg.designer.vb">
-      <DependentUpon>202302241228449_ghfghfgg.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202302241228449_ghfghfgg.vb" />
     <Compile Include="Services\BrandImageService.vb" />
     <Compile Include="Managers\CustomerManager.vb" />
     <Compile Include="Services\ProductImageService.vb" />
@@ -317,10 +313,6 @@
     <Compile Include="Stores\EntityStore.vb" />
     <Compile Include="Extensions\StringExtension.vb" />
     <Compile Include="Data\ApplicationDbContext.vb" />
-    <Compile Include="Migrations\202211291539352_dgfdfghfh.designer.vb">
-      <DependentUpon>202211291539352_dgfdfghfh.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202211291539352_dgfdfghfh.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="Models\ApplicationEntity.vb" />
     <Compile Include="Models\Attribute.vb" />
@@ -389,12 +381,6 @@
     <Compile Include="Validators\BrandValidator.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202211291539352_dgfdfghfh.resx">
-      <DependentUpon>202211291539352_dgfdfghfh.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202302241228449_ghfghfgg.resx">
-      <DependentUpon>202302241228449_ghfghfgg.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -1045,7 +1031,7 @@
     <Content Include="Areas\Admin\Views\Brands\EditorTemplates\Brand.vbhtml" />
     <Content Include="Areas\Admin\Views\Brands\Index.vbhtml" />
     <Content Include="Areas\Admin\Views\Brands\_Delete.vbhtml" />
-    <Content Include="Areas\Admin\Views\Brands\_Filter.vbhtml" />
+    <Content Include="Areas\Admin\Views\Brands\Filter.vbhtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Thumbnail.vbhtml" />
     <Content Include="Areas\Admin\Views\Brands\_Change.vbhtml" />
     <Content Include="Areas\Admin\Views\Settings\Index.vbhtml" />

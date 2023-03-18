@@ -6,11 +6,9 @@ Imports Soldata.Azox
 Public Class BrandManager
     Inherits PictorialEntityManager(Of Brand)
 
-    Private ReadOnly _brandValidator As IEntityValidator(Of Brand)
-
     Public Sub New(store As IEntityStore(Of Brand), imageService As BrandImageService)
         MyBase.New(store, imageService)
-        _brandValidator = New BrandValidator(Me)
+        Validator = New BrandValidator(Me)
     End Sub
 
     Public ReadOnly Property Brands As IQueryable(Of Brand)
@@ -29,7 +27,7 @@ Public Class BrandManager
         Dim entities = Store.Entities.AsNoTracking.Include(Function(x) x.Products)
 
         ' Поиск.
-        If Not String.IsNullOrEmpty(query.SearchText) Then
+        If Not String.IsNullOrEmpty(query?.SearchText) Then
             Dim s = query.SearchText.ToLower.Replace("ё", "е")
             entities = entities.Where(Function(x) x.Title.ToLower.Replace("ё", "е").Contains(s))
         End If

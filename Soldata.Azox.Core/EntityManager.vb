@@ -25,6 +25,11 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity(Of TKey)}, 
     Protected Friend ReadOnly Property Store As IEntityStore(Of TEntity, TKey)
 
     ''' <summary>
+    ''' Устанавливает или возвращает валидатор сущности.
+    ''' </summary>
+    Protected Overridable Property Validator As IEntityValidator(Of TEntity, TKey)
+
+    ''' <summary>
     ''' Инициализирует экземпляр класса <see cref="EntityManager(Of TEntity, TKey)"/>.
     ''' </summary>
     ''' <param name="store">Хранилище.</param>
@@ -58,6 +63,14 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity(Of TKey)}, 
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
+
+        If Validator IsNot Nothing Then
+            Dim entityResult = Await Validator.ValidateAsync(entity)
+            If Not entityResult.Succeeded Then
+                Return entityResult
+            End If
+        End If
+
         Await Store.CreateAsync(entity)
         Return EntityResult.Success
     End Function
@@ -86,6 +99,14 @@ Public MustInherit Class EntityManager(Of TEntity As {Class, IEntity(Of TKey)}, 
         If IsNothing(entity) Then
             Throw New ArgumentNullException(NameOf(entity))
         End If
+
+        If Validator IsNot Nothing Then
+            Dim entityResult = Await Validator.ValidateAsync(entity)
+            If Not entityResult.Succeeded Then
+                Return entityResult
+            End If
+        End If
+
         Await Store.UpdateAsync(entity)
         Return EntityResult.Success
     End Function

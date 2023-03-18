@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.Models", "Soldata.Azox.Models\Soldata.Azox.Models.vbproj", "{CA83ADFB-3E70-4EA3-A149-2190202D5805}"
 EndProject
@@ -22,8 +22,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Imaging", "Soldata.Imaging\Soldata.Imaging.vbproj", "{FD2427E5-9B95-4F05-8C8A-D561F298831F}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Utilities", "Soldata.Utilities\Soldata.Utilities.vbproj", "{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Entity", "Soldata.Entity\Soldata.Entity.vbproj", "{37526145-2D27-42C5-9B6E-751D1EDE1C03}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Soldata.Azox.Deliveries", "Soldata.Azox.Deliveries\Soldata.Azox.Deliveries.vbproj", "{1595664B-A374-4220-8F7B-654E1F218693}"
 EndProject
@@ -73,10 +71,6 @@ Global
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73EF426A-7083-4B2C-A8DB-B79AE7DC3454}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37526145-2D27-42C5-9B6E-751D1EDE1C03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1595664B-A374-4220-8F7B-654E1F218693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1595664B-A374-4220-8F7B-654E1F218693}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1595664B-A374-4220-8F7B-654E1F218693}.Release|Any CPU.ActiveCfg = Release|Any CPU

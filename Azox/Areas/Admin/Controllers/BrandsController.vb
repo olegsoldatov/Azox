@@ -123,5 +123,9 @@ Namespace Areas.Admin.Controllers
 			End If
 			Return Json(True, JsonRequestBehavior.AllowGet)
 		End Function
+
+		Public Function Filter(query As BrandQuery) As ActionResult
+			Return PartialView(query)
+		End Function
 	End Class
 End Namespace

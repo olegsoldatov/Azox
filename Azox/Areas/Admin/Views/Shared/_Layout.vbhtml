@@ -167,28 +167,27 @@ End Code
         </main>
     </div>
 
-	<a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">
-		<div class="fa fa-arrow-up" aria-label="Наверх"></div>
-	</a>
+    <a href="#" class="back-to-top" aria-disabled="true" data-toggle="toTop" title="Наверх">
+        <div class="fa fa-arrow-up" aria-label="Наверх"></div>
+    </a>
 
-	@RenderSection("Modals", required:=False)
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
-	@Scripts.Render("~/bundles/dashboard")
-	@RenderSection("Scripts", required:=False)
-	@If Not IsNothing(TempData("Message")) Then
-		@<script>
-			 $("#toast-message").toast("show");
-		</script>
-	ElseIf Not IsNothing(TempData("Warning")) Then
-		@<script>
-			 $("#toast-warning").toast("show");
-		</script>
-	ElseIf Not IsNothing(TempData("Error")) Then
-		@<script>
-			 $("#toast-error").toast("show");
-		</script>
-	End If
+    @RenderSection("Modals", required:=False)
+    @Scripts.Render("~/bundles/jquery", "~/Scripts/bootstrap.bundle.js")
+    @Scripts.Render("~/bundles/dashboard")
+    @RenderSection("Scripts", required:=False)
+    @If Not IsNothing(TempData("Message")) Then
+        @<script>
+             $("#toast-message").toast("show");
+        </script>
+    ElseIf Not IsNothing(TempData("Warning")) Then
+        @<script>
+             $("#toast-warning").toast("show");
+        </script>
+    ElseIf Not IsNothing(TempData("Error")) Then
+        @<script>
+             $("#toast-error").toast("show");
+        </script>
+    End If
 </body>
 </html>
 <!-- Софт Бизнес https://soft.business -->
