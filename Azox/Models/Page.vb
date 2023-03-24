@@ -6,6 +6,16 @@ Imports System.ComponentModel.DataAnnotations.Schema
 ''' </summary>
 Public Class Page
     Inherits ApplicationEntity
+    Implements IPage
+
+    <Display(Name:="Имя страницы")>
+    Public Property Name As String Implements IPage.Name
+
+    <Display(Name:="Заголовок")>
+    Public Property Title As String Implements IPage.Title
+
+    <Display(Name:="Описание")>
+    Public Property Description As String Implements IPage.Description
 
     <Required(ErrorMessage:="Укажите заголовок.")>
     <MaxLength(250, ErrorMessage:="Не более {1} символов.")>
@@ -20,6 +30,9 @@ Public Class Page
 
     <Display(Name:="SEO")>
     Public Property Seo As PageSeo
+
+    <Display(Name:="Статьи")>
+    Public Property Articles As ICollection(Of IArticle) = New List(Of IArticle) Implements IPage.Articles
 End Class
 
 ''' <summary>

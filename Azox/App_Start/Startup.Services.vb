@@ -23,6 +23,7 @@ Partial Public Class Startup
         builder.RegisterType(Of EntityStore(Of Customer)).As(Of IEntityStore(Of Customer)).InstancePerRequest()
 
         ' Сервисы.
+        builder.RegisterType(Of PageService).As(Of IPageService).InstancePerRequest()
         builder.RegisterType(Of BrandImageService).InstancePerRequest()
         builder.RegisterType(Of CategoryImageService).InstancePerRequest()
         builder.RegisterType(Of ProductImageService).InstancePerRequest()
