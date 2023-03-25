@@ -100,5 +100,11 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Soldata.Azox.Core\Soldata.Azox.Core.vbproj">
+      <Project>{a0c2377d-1be4-4d09-8017-724b04ee1936}</Project>
+      <Name>Soldata.Azox.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
