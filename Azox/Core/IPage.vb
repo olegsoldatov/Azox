@@ -1,11 +1,18 @@
-﻿''' <summary>
-''' Страница.
+﻿Imports Soldata.Azox
+
+''' <summary>
+''' Предоставляет определение веб-страницы.
 ''' </summary>
 Public Interface IPage
+    Inherits IEntity
+
     ''' <summary>
-    ''' Имя страницы.
+    ''' Ярлык страницы.
     ''' </summary>
-    Property Name As String
+    ''' <remarks>
+    ''' При реализации в производном классе должно быть обязательным и иметь уникальное значение.
+    ''' </remarks>
+    Property Slug As String
 
     ''' <summary>
     ''' Заголовок страницы.
@@ -18,7 +25,8 @@ Public Interface IPage
     Property Description As String
 
     ''' <summary>
-    ''' Статьи.
+    ''' Содержание страницы.
     ''' </summary>
-    Property Articles As ICollection(Of IArticle)
+    ''' <remarks>При реализации в производном классе должно разрешать использование HTML-тэгов.</remarks>
+    Property Content As String
 End Interface

@@ -21,19 +21,13 @@ End Code
                         Pages
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="~/about/v1">About v.1</a></li>
-                        <li><a class="dropdown-item" href="~/about/v2">About v.2</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="~/contacts/v1">Contacts v.1</a></li>
                         <li><a class="dropdown-item" href="~/contacts/v2">Contacts v.2</a></li>
                         <li><a class="dropdown-item" href="~/contacts/v3">Contacts v.3</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="~/about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
+                    <a class="nav-link" href="~/about">О компании</a>
                 </li>
             </ul>
             <form class="d-flex" role="search">

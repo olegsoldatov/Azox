@@ -21,6 +21,19 @@ Public Class PageManager
         Return (Await entities.CountAsync(), Await entities.OrderByDescending(Function(x) x.LastUpdateDate).Skip(offset).Take(limit).ToListAsync())
     End Function
 
+    ''' <summary>
+    ''' Находит страницу по ярлыку.
+    ''' </summary>
+    ''' <param name="slug">Ярлык.</param>
+    Public Async Function FindBySlugAsync(slug As String) As Task(Of IPage)
+        Return New Page With {
+            .Slug = slug,
+            .Title = "Заголовок страницы",
+            .Description = "Описание страницы",
+            .Content = "<p>Lorem ipsum dolor...</p>"
+        }
+    End Function
+
     Public Async Function GetPageAsync(Of T As {Page, New})() As Task(Of T)
         Dim page = Await Store.Entities.OfType(Of T).FirstOrDefaultAsync
         If IsNothing(page) Then

@@ -269,14 +269,12 @@
     <Compile Include="Areas\Admin\Models\ProductChange.vb" />
     <Compile Include="Core\IArticle.vb" />
     <Compile Include="Core\IPage.vb" />
-    <Compile Include="Core\IPageService.vb" />
-    <Compile Include="Migrations\202303182110132_fghfghfghgg.designer.vb">
-      <DependentUpon>202303182110132_fghfghfghgg.vb</DependentUpon>
+    <Compile Include="Migrations\202303290017324_fghfgjfj.designer.vb">
+      <DependentUpon>202303290017324_fghfgjfj.vb</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202303182110132_fghfghfghgg.vb" />
+    <Compile Include="Migrations\202303290017324_fghfgjfj.vb" />
     <Compile Include="Services\BrandImageService.vb" />
     <Compile Include="Managers\CustomerManager.vb" />
-    <Compile Include="Services\PageService.vb" />
     <Compile Include="Services\ProductImageService.vb" />
     <Compile Include="Managers\WarehouseManager.vb" />
     <Compile Include="Controllers\DeliveryController.vb" />
@@ -389,8 +387,8 @@
     <Compile Include="Validators\BrandValidator.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202303182110132_fghfghfghgg.resx">
-      <DependentUpon>202303182110132_fghfghfghgg.vb</DependentUpon>
+    <EmbeddedResource Include="Migrations\202303290017324_fghfgjfj.resx">
+      <DependentUpon>202303290017324_fghfgjfj.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
@@ -1300,8 +1298,6 @@
     <Content Include="Views\Brands\Details.vbhtml" />
     <Content Include="Views\Brands\Index.vbhtml" />
     <Content Include="Views\Shared\_Navbar.vbhtml" />
-    <Content Include="Views\About\V1.vbhtml" />
-    <Content Include="Views\About\V2.vbhtml" />
     <Content Include="Views\Contacts\V1.vbhtml" />
     <Content Include="Views\Contacts\V2.vbhtml" />
     <Content Include="Views\Contacts\V3.vbhtml" />
