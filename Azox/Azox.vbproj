@@ -1298,9 +1298,6 @@
     <Content Include="Views\Brands\Details.vbhtml" />
     <Content Include="Views\Brands\Index.vbhtml" />
     <Content Include="Views\Shared\_Navbar.vbhtml" />
-    <Content Include="Views\Contacts\V1.vbhtml" />
-    <Content Include="Views\Contacts\V2.vbhtml" />
-    <Content Include="Views\Contacts\V3.vbhtml" />
     <Content Include="Views\Shared\_Account.vbhtml" />
     <Content Include="Views\About\Index.vbhtml" />
   </ItemGroup>

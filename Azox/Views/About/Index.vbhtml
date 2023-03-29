@@ -2,6 +2,7 @@
 @Code
     ViewBag.Title = Model.Title
     ViewBag.Description = Model.Description
+    ViewBag.EditUrl = Url.Action("edit", "pages", New With {.area = "admin", Model.Id})
 End Code
 
 <div class="container">
