@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel.DataAnnotations
+Imports Soldata.Azox
 
 ''' <summary>
 ''' Модель данных веб-страницы.

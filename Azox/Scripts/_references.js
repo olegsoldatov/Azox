@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-3.6.3.js" />
+﻿/// <reference path="jquery-3.6.4.js" />
 /// <autosync enabled="true" />
 /// <reference path="../ckfinder/ckfinder.js" />
 /// <reference path="../ckfinder/ckfinder_v1.js" />

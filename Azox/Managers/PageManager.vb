@@ -9,16 +9,13 @@ Public Class PageManager
         MyBase.New(store)
     End Sub
 
-    Public ReadOnly Property Pages As IQueryable(Of Page)
-        Get
-            Return Store.Entities
-        End Get
-    End Property
-
-    Public Async Function GetListAsync(Optional offset As Integer = 0, Optional limit As Integer = 10) As Task(Of (Count As Long, Items As IReadOnlyList(Of Page)))
+    Public Async Function GetListAsync(limit As Integer, offset As Integer) As Task(Of (Items As IEnumerable(Of Page), TotalCount As Integer, PageCount As Integer))
         Dim entities = Store.Entities
 
-        Return (Await entities.CountAsync(), Await entities.OrderByDescending(Function(x) x.LastUpdateDate).Skip(offset).Take(limit).ToListAsync())
+        Dim items = Await entities.OrderBy(Function(x) x.Title).Skip(limit * offset).Take(limit).AsNoTracking.ToListAsync
+        Dim totalCount = Await entities.AsNoTracking.CountAsync
+        Dim pageCount = CInt(Math.Ceiling(totalCount / limit))
+        Return (items, totalCount, pageCount)
     End Function
 
     ''' <summary>

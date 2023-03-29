@@ -1,5 +1,4 @@
-﻿Imports System.Data.Entity
-Imports System.Net
+﻿Imports System.Net
 Imports System.Threading.Tasks
 Imports Soldata.Web.Extensions
 
@@ -13,21 +12,20 @@ Namespace Areas.Admin.Controllers
             Me.PageManager = pageManager
         End Sub
 
-        Public Async Function Index(Optional pageIndex As Integer = 0, Optional pageSize As Integer = 50) As Task(Of ActionResult)
-            Dim entities = Await PageManager.GetListAsync(offset:=pageIndex, limit:=pageSize)
-            Pagination(entities.Count, pageIndex, pageSize)
-            Return View(entities.Items)
+        Public Async Function Index(Optional pageSize As Integer = 50, Optional pageIndex As Integer = 0) As Task(Of ActionResult)
+            Dim list = Await PageManager.GetListAsync(pageSize, pageIndex)
+            Pagination(list.TotalCount, pageIndex, pageSize)
+            Return View(list.Items)
         End Function
 
         <HttpPost>
         <ValidateAntiForgeryToken>
         Public Async Function Index(id As Guid(), returnUrl As String, Optional delete As Boolean = False) As Task(Of ActionResult)
             If Not IsNothing(id) Then
-                Dim pages = Await PageManager.Pages.Where(Function(x) id.Contains(x.Id)).ToListAsync()
-
+                Dim pages = Await PageManager.FindByIdRangeAsync(id)
                 If delete Then
                     Await PageManager.DeleteRangeAsync(pages)
-                    Alert(String.Format("Удалено: {0}.", pages.Count.ToString("страница", "страницы", "страниц")))
+                    Alert(pages.Count.ToString("страница удалена.", "страницы удалены.", "страниц удалено."))
                 End If
             End If
             Return Redirect(returnUrl)
@@ -94,16 +92,6 @@ Namespace Areas.Admin.Controllers
         <HttpGet>
         Public Async Function Home() As Task(Of ActionResult)
             Return View("Edit", Await PageManager.GetPageAsync(Of HomePage))
-        End Function
-
-        <HttpGet>
-        Public Async Function About() As Task(Of ActionResult)
-            Return View("Edit", Await PageManager.GetPageAsync(Of AboutPage))
-        End Function
-
-        <HttpGet>
-        Public Async Function Contacts() As Task(Of ActionResult)
-            Return View("Edit", Await PageManager.GetPageAsync(Of ContactsPage))
         End Function
 
         <HttpGet>

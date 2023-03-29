@@ -2,14 +2,6 @@
     Inherits Page
 End Class
 
-Public Class AboutPage
-    Inherits Page
-End Class
-
-Public Class ContactsPage
-    Inherits Page
-End Class
-
 Public Class DeliveryPage
     Inherits Page
 End Class
